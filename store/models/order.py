@@ -16,7 +16,7 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     number = models.CharField(max_length=64, blank=True, null=True)
-    create_date = models.DateTimeField(auto_now=True)
+    create_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=16, choices=STATUS_CHOICES, default='check')
     is_completed = models.BooleanField(default=False)
     is_pay = models.BooleanField(default=False)

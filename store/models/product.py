@@ -51,6 +51,7 @@ class Goods(models.Model):
         min_price = self.offers.all().aggregate(Min('price'))
         return min_price['price__min']
 
+
     def save(self, *args, **kwargs):
         self.slug = uuslug(f'{self.brand.name} {self.model}', instance=self)
         super().save(*args, **kwargs)
@@ -66,7 +67,8 @@ class OfferVendor(models.Model):
 
     @property
     def price_currency(self):
-        return convert_price(self.price)
+        currecy, cur_price = convert_price(self.price)
+        return {'cur': currecy, 'price': round(cur_price, 2)}
 
     def __str__(self):
         return f'{self.vendor.name} - {self.goods.category.name} {self.goods.brand.name} {self.goods.model}: {self.price}'
@@ -93,7 +95,7 @@ class ReviewGoods(models.Model):
     title = models.CharField(max_length=128, verbose_name='Заголовок отзыва')
     plus = models.TextField(verbose_name='Достоинства')
     minus = models.TextField(verbose_name='Недостатки')
-    created_date = models.DateTimeField(auto_created=True)
+    created_date = models.DateTimeField(auto_now_add=True)
     moderation = models.BooleanField(default=False, verbose_name='Прошел модерацию')
 
 
