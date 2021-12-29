@@ -13,6 +13,7 @@ class OfferVendorSerializer(serializers.ModelSerializer):
         fields = (
             'vendor',
             'price',
+            'price_currency',
         )
 
 
@@ -62,6 +63,14 @@ class ReviewGoodsSerializer(serializers.ModelSerializer):
             'photos',
         )
 
+class GoodsReviewsSerializer(serializers.ModelSerializer):
+    reviews = ReviewGoodsSerializer(many=True)
+
+    class Meta:
+        model = Goods
+        fields = (
+            'reviews',
+        )
 
 # class ReviewGoods(models.Model):
 #     goods = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name='reviews', verbose_name='Товар')

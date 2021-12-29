@@ -1,0 +1,2 @@
+from .currency import ExchangeCurrency
+

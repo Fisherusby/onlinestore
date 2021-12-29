@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Avg, Max, Min
 
+from info.tools import convert_price
 from tools.image_store import get_path_image_store
 from .product_category import Category
 from uuslug import uuslug
@@ -62,6 +63,10 @@ class OfferVendor(models.Model):
     goods = models.ForeignKey(Goods, on_delete=models.CASCADE, verbose_name='Товар', related_name='offers')
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name='Продавец', related_name='offers')
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
+
+    @property
+    def price_currency(self):
+        return convert_price(self.price)
 
     def __str__(self):
         return f'{self.vendor.name} - {self.goods.category.name} {self.goods.brand.name} {self.goods.model}: {self.price}'

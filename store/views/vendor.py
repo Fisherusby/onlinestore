@@ -9,8 +9,8 @@ class VendorViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = VendorSerializer
 
 
-    def get_queryset(self):
+    # def get_queryset(self):
         # import pdb
         # pdb.set_trace()
-        return self.queryset.filter(pk=self.kwargs['pk'])
+        # return self.queryset.filter(pk=self.kwargs['pk'])
 
