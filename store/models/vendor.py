@@ -10,6 +10,10 @@ def vendor_store_path(instance, filename):
     get_path_image_store(filename, 'vendor')
 
 
+# from store.models import Vendor
+# aa = [Vendor.objects.create(name=f'Vendor {i}', email='fisherus.dev@gmail.com', address=f'Zone 51-{i}', slug='1') for i in range(20)]
+
+
 class Vendor(models.Model):
     name = models.CharField(max_length=128, verbose_name='Название')
     logo = models.ImageField(upload_to=vendor_store_path, verbose_name='Логотип', blank=True, null=True)

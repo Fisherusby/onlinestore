@@ -6,20 +6,34 @@ from store.models import Product, Vendor
 
 class Order(models.Model):
     STATUS_CHOICES = (
-        ('check', 'Подтверждение'),
+        ('verify', 'Подтверждение'),
         ('payment', 'Оплата'),
         ('delivery', 'Доставка'),
-        ('ready', 'Готов к выдаче'),
-        ('finish', 'Выполнен'),
+        # ('ready', 'Готов к выдаче'),
+        ('completed', 'Выполнен'),
         ('cancel', 'Отменен'),
     )
 
+    PAYMENT_METHOD = (
+        ('cash', 'Наличными'),
+        ('wallet', 'Кошелек'),
+        ('online', 'online'),
+    )
+
+    DELIVERY_METHOD = (
+        ('pickup', 'Самовывоз'),
+        ('courier', 'Курьером'),
+    )
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    number = models.CharField(max_length=64, blank=True, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default='check')
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default='verify')
+    payment = models.CharField(max_length=16, choices=PAYMENT_METHOD)
+    delivery = models.CharField(max_length=16, choices=DELIVERY_METHOD)
+    is_confirmed = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
+    is_deliver = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
-    is_pay = models.BooleanField(default=False)
     is_cancel = models.BooleanField(default=False)
 
     # def save(self, *args, **kwargs):

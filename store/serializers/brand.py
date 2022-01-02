@@ -29,6 +29,7 @@ class BrandProductSerializer(serializers.ModelSerializer):
 
 
 class RetrieveBrandSerializer(serializers.ModelSerializer):
+    products = BrandProductSerializer(many=True)
 
     class Meta:
         model = Brand
@@ -36,5 +37,6 @@ class RetrieveBrandSerializer(serializers.ModelSerializer):
             'name',
             'logo',
             'slug',
+            'products',
         )
 

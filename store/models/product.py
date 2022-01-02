@@ -55,7 +55,7 @@ class OfferVendor(models.Model):
         return {'cur': currency, 'price': round(cur_price, 2)}
 
     def __str__(self):
-        return f'{self.vendor.name} - {self.full_name.model}: {self.price}'
+        return f'{self.vendor.name} - {self.product.full_name}: {self.price}'
 
 
 def image_store_path(instance, filename):

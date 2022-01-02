@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from store.models import Product, OfferVendor, ReviewProduct, PhotoReviewProduct, FavoriteProduct
+from store.models import Product, OfferVendor, ReviewProduct, PhotoReviewProduct, FavoriteProduct, ProductImage
 from .vendor import VendorSerializer
 from .brand import BrandSerializer
 from .product_category import ProductCategorySerializer
@@ -17,15 +17,29 @@ class OfferVendorSerializer(serializers.ModelSerializer):
             'price_currency',
         )
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = (
+            'image',
+        )
 
-class ProductSerializer(serializers.ModelSerializer):
+
+class ProductSerializer(serializers.HyperlinkedModelSerializer):
     brand = BrandSerializer()
     category = ProductCategorySerializer()
+    images = ProductImageSerializer(many=True)
     offers = OfferVendorSerializer(many=True, read_only=True)
+    url = serializers.HyperlinkedIdentityField(
+        view_name='ProductViewSet',
+        lookup_field='slug'
+    )
+
 
     class Meta:
         model = Product
         fields = (
+            'url',
             'full_name',
             'category',
             'model',

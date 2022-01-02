@@ -7,7 +7,7 @@ from store.views import VendorViewSet, BasketViewSet, CategoryViewSet, ProductVi
 router = DefaultRouter()
 router.register('vendor', VendorViewSet, basename="VendorViewSet")
 router.register('category', CategoryViewSet, basename="CategoryViewSet")
-router.register('brand', BrandViewSet, basename='BrandViewSet')
+router.register('products/brand', BrandViewSet, basename='BrandViewSet')
 router.register('basket', BasketViewSet, basename='BasketViewSet')
 router.register('order', OrderViewSet, basename='OrderViewSet')
 router.register('review_product', ReviewProductViewSet, basename='ReviewProductViewSet')
@@ -18,9 +18,9 @@ router.register('favorite/products', FavoriteProductsViewSet, basename='Favorite
 urlpatterns = [
     path('', include(router.urls)),
     path('vendor/list', ListVendorViewSet.as_view(), name='ListVendorViewSet'),
-    path('products/<cat_slug>',
+    path('products/category/<cat_slug>',
          ProductViewSet.as_view({'get': 'list', }), name='ProductViewSet'),
-    path('product/<cat_slug>/<slug>',
+    path('product/detail/<slug>',
          ProductViewSet.as_view({'get': 'retrieve', }), name='ProductViewSet'),
 ]
 
