@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OnlineStore</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <nav>
+        <div id="catalog">
+            <ul>
+                <li tpl="tpl" style="display: none;">
+                    <div class="cat-icon-l1"></div>
+                    <div class="cat-title-l1"></div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <script type="text/javascript">
+        $("document").ready(function (){
+            let url = "/api/category/";
+            $.ajax({
+               url : url,
+               dataType: "json",
+               success : function (data){
+
+
+                   for (val of data.results) {
+                       let cat_tpl_l1 = $("#catalog>ul>li[tpl$='tpl']").clone(true).attr('tpl','none').show()
+                       cat_tpl_l1.find('.cat-title-l1').text(val.name)
+                       console.log(val.name);
+                       $("#catalog>ul").append(cat_tpl_l1);
+                   }
+               }
+            });
+        });
+    </script>
+</body>
+</html>

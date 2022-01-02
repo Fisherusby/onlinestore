@@ -18,6 +18,6 @@ class VendorSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'email',
-            'adress',
+            'address',
             'slug',
         )

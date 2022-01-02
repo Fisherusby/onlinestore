@@ -10,27 +10,12 @@ from .vendor import Vendor
 from django.contrib.auth.models import User
 
 
-# class Product(models.Model):
-#     name = models.CharField(verbose_name="Название", max_length=128, unique=True)
-#     description = models.CharField(verbose_name="Описание", max_length=512, null=True, blank=True)
-#     category = models.ForeignKey(
-#         Category, on_delete=models.CASCADE, related_name='products', verbose_name='Категория'
-#     )
-#     slug = models.SlugField(verbose_name='slug', max_length=255, unique=True)
-#
-#     def save(self, *args, **kwargs):
-#         self.slug = uuslug(self.name, instance=self)
-#         super().save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return f'{self.name}'
-
-
-class Goods(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='goods', verbose_name="Категория")
-    model = models.CharField(verbose_name="Модель", max_length=128, unique=True)
-    brand = models.ForeignKey(Brand, verbose_name="Бренд (Производитель)", on_delete=models.CASCADE, related_name='goods')
+class Product(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name="Категория")
+    model = models.CharField(verbose_name="Модель", max_length=128)
+    brand = models.ForeignKey(Brand, verbose_name="Бренд (Производитель)", on_delete=models.CASCADE, related_name='products')
     slug = models.SlugField(verbose_name='slug', max_length=255, unique=True)
+    description = models.TextField(blank=True, null=True)
 
     @property
     def full_name(self):
@@ -51,44 +36,43 @@ class Goods(models.Model):
         min_price = self.offers.all().aggregate(Min('price'))
         return min_price['price__min']
 
-
     def save(self, *args, **kwargs):
         self.slug = uuslug(f'{self.brand.name} {self.model}', instance=self)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.category.name} - {self.brand.name} {self.model}'
+        return f'{self.full_name}'
 
 
 class OfferVendor(models.Model):
-    goods = models.ForeignKey(Goods, on_delete=models.CASCADE, verbose_name='Товар', related_name='offers')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар', related_name='offers')
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name='Продавец', related_name='offers')
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
 
     @property
     def price_currency(self):
-        currecy, cur_price = convert_price(self.price)
-        return {'cur': currecy, 'price': round(cur_price, 2)}
+        currency, cur_price = convert_price(self.price)
+        return {'cur': currency, 'price': round(cur_price, 2)}
 
     def __str__(self):
-        return f'{self.vendor.name} - {self.goods.category.name} {self.goods.brand.name} {self.goods.model}: {self.price}'
+        return f'{self.vendor.name} - {self.full_name.model}: {self.price}'
 
 
-def image_store_path(instance, filename, name):
-    return get_path_image_store(filename, 'goods')
+def image_store_path(instance, filename):
+    return get_path_image_store(filename, 'products')
 
 
-class GoodsImage(models.Model):
-    goods = models.ForeignKey(Goods, verbose_name="Товар", on_delete=models.CASCADE, related_name='images')
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, verbose_name="Товар", on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(verbose_name="Изображение", upload_to=image_store_path)
     order = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.goods.category.name} {self.goods.model} - {self.pk}. {self.image}'
+        return f'{self.product.full_name} - {self.pk}. {self.image}'
 
 
-class ReviewGoods(models.Model):
-    goods = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name='reviews', verbose_name='Товар')
+class ReviewProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews', verbose_name='Товар')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], verbose_name='Рейтинг')
     review_text = models.TextField(verbose_name='Отзыв')
@@ -100,37 +84,15 @@ class ReviewGoods(models.Model):
 
 
 def reviews_image_path(instance, filename):
-    return get_path_image_store(filename, 'reviewsgoods')
+    return get_path_image_store(filename, 'reviewsproduct')
 
 
-class PhotoReviewGoods(models.Model):
-    review = models.ForeignKey(ReviewGoods, on_delete=models.CASCADE, related_name='photos')
-    photos = models.ImageField(upload_to=reviews_image_path, verbose_name=' Фотограция')
+class PhotoReviewProduct(models.Model):
+    review = models.ForeignKey(ReviewProduct, on_delete=models.CASCADE, related_name='photos')
+    photo = models.ImageField(upload_to=reviews_image_path, verbose_name=' Фотограция')
 
 
-
-
-
-#
-# class PropertyProduct(models.Model):
-#     title = models.CharField(max_length=128, verbose_name="Наименование хорактеристики")
-#     store = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт')
-#     description = models.CharField(max_length=255, verbose_name="Описание", null=True, blank=True)
-#
-#     def __str__(self):
-#         return f'{self.store.name} - {self.title}'
-#
-#
-# class Goods(models.Model):
-#     product_type = models.ForeignKey(Product, verbose_name="Тип продукта", on_delete=models.CASCADE)
-#     prise = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена за еденицу")
-#     brand = models.CharField(max_length=64, verbose_name="Производитель (бренд)")
-#     model = models.CharField(max_length=128, verbose_name="Модель")
-#     year = models.PositiveIntegerField(verbose_name="Дата выхода на рынок")
-#
-#
-# class GoodsProperty(models.Model):
-#     value = models.CharField(max_length=64, verbose_name="Значение", null=True, blank=True)
-#     goodss = models.ForeignKey(Goods, on_delete=models.CASCADE, verbose_name="Товар")
-#     Properties = models.ForeignKey(PropertyProduct, on_delete=models.CASCADE, verbose_name="Характеристика")
-#
+class FavoriteProduct(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_products')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='in_favorites')
+    create_date = models.DateTimeField(auto_now_add=True)

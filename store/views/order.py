@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from store.models import Order, GoodsInOrder
-from store.serializers import OrderSerializer, GoodsInOrderSerializer
+from store.models import Order, ProductInOrder
+from store.serializers import OrderSerializer, ProductInOrderSerializer
 
 
 class OrderViewSet(viewsets.ModelViewSet):

@@ -1,5 +1,5 @@
 from rest_framework import viewsets, mixins
-from store.models import GoodsInBasket, Basket
+from store.models import ProductInBasket, Basket
 from store.serializers import BasketSerializer
 
 

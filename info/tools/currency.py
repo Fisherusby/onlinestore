@@ -9,8 +9,8 @@ def convert_price(price):
     default_currency = 'USD'
     try:
         current_currency_rate = ExchangeCurrency.objects.filter(currency=default_currency, date=today).latest('created_date')
-        # import pdb
-        # pdb.set_trace()
+        #import pdb
+        #pdb.set_trace()
         return default_currency, price * current_currency_rate.scale / current_currency_rate.rate
     except ObjectDoesNotExist:
         current_currency_rate = update_currecy(default_currency)
@@ -21,7 +21,7 @@ def convert_price(price):
             except ObjectDoesNotExist:
                 return None
 
-        return default_currency, price * current_currency_rate
+        return default_currency, float(price) * current_currency_rate
 
 
 def update_currecy(default_currency):
@@ -30,7 +30,7 @@ def update_currecy(default_currency):
 
     result = 0
 
-    url = "https://www.nbrbsdsds.by/api/exrates/rates?periodicity=0"
+    url = "https://www.nbrb.by/api/exrates/rates?periodicity=0"
 
     # CURRENCY = ['USD', 'EUR', 'RUB']
 

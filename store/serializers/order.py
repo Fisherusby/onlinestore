@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from store.models import Order, GoodsInOrder, Basket, GoodsInBasket
+from store.models import Order, ProductInOrder, Basket, ProductInBasket
 from tools.notify import notify_order
 
 
-class GoodsInOrderSerializer(serializers.ModelSerializer):
+class ProductInOrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = GoodsInOrder
+        model = ProductInOrder
         fields = (
-            'goods',
+            'product',
             'vendor',
             'price',
             'count',
@@ -15,7 +15,7 @@ class GoodsInOrderSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    goods = GoodsInOrderSerializer(many=True)
+    products = ProductInOrderSerializer(many=True)
 
     class Meta:
         model = Order
@@ -27,7 +27,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'is_completed',
             'is_pay',
             'is_cancel',
-            'goods',
+            'products',
             'total_price',
         )
 
@@ -45,16 +45,16 @@ class OrderSerializer(serializers.ModelSerializer):
 
         # Add goods in order from basket
         for gib in basket.goods_in_basket.all():
-            GoodsInOrder.objects.create(
+            ProductInOrder.objects.create(
                 order=order,
-                goods=gib.goods,
+                product=gib.product,
                 vendor=gib.offer.vendor,
                 price=gib.offer.price,
                 count=gib.count,
             )
 
         # clear basket
-        GoodsInBasket.objects.filter(basket=basket).delete()
+        ProductInBasket.objects.filter(basket=basket).delete()
 
         # send email to user about order
         notify_order(order)

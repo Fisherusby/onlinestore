@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from store.models import Goods, OfferVendor, ReviewGoods, PhotoReviewGoods
+from store.models import Product, OfferVendor, ReviewProduct, PhotoReviewProduct, FavoriteProduct
 from .vendor import VendorSerializer
 from .brand import BrandSerializer
-from .product_category import GoodsCategorySerializer
+from .product_category import ProductCategorySerializer
+from django.shortcuts import get_object_or_404
 
 
 class OfferVendorSerializer(serializers.ModelSerializer):
@@ -17,13 +18,13 @@ class OfferVendorSerializer(serializers.ModelSerializer):
         )
 
 
-class GoodsSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     brand = BrandSerializer()
-    category = GoodsCategorySerializer()
-    offers = OfferVendorSerializer(many=True)
+    category = ProductCategorySerializer()
+    offers = OfferVendorSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Goods
+        model = Product
         fields = (
             'full_name',
             'category',
@@ -39,19 +40,19 @@ class GoodsSerializer(serializers.ModelSerializer):
         lookup_field = 'slug'
 
 
-class PhotoReviewGoodsSerializer(serializers.ModelSerializer):
+class PhotoReviewProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PhotoReviewGoods
+        model = PhotoReviewProduct
         fields = (
-            'photos',
+            'photo',
         )
 
 
-class ReviewGoodsSerializer(serializers.ModelSerializer):
-    photos = PhotoReviewGoodsSerializer(many=True)
+class ReviewProductSerializer(serializers.ModelSerializer):
+    photos = PhotoReviewProductSerializer(many=True)
 
     class Meta:
-        model = ReviewGoods
+        model = ReviewProduct
         fields = (
             'user',
             'rating',
@@ -63,23 +64,40 @@ class ReviewGoodsSerializer(serializers.ModelSerializer):
             'photos',
         )
 
-class GoodsReviewsSerializer(serializers.ModelSerializer):
-    reviews = ReviewGoodsSerializer(many=True)
+
+class ProductReviewsSerializer(serializers.ModelSerializer):
+    reviews = ReviewProductSerializer(many=True)
 
     class Meta:
-        model = Goods
+        model = Product
         fields = (
             'reviews',
         )
 
-# class ReviewGoods(models.Model):
-#     goods = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name='reviews', verbose_name='Товар')
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-#     rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], verbose_name='Рейтинг')
-#     review_text = models.TextField(verbose_name='Отзыв')
-#     title = models.CharField(max_length=128, verbose_name='Заголовок отзыва')
-#     plus = models.TextField(verbose_name='Достоинства')
-#     minus = models.TextField(verbose_name='Недостатки')
-#     created_date = models.DateTimeField(auto_created=True)
-#     moderation = models.BooleanField(default=False, verbose_name='Прошел модерацию')
+
+# class FavoriteProductSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Product
+#         fields = (
+#             'user',
+#             'product',
+#         )
+#
+#
+# class ChangeFavoriteProductSerializer(serializers.Serializer):
+#     slug = serializers.SlugField(max_length=255, min_length=None, allow_blank=False)
+
+
+class ProductToFavoriteSerializer(serializers.Serializer):
+    slug = serializers.SlugField(max_length=255, min_length=None, allow_blank=False)
+
+    def create(self, validated_data):
+        product = get_object_or_404(Product, slug=validated_data['slug'])
+        FavoriteProduct.objects.get_or_create(user=self.context['request'].user, product=product)
+
+        return validated_data
+
+
+
+
 

@@ -1,9 +1,9 @@
 from .product_category import Category
-from .product import Goods, GoodsImage, OfferVendor, ReviewGoods, PhotoReviewGoods
-from .basket import Basket, GoodsInBasket
+from .product import Product, ProductImage, OfferVendor, ReviewProduct, PhotoReviewProduct, FavoriteProduct
+from .basket import Basket, ProductInBasket
 from .brand import Brand
-from .vendor import Vendor
-from .order import Order, GoodsInOrder
+from .vendor import Vendor, ReviewVendor
+from .order import Order, ProductInOrder
 
 
 

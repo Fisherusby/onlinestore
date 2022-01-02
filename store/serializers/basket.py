@@ -1,29 +1,27 @@
 from rest_framework import serializers
-from store.models import Basket, GoodsInBasket, Goods
+from store.models import Basket, ProductInBasket, Product
 from store.serializers import VendorSerializer
 
 from store.serializers.product import OfferVendorSerializer
 
 
-class TitleGoodsInBasketSerializer(serializers.ModelSerializer):
+class TitleProductInBasketSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Goods
+        model = Product
         fields = (
             'full_name',
             'slug',
         )
 
 
-class GoodsInBasketSerializer(serializers.ModelSerializer):
-    # offer = OfferVendorSerializer()
-    goods = TitleGoodsInBasketSerializer()
+class ProductInBasketSerializer(serializers.ModelSerializer):
+    product = TitleProductInBasketSerializer()
     vendor = VendorSerializer()
 
     class Meta:
-        model = GoodsInBasket
+        model = ProductInBasket
         fields = (
-          #  'offer',
-            'goods',
+            'product',
             'vendor',
             'count',
             'price_sum',
@@ -31,12 +29,13 @@ class GoodsInBasketSerializer(serializers.ModelSerializer):
 
 
 class BasketSerializer(serializers.ModelSerializer):
-    goods_in_basket = GoodsInBasketSerializer(many=True)
+    products_in_basket = ProductInBasketSerializer(many=True)
 
     class Meta:
         model = Basket
         fields = (
-            'goods_in_basket',
+            'products_in_basket',
             'last_update',
             'total_price',
         )
+
