@@ -51,7 +51,8 @@ class OfferVendor(models.Model):
 
     @property
     def price_currency(self):
-        currency, cur_price = convert_price(self.price)
+        currency = 'USD'
+        cur_price = convert_price(self.price, currency)
         return {'cur': currency, 'price': round(cur_price, 2)}
 
     def __str__(self):

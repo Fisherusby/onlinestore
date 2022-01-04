@@ -2,33 +2,31 @@ from info.models import ExchangeCurrency
 from django.core.exceptions import ObjectDoesNotExist
 
 
-def convert_price(price):
+def convert_price(price, currency='USD'):
     import datetime
     today = datetime.date.today()
 
-    default_currency = 'USD'
+    # default_currency = 'USD'
     try:
-        current_currency_rate = ExchangeCurrency.objects.filter(currency=default_currency, date=today).latest('created_date')
-        #import pdb
-        #pdb.set_trace()
-        return default_currency, price * current_currency_rate.scale / current_currency_rate.rate
+        current_currency_rate = ExchangeCurrency.objects.filter(currency=currency, date=today).latest('created_date')
+        # return price * current_currency_rate.scale / current_currency_rate.rate
     except ObjectDoesNotExist:
-        current_currency_rate = update_currecy(default_currency)
+        current_currency_rate = update_currency(currency)
         if not current_currency_rate:
             try:
-                current_currency_rate = ExchangeCurrency.objects.filter(currency=default_currency).latest('created_date')
-                return default_currency, price * current_currency_rate.scale / current_currency_rate.rate
+                current_currency_rate = ExchangeCurrency.objects.filter(currency=currency).latest('created_date')
+                # return price * current_currency_rate.scale / current_currency_rate.rate
             except ObjectDoesNotExist:
                 return None
 
-        return default_currency, float(price) * current_currency_rate
+    return price * current_currency_rate.scale / current_currency_rate.rate
 
 
-def update_currecy(default_currency):
+def update_currency(default_currency):
     import requests
     import json
 
-    result = 0
+    result = True
 
     url = "https://www.nbrb.by/api/exrates/rates?periodicity=0"
 
@@ -39,26 +37,29 @@ def update_currecy(default_currency):
     try:
         response = requests.request("GET", url, headers=headers, data=payload)
         json_loads = json.loads(response.text)
-        # print(type(json_loads))
+
         if len(json_loads) < 2:
             return False
+
+        # {"Cur_ID": 440, "Date": "2022-01-03T00:00:00", "Cur_Abbreviation": "AUD", "Cur_Scale": 1,
+        #          "Cur_Name": "Австралийский доллар", "Cur_OfficialRate": 1.8492}
+
         for currency in json_loads:
             cur_name = currency.get('Cur_Abbreviation', False)
             cur_scale = currency.get('Cur_Scale', False)
             cur_official_rate = currency.get('Cur_OfficialRate', False)
             date = currency.get('Date', False)
 
-            if cur_name == default_currency:
-                result = cur_scale/cur_official_rate
-
-            ExchangeCurrency.objects.create(
+            exchange_currency = ExchangeCurrency.objects.create(
                 currency=cur_name,
                 rate=cur_official_rate,
                 scale=cur_scale,
                 date=date[:10],
             )
+
+            if cur_name == default_currency:
+                result = exchange_currency
+
         return result
     except requests.ConnectionError:
         return False
-
-

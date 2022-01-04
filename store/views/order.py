@@ -11,15 +11,12 @@ class OrderViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Li
         'create': CreateOrderSerializer,
         'retrieve': OrderSerializer,
     }
-    serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_class(self):
         return self.serializers[self.action]
 
     def get_object(self):
-     #   import pdb
-      #  pdb.set_trace()
         return self.queryset.filter(user=self.request.user)
 
 

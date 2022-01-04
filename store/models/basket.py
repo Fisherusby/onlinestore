@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from . import OfferVendor
 
 
+
 class Basket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
@@ -23,7 +24,7 @@ class Basket(models.Model):
 class ProductInBasket(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name='products_in_basket')
     offer = models.ForeignKey(OfferVendor, on_delete=models.CASCADE, related_name='in_baskets')
-    count = models.PositiveIntegerField(default=0)
+    count = models.PositiveIntegerField(default=1)
 
     @property
     def price_sum(self):

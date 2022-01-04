@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from store.models import Order, ProductInOrder, Basket, ProductInBasket
 from tools.notify import notify_order
-from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -15,17 +14,6 @@ class ProductInOrderSerializer(serializers.ModelSerializer):
             'count',
         )
 
-
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # create_date = models.DateTimeField(auto_now_add=True)
-    # status = models.CharField(max_length=16, choices=STATUS_CHOICES, default='verify')
-    # payment = models.CharField(max_length=16, choices=PAYMENT_METHOD)
-    # delivery = models.CharField(max_length=16, choices=DELIVERY_METHOD)
-    # is_confirmed = models.BooleanField(default=False)
-    # is_paid = models.BooleanField(default=False)
-    # is_deliver = models.BooleanField(default=False)
-    # is_completed = models.BooleanField(default=False)
-    # is_cancel = models.BooleanField(default=False)
 
 class OrderSerializer(serializers.ModelSerializer):
     products = ProductInOrderSerializer(many=True)

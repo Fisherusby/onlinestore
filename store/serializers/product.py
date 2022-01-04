@@ -12,6 +12,7 @@ class OfferVendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = OfferVendor
         fields = (
+            'id',
             'vendor',
             'price',
             'price_currency',
@@ -87,19 +88,6 @@ class ProductReviewsSerializer(serializers.ModelSerializer):
         fields = (
             'reviews',
         )
-
-
-# class FavoriteProductSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Product
-#         fields = (
-#             'user',
-#             'product',
-#         )
-#
-#
-# class ChangeFavoriteProductSerializer(serializers.Serializer):
-#     slug = serializers.SlugField(max_length=255, min_length=None, allow_blank=False)
 
 
 class ProductToFavoriteSerializer(serializers.Serializer):

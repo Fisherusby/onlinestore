@@ -1,43 +1,35 @@
-from rest_framework import viewsets, mixins, generics, permissions
-from rest_framework.views import APIView
+from rest_framework import viewsets, mixins, permissions
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
-from store.models import Product, ReviewProduct, FavoriteProduct
-from store.serializers import ProductSerializer, ReviewProductSerializer, ProductReviewsSerializer
+from store.models import Product, FavoriteProduct
+from store.serializers import ProductSerializer, ProductReviewsSerializer
 from store.serializers.product import ProductToFavoriteSerializer
 
 
 class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    # lookup_field = 'category__slug'
 
     def get_queryset(self):
-        #import pdb
-        #pdb.set_trace()
         return self.queryset.filter(category__slug=self.kwargs['cat_slug'])
 
     def get_object(self):
-        # import pdb
-        # pdb.set_trace()
         try:
             return self.queryset.get(slug=self.kwargs['slug'])
         except ObjectDoesNotExist:
             raise Http404
 
 
-class ReviewProductViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class ProductReviewsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductReviewsSerializer
     lookup_field = 'slug'
 
     def get_object(self):
-        # import pdb
-        # pdb.set_trace()
         try:
             return self.queryset.get(slug=self.kwargs['slug'])
         except ObjectDoesNotExist:

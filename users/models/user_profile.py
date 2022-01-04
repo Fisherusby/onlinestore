@@ -3,7 +3,7 @@ from django.db import models
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
     currency = models.CharField(max_length=3, default='USD')
 
     is_client = models.BooleanField(default=False)

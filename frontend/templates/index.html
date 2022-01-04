@@ -1,20 +1,44 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>OnlineStore</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-
     <nav>
         <div id="catalog">
-            <ul>
-                <li tpl="tpl" style="display: none;">
-                    <div class="cat-icon-l1"></div>
-                    <div class="cat-title-l1"></div>
-                </li>
-            </ul>
+            <div class="cat-dv-l1">
+                <ul class="cat-l1">
+                    <li tpl="tpl-cat-dv-l1" style="display: none;">
+                        <div class="cat-icon-l1"></div>
+                        <div class="cat-title-l1"></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="cat-dv-l2">
+                <div tpl="tpl" style="display: none;">
+                    <ul class="cat-l2">
+                        <li tpl="tpl" style="display: none;">
+                            <div class="cat-icon-l2"></div>
+                            <div class="cat-title-l2"></div>
+                        </li>
+                    </ul>
+                <div>
+            </div>
+            <div class="cat-dv-l3">
+                <div tpl="tpl" style="display: none;">
+                    <ul class="cat-l3">
+                        <li tpl="tpl" style="display: none;">
+                            <div class="cat-icon-l3"></div>
+                            <div class="cat-title-l3"></div>
+                        </li>
+                    </ul>
+                <div>
+            </div>
         </div>
     </nav>
 
@@ -28,10 +52,11 @@
 
 
                    for (val of data.results) {
-                       let cat_tpl_l1 = $("#catalog>ul>li[tpl$='tpl']").clone(true).attr('tpl','none').show()
+                       let cat_tpl_l1 = $("li[tpl$='tpl-cat-dv-l1']").clone(true).attr('tpl','none').show()
                        cat_tpl_l1.find('.cat-title-l1').text(val.name)
                        console.log(val.name);
-                       $("#catalog>ul").append(cat_tpl_l1);
+                       console.log(cat_tpl_l1);
+                       $("ul.cat-l1").append(cat_tpl_l1);
                    }
                }
             });
