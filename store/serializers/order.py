@@ -70,9 +70,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Basket_not_found")
 
-
-        # if basket empty generate raise
-        if not basket.total_price > 0:
+        if basket.total_price.get('BYN', 0) == 0:
             raise serializers.ValidationError("Basket_empty")
 
         # Create new order
@@ -164,9 +162,6 @@ class PayOrderByCardtSerializer(serializers.ModelSerializer):
 
         if order.total_price.get('BYN', 0) == 0:
             raise serializers.ValidationError("Order_empty")
-
-
-
 
 
         try:
