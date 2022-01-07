@@ -6,42 +6,32 @@
     <meta charset="UTF-8">
     <title>OnlineStore</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
 </head>
 <body>
-    <nav>
-        <div id="catalog">
-            <div class="cat-dv-l1">
-                <ul class="cat-l1">
-                    <li tpl="tpl-cat-dv-l1" style="display: none;">
-                        <div class="cat-icon-l1"></div>
-                        <div class="cat-title-l1"></div>
-                    </li>
-                </ul>
-            </div>
-            <div class="cat-dv-l2">
-                <div tpl="tpl" style="display: none;">
-                    <ul class="cat-l2">
-                        <li tpl="tpl" style="display: none;">
-                            <div class="cat-icon-l2"></div>
-                            <div class="cat-title-l2"></div>
-                        </li>
-                    </ul>
-                <div>
-            </div>
-            <div class="cat-dv-l3">
-                <div tpl="tpl" style="display: none;">
-                    <ul class="cat-l3">
-                        <li tpl="tpl" style="display: none;">
-                            <div class="cat-icon-l3"></div>
-                            <div class="cat-title-l3"></div>
-                        </li>
-                    </ul>
-                <div>
-            </div>
-        </div>
-    </nav>
+    <div class="bd">
+        <div class="middle">
+            <nav>
+                <div id="catalog">
+                    <div id="level1"></div>
+                    <div class="submenu">
+                        <div id="level2"></div>
+                        <div id="level3"></div>
+                    </div>
+                </div>
 
+            </nav>
+            <div id="products">
+                <div id="product-filter">
+                    filter
+                </div>
+                <div id="product-list">
+                    list
+                </div>
+            </div>
+            <div id="log_json"></div>
+        </div>
+    </div>
     <script type="text/javascript">
         $("document").ready(function (){
             let url = "/api/category/";
@@ -49,18 +39,90 @@
                url : url,
                dataType: "json",
                success : function (data){
+                   console.log(data)
+                   $('#log_json').text()
+
+                   let html_cat = '<div class="cat-lvl1">'
+                   for (cat1 of data.results) {
+                       html_cat += '<div class="cat-item-lvl1" cat="'+cat1.slug+'"><div class="cat-item-lvl1-icon"></div><div class="cat-item-lvl1-title">'+cat1.name+'</div></div>'
 
 
-                   for (val of data.results) {
-                       let cat_tpl_l1 = $("li[tpl$='tpl-cat-dv-l1']").clone(true).attr('tpl','none').show()
-                       cat_tpl_l1.find('.cat-title-l1').text(val.name)
-                       console.log(val.name);
-                       console.log(cat_tpl_l1);
-                       $("ul.cat-l1").append(cat_tpl_l1);
+                       let html_cat2 = '<div class="cat-lvl2" cat="'+cat1.slug+'" style="display: none">'
+                       for  (cat2 of cat1.children) {
+                           html_cat2 += '<div class="cat-item-lvl2" cat="'+cat2.slug+'"><div>'+cat2.name+'</div></div>'
+
+                           let html_cat3 = '<div class="cat-lvl3" cat="'+cat2.slug+'" style="display: none">'
+                           for (cat3 of cat2.children){
+                               html_cat3 += '<div class="cat-item-lvl3"  cat="'+cat3.slug+'"><div>'+cat3.name+'</div></div>'
+                           }
+                           html_cat3 += '</div>'
+
+                           $('#catalog #level3').append(html_cat3)
+                       }
+
+                       html_cat2 += '</div>'
+
+                       $('#catalog #level2').append(html_cat2)
                    }
+
+                   html_cat +='</div>'
+
+                   $('#catalog #level1').append(html_cat)
                }
             });
+
+
         });
+
+        $("#catalog").on('click', '.cat-item-lvl1', function(){
+                let target_cat = $(this).attr('cat')
+                console.log(target_cat)
+                $('#catalog .submenu').show()
+                $('.cat-lvl2').hide()
+                $('.cat-lvl2[cat$='+target_cat+']').show()
+                $('#products').hide()
+        });
+
+        $("#catalog").on('mouseover', '.cat-item-lvl2', function(){
+                let target_cat = $(this).attr('cat')
+                console.log(target_cat)
+                $('.cat-lvl3').hide()
+                $('.cat-lvl3[cat$='+target_cat+']').show()
+        });
+
+        $("#catalog").on('click', '.cat-item-lvl3', function(){
+                let target_cat = $(this).attr('cat')
+                console.log(target_cat)
+                $('#catalog .submenu').hide()
+                $('.cat-lvl3').hide()
+                $('.cat-lvl2').hide()
+                $('#product-list').empty()
+                $('#products').show()
+
+
+
+                let url = "/api/products/category/"+target_cat;
+                $.ajax({
+                    url : url,
+                    dataType: "json",
+                    success : function (data) {
+                        console.log(data)
+
+                        for (product of data.results) {
+                            let html_product =
+                                `<div class="product-list-item" prd="${product.slug}">
+                                    <div class="product-list-item-title">${product.full_name}</div>
+                                    <div class="product-list-item-price">${product.rating}</div>
+                                    <div class="product-list-item-vendors">${product.offers.length}</div>
+                                </div>`;
+                            console.log(html_product)
+                            $('#product-list').append(html_product)
+                        }
+
+                    }
+                });
+        });
+
     </script>
 </body>
 </html>

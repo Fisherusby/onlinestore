@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'info',
     'users',
     'frontend',
-
+    'autofleamarket',
+    'forum',
 ]
 
 MIDDLEWARE = [

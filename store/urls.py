@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
+from info.views import ExchangeCurrencyViewSet, TodayExchangeCurrencyViewSet
 from store.views import VendorViewSet, BasketViewSet, CategoryViewSet, ProductViewSet, BrandViewSet, OrderViewSet, \
     ProductReviewsViewSet, ListVendorViewSet, ProductToFavoriteViewSet, FavoriteProductsViewSet, ProductToBasket
 
@@ -14,6 +15,9 @@ router.register('order', OrderViewSet, basename='OrderViewSet')
 router.register('product/reviews', ProductReviewsViewSet, basename='ProductReviewsViewSet')
 router.register('favorite/product', ProductToFavoriteViewSet, basename='ProductToFavoriteViewSet')
 router.register('favorite/products', FavoriteProductsViewSet, basename='FavoriteProductsViewSet')
+
+router.register('currency', TodayExchangeCurrencyViewSet, basename = 'ExchangeCurrencyViewSet')
+# router.register('currency/today', TodayExchangeCurrencyViewSet, basename='TodayExchangeCurrencyViewSet')
 
 
 urlpatterns = [

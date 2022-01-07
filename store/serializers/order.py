@@ -79,7 +79,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         )
 
         # Add goods in order from basket
-        for gib in basket.goods_in_basket.all():
+        for gib in basket.products_in_basket.all():
             ProductInOrder.objects.create(
                 order=order,
                 product=gib.product,
@@ -89,7 +89,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             )
 
         # clear basket
-        ProductInBasket.objects.filter(basket=basket).delete()
+        # ProductInBasket.objects.filter(basket=basket).delete()
 
         # send email to user about order
         notify_order(order)

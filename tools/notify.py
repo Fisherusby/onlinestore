@@ -9,7 +9,7 @@ def notify_order(order):
     subject = f'Thank you for your order №{str(order.pk).rjust(10,"0")}'
     message = f'Thank you for your order №{str(order.pk).rjust(10,"0")}'
 
-    html_message = render_to_string('emails/invitation.html', {'order': order})
+    # html_message = render_to_string('emails/invitation.html', {'order': order})
 
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [order.user.email, email_from]
