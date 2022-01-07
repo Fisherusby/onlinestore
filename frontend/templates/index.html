@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OnlineStore</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+</head>
+<body>
+    <div class="bd">
+        <div class="middle">
+            <nav>
+                <div id="catalog">
+                    <div id="level1"></div>
+                    <div class="submenu">
+                        <div id="level2"></div>
+                        <div id="level3"></div>
+                    </div>
+                </div>
+
+            </nav>
+            <div id="products">
+                <div id="product-filter">
+                    filter
+                </div>
+                <div id="product-list">
+                    list
+                </div>
+            </div>
+            <div id="log_json"></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("document").ready(function (){
+            let url = "/api/category/";
+            $.ajax({
+               url : url,
+               dataType: "json",
+               success : function (data){
+                   console.log(data)
+                   $('#log_json').text()
+
+                   let html_cat = '<div class="cat-lvl1">'
+                   for (cat1 of data.results) {
+                       html_cat += '<div class="cat-item-lvl1" cat="'+cat1.slug+'"><div class="cat-item-lvl1-icon"></div><div class="cat-item-lvl1-title">'+cat1.name+'</div></div>'
+
+
+                       let html_cat2 = '<div class="cat-lvl2" cat="'+cat1.slug+'" style="display: none">'
+                       for  (cat2 of cat1.children) {
+                           html_cat2 += '<div class="cat-item-lvl2" cat="'+cat2.slug+'"><div>'+cat2.name+'</div></div>'
+
+                           let html_cat3 = '<div class="cat-lvl3" cat="'+cat2.slug+'" style="display: none">'
+                           for (cat3 of cat2.children){
+                               html_cat3 += '<div class="cat-item-lvl3"  cat="'+cat3.slug+'"><div>'+cat3.name+'</div></div>'
+                           }
+                           html_cat3 += '</div>'
+
+                           $('#catalog #level3').append(html_cat3)
+                       }
+
+                       html_cat2 += '</div>'
+
+                       $('#catalog #level2').append(html_cat2)
+                   }
+
+                   html_cat +='</div>'
+
+                   $('#catalog #level1').append(html_cat)
+               }
+            });
+
+
+        });
+
+        $("#catalog").on('click', '.cat-item-lvl1', function(){
+                let target_cat = $(this).attr('cat')
+                console.log(target_cat)
+                $('#catalog .submenu').show()
+                $('.cat-lvl2').hide()
+                $('.cat-lvl2[cat$='+target_cat+']').show()
+                $('#products').hide()
+        });
+
+        $("#catalog").on('mouseover', '.cat-item-lvl2', function(){
+                let target_cat = $(this).attr('cat')
+                console.log(target_cat)
+                $('.cat-lvl3').hide()
+                $('.cat-lvl3[cat$='+target_cat+']').show()
+        });
+
+        $("#catalog").on('click', '.cat-item-lvl3', function(){
+                let target_cat = $(this).attr('cat')
+                console.log(target_cat)
+                $('#catalog .submenu').hide()
+                $('.cat-lvl3').hide()
+                $('.cat-lvl2').hide()
+                $('#product-list').empty()
+                $('#products').show()
+
+
+
+                let url = "/api/products/category/"+target_cat;
+                $.ajax({
+                    url : url,
+                    dataType: "json",
+                    success : function (data) {
+                        console.log(data)
+
+                        for (product of data.results) {
+                            let html_product =
+                                `<div class="product-list-item" prd="${product.slug}">
+                                    <div class="product-list-item-title">${product.full_name}</div>
+                                    <div class="product-list-item-price">${product.rating}</div>
+                                    <div class="product-list-item-vendors">${product.offers.length}</div>
+                                </div>`;
+                            console.log(html_product)
+                            $('#product-list').append(html_product)
+                        }
+
+                    }
+                });
+        });
+
+    </script>
+</body>
+</html>

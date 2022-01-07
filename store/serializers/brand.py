@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from store.models import Brand, Goods
+from store.models import Brand, Product
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -14,9 +14,9 @@ class BrandSerializer(serializers.ModelSerializer):
         lookup_field = 'slug'
 
 
-class BrandGoodsSerializer(serializers.ModelSerializer):
+class BrandProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Goods
+        model = Product
         fields = (
             'full_name',
             'model',
@@ -29,7 +29,7 @@ class BrandGoodsSerializer(serializers.ModelSerializer):
 
 
 class RetrieveBrandSerializer(serializers.ModelSerializer):
-   # goods = BrandGoodsSerializer(many=True)
+    products = BrandProductSerializer(many=True)
 
     class Meta:
         model = Brand
@@ -37,5 +37,6 @@ class RetrieveBrandSerializer(serializers.ModelSerializer):
             'name',
             'logo',
             'slug',
-     #       'goods'
+            'products',
         )
+

@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum
 
-from . import Goods, OfferVendor
+from . import OfferVendor
+
 
 
 class Basket(models.Model):
@@ -12,7 +12,7 @@ class Basket(models.Model):
     @property
     def total_price(self):
         result = 0
-        products = self.goods_in_basket.all()
+        products = self.products_in_basket.all()
         for pr in products:
             result += pr.price_sum
         return result
@@ -21,19 +21,18 @@ class Basket(models.Model):
         return f'{self.user.username}'
 
 
-class GoodsInBasket(models.Model):
-    basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name='goods_in_basket')
-   # goods = models.ForeignKey(Goods, on_delete=models.CASCADE, related_name='in_baskets')
+class ProductInBasket(models.Model):
+    basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name='products_in_basket')
     offer = models.ForeignKey(OfferVendor, on_delete=models.CASCADE, related_name='in_baskets')
-    count = models.PositiveIntegerField(default=0)
+    count = models.PositiveIntegerField(default=1)
 
     @property
     def price_sum(self):
         return self.offer.price * self.count
 
     @property
-    def goods(self):
-        return self.offer.goods
+    def product(self):
+        return self.offer.product
 
     @property
     def vendor(self):

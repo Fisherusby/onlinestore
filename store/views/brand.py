@@ -1,5 +1,4 @@
 from rest_framework import viewsets, mixins
-
 from store.models import Brand
 from store.serializers import BrandSerializer, RetrieveBrandSerializer
 

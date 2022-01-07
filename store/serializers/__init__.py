@@ -1,6 +1,7 @@
 from .vendor import VendorSerializer
-from .product_category import CategorySerializer, GoodsCategorySerializer
-from .product import GoodsSerializer, PhotoReviewGoodsSerializer, ReviewGoodsSerializer, GoodsReviewsSerializer
+from .product_category import CategorySerializer, ProductCategorySerializer
+from .product import ProductSerializer, PhotoReviewProductSerializer, ReviewProductSerializer, ProductReviewsSerializer, \
+     ProductToFavoriteSerializer
 from .brand import BrandSerializer, RetrieveBrandSerializer
-from .basket import BasketSerializer
-from .order import GoodsInOrderSerializer, OrderSerializer
+from .basket import BasketSerializer, CreateBasketSerializer, ProductToBasket
+from .order import ProductInOrderSerializer, OrderSerializer, CreateOrderSerializer
