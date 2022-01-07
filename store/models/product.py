@@ -28,13 +28,23 @@ class Product(models.Model):
 
     @property
     def max_price(self):
-        max_price = self.offers.all().aggregate(Max('price'))
-        return max_price['price__max']
+        max_price = {}
+        for offer in self.offers.all():
+            for cur, val in offer.price_in_currency.items():
+                m_pr = max_price.get(cur, val-1)
+                if m_pr < val:
+                    max_price[cur] = val
+        return max_price
 
     @property
     def min_price(self):
-        min_price = self.offers.all().aggregate(Min('price'))
-        return min_price['price__min']
+        min_price = {}
+        for offer in self.offers.all():
+            for cur, val in offer.price_in_currency.items():
+                m_pr = min_price.get(cur, val+1)
+                if m_pr > val:
+                    min_price[cur] = val
+        return min_price
 
     def save(self, *args, **kwargs):
         self.slug = uuslug(f'{self.brand.name} {self.model}', instance=self)
@@ -50,10 +60,9 @@ class OfferVendor(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
 
     @property
-    def price_currency(self):
-        currency = 'USD'
-        cur_price = convert_price(self.price, currency)
-        return {'cur': currency, 'price': round(cur_price, 2)}
+    def price_in_currency(self):
+        cur_price = convert_price(self.price)
+        return cur_price
 
     def __str__(self):
         return f'{self.vendor.name} - {self.product.full_name}: {self.price}'

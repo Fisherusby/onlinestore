@@ -17,5 +17,5 @@ class OfferAuto(models.Model):
     state = models.CharField(max_length=16)
     is_cleared = models.BooleanField(max_length=16)
     create_date = models.DateTimeField(auto_now=True)
-    cost = models.DecimalField(max_digits=6, decimal_places=2)
+    cost = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 

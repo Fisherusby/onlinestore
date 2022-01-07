@@ -4,17 +4,18 @@ from django.contrib.auth.models import User
 from . import OfferVendor
 
 
-
 class Basket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
 
     @property
     def total_price(self):
-        result = 0
+        result = {}
         products = self.products_in_basket.all()
         for pr in products:
-            result += pr.price_sum
+            for cur, price in pr.price_in_currency.items():
+                result.setdefault(cur, 0)
+                result[cur] += price
         return result
 
     def __str__(self):
@@ -27,8 +28,11 @@ class ProductInBasket(models.Model):
     count = models.PositiveIntegerField(default=1)
 
     @property
-    def price_sum(self):
-        return self.offer.price * self.count
+    def price_in_currency(self):
+        result = {}
+        for cur, price in self.offer.price_in_currency.items():
+            result[cur] = price * self.count
+        return result
 
     @property
     def product(self):

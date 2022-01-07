@@ -1,28 +1,32 @@
 from info.models import ExchangeCurrency
 from django.core.exceptions import ObjectDoesNotExist
+import datetime
 
 
-def convert_price(price, currency='USD'):
-    import datetime
+DEFAULT_CURRENCY = (
+    'USD',
+    'EUR',
+    'RUB',
+)
+
+
+def convert_price(price):
     today = datetime.date.today()
-
-    # default_currency = 'USD'
+    tmp = {}
     try:
-        current_currency_rate = ExchangeCurrency.objects.filter(currency=currency, date=today).latest('created_date')
-        # return price * current_currency_rate.scale / current_currency_rate.rate
+        for currency in DEFAULT_CURRENCY:
+            tmp[currency] = ExchangeCurrency.objects.filter(currency=currency).latest('created_date')
     except ObjectDoesNotExist:
-        current_currency_rate = update_currency(currency)
-        if not current_currency_rate:
-            try:
-                current_currency_rate = ExchangeCurrency.objects.filter(currency=currency).latest('created_date')
-                # return price * current_currency_rate.scale / current_currency_rate.rate
-            except ObjectDoesNotExist:
-                return None
+        return None
 
-    return price * current_currency_rate.scale / current_currency_rate.rate
+    result = {'BYN': price}
+    for currency, data in tmp.items():
+        result[currency] = round(price * data.scale / data.rate, 2)
+
+    return result
 
 
-def update_currency(default_currency):
+def update_currency():
     import requests
     import json
 
@@ -41,9 +45,6 @@ def update_currency(default_currency):
         if len(json_loads) < 2:
             return False
 
-        # {"Cur_ID": 440, "Date": "2022-01-03T00:00:00", "Cur_Abbreviation": "AUD", "Cur_Scale": 1,
-        #          "Cur_Name": "Австралийский доллар", "Cur_OfficialRate": 1.8492}
-
         for currency in json_loads:
             cur_name = currency.get('Cur_Abbreviation', False)
             cur_scale = currency.get('Cur_Scale', False)
@@ -56,9 +57,6 @@ def update_currency(default_currency):
                 scale=cur_scale,
                 date=date[:10],
             )
-
-            if cur_name == default_currency:
-                result = exchange_currency
 
         return result
     except requests.ConnectionError:

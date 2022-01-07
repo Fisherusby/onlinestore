@@ -5,6 +5,7 @@ from django.db import models
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
     currency = models.CharField(max_length=3, default='USD')
+    money_in_wallet = models.IntegerField(default=0)
 
     is_client = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)

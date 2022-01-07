@@ -3,18 +3,21 @@ from rest_framework.routers import DefaultRouter
 
 from info.views import ExchangeCurrencyViewSet, TodayExchangeCurrencyViewSet
 from store.views import VendorViewSet, BasketViewSet, CategoryViewSet, ProductViewSet, BrandViewSet, OrderViewSet, \
-    ProductReviewsViewSet, ListVendorViewSet, ProductToFavoriteViewSet, FavoriteProductsViewSet, ProductToBasket
+    ProductReviewsViewSet, ListVendorViewSet, ProductToFavoriteViewSet, FavoriteProductsViewSet, ProductToBasketViewSet, \
+    PayOrderByWalletViewSet
 
 router = DefaultRouter()
 # router.register('vendor', VendorViewSet, basename="VendorViewSet")
 router.register('category', CategoryViewSet, basename="CategoryViewSet")
 router.register('products/brand', BrandViewSet, basename='BrandViewSet')
 router.register('basket', BasketViewSet, basename='BasketViewSet')
-router.register('to_basket', ProductToBasket, basename='ProductToBasket')
+router.register('to_basket', ProductToBasketViewSet, basename='ProductToBasketViewSet')
 router.register('order', OrderViewSet, basename='OrderViewSet')
 router.register('product/reviews', ProductReviewsViewSet, basename='ProductReviewsViewSet')
 router.register('favorite/product', ProductToFavoriteViewSet, basename='ProductToFavoriteViewSet')
 router.register('favorite/products', FavoriteProductsViewSet, basename='FavoriteProductsViewSet')
+
+router.register('pay/wallet', PayOrderByWalletViewSet, basename='PayOrderByWalletViewSet')
 
 router.register('currency', TodayExchangeCurrencyViewSet, basename = 'ExchangeCurrencyViewSet')
 # router.register('currency/today', TodayExchangeCurrencyViewSet, basename='TodayExchangeCurrencyViewSet')

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информационное сообщение!</title>
+</head>
+<body>
+Здравствуйте, {{ order.user.username }},
+
+Ваш заказ номер {{ order.id }} от {{ orde.create_date }} принят в обработку.
+Для уточнения деталей с Вами свяжется менеджер магазина.
+
+Стоимость заказа: {{ order.total_price }} {{ order.price_currency }}.
+
+Состав заказа:
+    {% for product in order.products.all %}
+        {{ product.product.full_name }} - {{ product.count }} шт x {{ product.price_in_currency }} {{ order.price_currency }} = {{ product.price_count }} {{ order.price_currency }}
+    {% endfor %}
+
+
+</body>
+</html>

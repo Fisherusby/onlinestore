@@ -47,7 +47,7 @@ class ProductInBasketSerializer(serializers.ModelSerializer):
             'product',
             'vendor',
             'count',
-            'price_sum',
+            'price_in_currency',
         )
 
 
@@ -88,7 +88,7 @@ class CreateProductInBasketSerializer(serializers.ModelSerializer):
         fields = (
             'offer',
             'count',
-            'price_sum',
+            'price_in_currency',
         )
 
 

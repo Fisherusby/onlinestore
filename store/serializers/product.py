@@ -15,7 +15,7 @@ class OfferVendorSerializer(serializers.ModelSerializer):
             'id',
             'vendor',
             'price',
-            'price_currency',
+            'price_in_currency',
         )
 
 class ProductImageSerializer(serializers.ModelSerializer):

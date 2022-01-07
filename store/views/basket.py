@@ -23,7 +23,7 @@ class BasketViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Gen
         return self.queryset.filter(user=self.request.user)
 
 
-class ProductToBasket(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class ProductToBasketViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = ProductInBasket.objects.all()
     serializer_class = ProductToBasket
     permission_classes = [permissions.IsAuthenticated]

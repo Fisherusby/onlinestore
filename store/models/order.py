@@ -1,8 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from info.tools import convert_price
 from store.models import Product, Vendor
 
+PAYMENT_METHOD = (
+    ('cash', 'Наличными'),
+    ('wallet', 'Кошелек'),
+    ('online', 'online'),
+)
 
 class Order(models.Model):
     STATUS_CHOICES = (
@@ -14,11 +20,7 @@ class Order(models.Model):
         ('cancel', 'Отменен'),
     )
 
-    PAYMENT_METHOD = (
-        ('cash', 'Наличными'),
-        ('wallet', 'Кошелек'),
-        ('online', 'online'),
-    )
+
 
     DELIVERY_METHOD = (
         ('pickup', 'Самовывоз'),
@@ -43,10 +45,14 @@ class Order(models.Model):
 
     @property
     def total_price(self):
-        result = 0
-        for product in self.products.all():
-            result += product.price * product.count
+        result = {}
+        products = self.products.all()
+        for pr in products:
+            for cur, price in pr.price_count.items():
+                result.setdefault(cur, 0)
+                result[cur] += price
         return result
+
 
     def __str__(self):
         return f'№{str(self.id).rjust(10, "0")} - {self.user.username} : {self.total_price}'
@@ -58,3 +64,25 @@ class ProductInOrder(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name='Продавец', related_name='orders')
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
     count = models.PositiveIntegerField(default=0, verbose_name='Количество')
+
+    @property
+    def price_in_currency(self):
+        cur_price = convert_price(self.price)
+        return cur_price
+
+    @property
+    def price_count(self):
+        result ={}
+        for cur, val in self.price_in_currency.items():
+            result[cur] = val * self.count
+        return result
+
+
+class ReceiptOfPayment(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE, related_name='receipts')
+    method = models.CharField(max_length=16, choices=PAYMENT_METHOD)
+    price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+    is_canceled = models.BooleanField(default=False)
+    create_data = models.DateTimeField(auto_now=True)
+
+

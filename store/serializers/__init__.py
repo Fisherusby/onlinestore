@@ -4,4 +4,4 @@ from .product import ProductSerializer, PhotoReviewProductSerializer, ReviewProd
      ProductToFavoriteSerializer
 from .brand import BrandSerializer, RetrieveBrandSerializer
 from .basket import BasketSerializer, CreateBasketSerializer, ProductToBasket
-from .order import ProductInOrderSerializer, OrderSerializer, CreateOrderSerializer
+from .order import ProductInOrderSerializer, OrderSerializer, CreateOrderSerializer, PayOrderByWalletSerializer
