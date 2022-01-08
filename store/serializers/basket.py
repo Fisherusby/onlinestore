@@ -130,7 +130,7 @@ class ProductToBasket(serializers.Serializer):
             raise serializers.ValidationError("offer_not_found")
 
         try:
-            basket = Basket.objects.filter(user=self.context['request'].user).last()
+            basket = Basket.objects.get(user=self.context['request'].user)
         except ObjectDoesNotExist:
             basket = Basket.objects.create(user=self.context['request'].user)
 

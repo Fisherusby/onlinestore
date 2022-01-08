@@ -14,7 +14,14 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name="Категория")
     model = models.CharField(verbose_name="Модель", max_length=128)
     brand = models.ForeignKey(Brand, verbose_name="Бренд (Производитель)", on_delete=models.CASCADE, related_name='products')
+    production = models.IntegerField(default=2020)
+    weight = models.DecimalField(max_digits=8, decimal_places=3, blank=True, null=True, default=0)
+    height = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, default=0)
+    width = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, default=0)
+    deep = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, default=0)
+    color = models.CharField(max_length=16, default=None, null=True, blank=True)
     slug = models.SlugField(verbose_name='slug', max_length=255, unique=True)
+
     description = models.TextField(blank=True, null=True)
 
     @property

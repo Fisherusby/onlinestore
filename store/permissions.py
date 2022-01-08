@@ -1,6 +1,15 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
+class IsNonAuthenticated(BasePermission):
+    """
+    Allows access only to authenticated users.
+    """
+
+    def has_permission(self, request, view):
+        return bool(not (request.user and request.user.is_authenticated))
+
+
 class IsOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         return bool(request.user and request.user.is_authenticated and obj.user == request.user)

@@ -4,6 +4,7 @@ from tools.notify import notify_order
 from django.core.exceptions import ObjectDoesNotExist
 
 from users.models import UserProfile
+from .product import ProductSerializer
 
 
 class ProductInOrderSerializer(serializers.ModelSerializer):
@@ -18,7 +19,21 @@ class ProductInOrderSerializer(serializers.ModelSerializer):
         )
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class FullProductInOrderSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = ProductInOrder
+        fields = (
+            'product',
+            'vendor',
+            'price_in_currency',
+            'price_count',
+            'count',
+        )
+
+
+class ListOrderSerializer(serializers.ModelSerializer):
     products = ProductInOrderSerializer(many=True)
 
     class Meta:
@@ -39,6 +54,30 @@ class OrderSerializer(serializers.ModelSerializer):
             'products',
             'total_price',
         )
+
+
+class RetrieveOrderSerializer(serializers.ModelSerializer):
+    products = FullProductInOrderSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = (
+            'id',
+            'user',
+            'create_date',
+            'status',
+            'payment',
+            'receipts',
+            'delivery',
+            'is_confirmed',
+            'is_paid',
+            'is_deliver',
+            'is_completed',
+            'is_cancel',
+            'products',
+            'total_price',
+        )
+
 
 
 class CreateOrderSerializer(serializers.ModelSerializer):
@@ -70,9 +109,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Basket_not_found")
 
-
-        # if basket empty generate raise
-        if not basket.total_price > 0:
+        if basket.total_price.get('BYN', 0) == 0:
             raise serializers.ValidationError("Basket_empty")
 
         # Create new order
@@ -93,7 +130,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             )
 
         # clear basket
-        # ProductInBasket.objects.filter(basket=basket).delete()
+        ProductInBasket.objects.filter(basket=basket).delete()
 
         # send email to user about order
         order_send = Order.objects.get(id=order.id)
@@ -164,9 +201,6 @@ class PayOrderByCardtSerializer(serializers.ModelSerializer):
 
         if order.total_price.get('BYN', 0) == 0:
             raise serializers.ValidationError("Order_empty")
-
-
-
 
 
         try:

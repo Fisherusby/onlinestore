@@ -23,10 +23,18 @@
             </nav>
             <div id="products">
                 <div id="product-filter">
-                    filter
+                    <form id="filter-form">
+                        <input hidden value="">
+
+                    </form>
                 </div>
-                <div id="product-list">
-                    list
+                <div id="product-list-block">
+                    <div id="product-list">
+                        list
+                    </div>
+                    <div id="load-more-product">
+                        more 30
+                    </div>
                 </div>
             </div>
             <div id="log_json"></div>
@@ -34,7 +42,7 @@
     </div>
     <script type="text/javascript">
         $("document").ready(function (){
-            let url = "/api/category/";
+            let url = "/api/store/category/";
             $.ajax({
                url : url,
                dataType: "json",
@@ -101,7 +109,7 @@
 
 
 
-                let url = "/api/products/category/"+target_cat;
+                let url = "/api/products/?category__slug="+target_cat;
                 $.ajax({
                     url : url,
                     dataType: "json",
@@ -115,10 +123,13 @@
                                     <div class="product-list-item-price">${product.rating}</div>
                                     <div class="product-list-item-vendors">${product.offers.length}</div>
                                 </div>`;
-                            console.log(html_product)
+
                             $('#product-list').append(html_product)
                         }
 
+                        if (data.next){
+                            console.log(data.next)
+                        }
                     }
                 });
         });

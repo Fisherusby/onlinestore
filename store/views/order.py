@@ -1,24 +1,34 @@
 from rest_framework import viewsets, permissions, mixins
 from store.models import Order, ProductInOrder, ReceiptOfPayment
-from store.serializers import OrderSerializer, ProductInOrderSerializer, CreateOrderSerializer, \
+from store.serializers import RetrieveOrderSerializer, ListOrderSerializer, CreateOrderSerializer, \
     PayOrderByWalletSerializer
+
+from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class OrderViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Order.objects.all()
 
     serializers = {
-        'list': OrderSerializer,
+        'list': ListOrderSerializer,
         'create': CreateOrderSerializer,
-        'retrieve': OrderSerializer,
+        'retrieve': RetrieveOrderSerializer,
     }
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_class(self):
         return self.serializers[self.action]
 
+    def get_queryset(self):
+        result = self.queryset.filter(user=self.request.user)
+        return result
+
     def get_object(self):
-        return self.queryset.filter(user=self.request.user)
+        try:
+            return self.queryset.get(user=self.request.user, pk=self.kwargs['pk'])
+        except ObjectDoesNotExist:
+            raise Http404
 
 
 class PayOrderByWalletViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
