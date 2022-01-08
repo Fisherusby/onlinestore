@@ -5,9 +5,10 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
-from store.models import Product, FavoriteProduct
+from store.models import Product, FavoriteProduct, ReviewProduct
 from store.serializers import ProductSerializer, ProductReviewsSerializer
-from store.serializers.product import ProductToFavoriteSerializer
+from store.serializers.product import ProductToFavoriteSerializer, \
+    CreateReviewProductSerializer, UpdateReviewProductSerializer
 
 
 class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -34,6 +35,24 @@ class ProductReviewsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             return self.queryset.get(slug=self.kwargs['slug'])
         except ObjectDoesNotExist:
             raise Http404
+
+
+class ReviewProductViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin,
+                            viewsets.GenericViewSet):
+    queryset = ReviewProduct.objects.all()
+    serializers = {
+        'create': CreateReviewProductSerializer,
+        'update': UpdateReviewProductSerializer,
+        'partial_update': UpdateReviewProductSerializer,
+    }
+
+    def get_serializer_class(self):
+        # import pdb
+        # pdb.set_trace()
+        return self.serializers[self.action]
+
+
+
 
 
 class FavoriteProductsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

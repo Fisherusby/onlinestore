@@ -52,12 +52,13 @@ def update_currency():
             date = currency.get('Date', False)
 
             exchange_currency = ExchangeCurrency.objects.create(
-                currency=cur_name,
-                rate=cur_official_rate,
-                scale=cur_scale,
-                date=date[:10],
-            )
+                    currency=cur_name,
+                    rate=cur_official_rate,
+                    scale=cur_scale,
+                    date=date[:10],
+                )
 
         return result
     except requests.ConnectionError:
         return False
+

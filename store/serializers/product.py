@@ -4,6 +4,7 @@ from .vendor import VendorSerializer
 from .brand import BrandSerializer
 from .product_category import ProductCategorySerializer
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class OfferVendorSerializer(serializers.ModelSerializer):
@@ -17,6 +18,7 @@ class OfferVendorSerializer(serializers.ModelSerializer):
             'price',
             'price_in_currency',
         )
+
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,7 +37,6 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         view_name='ProductViewSet',
         lookup_field='slug'
     )
-
 
     class Meta:
         model = Product
@@ -69,6 +70,7 @@ class ReviewProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewProduct
         fields = (
+            'id',
             'user',
             'rating',
             'review_text',
@@ -86,8 +88,82 @@ class ProductReviewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
+            'slug',
             'reviews',
         )
+
+
+class UpdateReviewProductSerializer(serializers.ModelSerializer):
+    photos = PhotoReviewProductSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ReviewProduct
+        fields = (
+            'id',
+            'user',
+            'rating',
+            'review_text',
+            'title',
+            'plus',
+            'minus',
+            'created_date',
+            'photos',
+        )
+
+
+class CreateReviewProductSerializer(serializers.ModelSerializer):
+        photos = PhotoReviewProductSerializer(many=True, read_only=True)
+        slug = serializers.SlugField(max_length=255, min_length=1)
+
+        class Meta:
+            model = ReviewProduct
+            fields = (
+                'slug',
+                'user',
+                'rating',
+                'review_text',
+                'title',
+                'plus',
+                'minus',
+                'created_date',
+                'photos',
+            )
+
+        def create(self, validated_data):
+            try:
+                product = Product.objects.get(slug=validated_data['slug'])
+            except ObjectDoesNotExist:
+                raise serializers.ValidationError("Product_not_found")
+
+            try:
+                review = ReviewProduct.objects.get(product=product, user=self.context['request'].user)
+                raise serializers.ValidationError("Forbidden_more_than_once")
+            except ObjectDoesNotExist:
+                review = ReviewProduct.objects.create(
+                    product=product,
+                    user=self.context['request'].user,
+                    rating=validated_data['rating'],
+                    review_text=validated_data['review_text'],
+                    title=validated_data['title'],
+                    plus=validated_data['plus'],
+                    minus=validated_data['minus'],
+                )
+                review.slug = validated_data['slug']
+            return review
+
+
+# {
+#   "slug": "establishes-eu-530",
+#   "user": 1,
+#   "rating": 5,
+#   "review_text": "В целом очень неплохо!",
+#   "title": "Отличный товар!",
+#   "plus": "Одни плюсы",
+#   "minus": "Нету",
+#   "photos": [
+#     {}
+#   ]
+# }
 
 
 class ProductToFavoriteSerializer(serializers.Serializer):
@@ -98,8 +174,4 @@ class ProductToFavoriteSerializer(serializers.Serializer):
         FavoriteProduct.objects.get_or_create(user=self.context['request'].user, product=product)
 
         return validated_data
-
-
-
-
 

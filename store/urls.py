@@ -1,37 +1,39 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from info.views import ExchangeCurrencyViewSet, TodayExchangeCurrencyViewSet
+from info.views import ExchangeCurrencyViewSet, TodayExchangeCurrencyViewSet, CovidViewSet
 from store.views import VendorViewSet, BasketViewSet, CategoryViewSet, ProductViewSet, BrandViewSet, OrderViewSet, \
     ProductReviewsViewSet, ListVendorViewSet, ProductToFavoriteViewSet, FavoriteProductsViewSet, ProductToBasketViewSet, \
-    PayOrderByWalletViewSet
+    PayOrderByWalletViewSet, ReviewProductViewSet
 
 router = DefaultRouter()
 # router.register('vendor', VendorViewSet, basename="VendorViewSet")
-router.register('category', CategoryViewSet, basename="CategoryViewSet")
-router.register('products/brand', BrandViewSet, basename='BrandViewSet')
-router.register('basket', BasketViewSet, basename='BasketViewSet')
-router.register('to_basket', ProductToBasketViewSet, basename='ProductToBasketViewSet')
-router.register('order', OrderViewSet, basename='OrderViewSet')
-router.register('product/reviews', ProductReviewsViewSet, basename='ProductReviewsViewSet')
-router.register('favorite/product', ProductToFavoriteViewSet, basename='ProductToFavoriteViewSet')
-router.register('favorite/products', FavoriteProductsViewSet, basename='FavoriteProductsViewSet')
+router.register('store/category', CategoryViewSet, basename="CategoryViewSet")
+router.register('store/products/brand', BrandViewSet, basename='BrandViewSet')
+router.register('store/user/basket', BasketViewSet, basename='BasketViewSet')
+router.register('store/user/to_basket', ProductToBasketViewSet, basename='ProductToBasketViewSet')
+router.register('store/user/order', OrderViewSet, basename='OrderViewSet')
+router.register('store/product/reviews', ProductReviewsViewSet, basename='ProductReviewsViewSet')
+router.register('store/product/review', ReviewProductViewSet, basename='ReviewProductViewSet')
+router.register('store/user/favorite/product', ProductToFavoriteViewSet, basename='ProductToFavoriteViewSet')
+router.register('store/user/favorite/products', FavoriteProductsViewSet, basename='FavoriteProductsViewSet')
 
-router.register('pay/wallet', PayOrderByWalletViewSet, basename='PayOrderByWalletViewSet')
+router.register('store/user/payment/wallet', PayOrderByWalletViewSet, basename='PayOrderByWalletViewSet')
 
-router.register('currency', TodayExchangeCurrencyViewSet, basename = 'ExchangeCurrencyViewSet')
+router.register('info/currency', TodayExchangeCurrencyViewSet, basename='ExchangeCurrencyViewSet')
+router.register('info/covid', CovidViewSet, basename='CovidViewSet')
 # router.register('currency/today', TodayExchangeCurrencyViewSet, basename='TodayExchangeCurrencyViewSet')
 
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('vendor/<slug:slug>',
+    path('store/vendor/<slug:slug>',
          VendorViewSet.as_view({'get': 'retrieve', }), name='VendorViewSet'),
-    path('vendor',
+    path('store/vendor',
          ListVendorViewSet.as_view(), name='ListVendorViewSet'),
-    path('products/category/<slug:cat_slug>/',
+    path('store/products/category/<slug:cat_slug>/',
          ProductViewSet.as_view({'get': 'list', }), name='ProductViewSet'),
-    path('product/detail/<slug:slug>/',
+    path('store/product/detail/<slug:slug>/',
          ProductViewSet.as_view({'get': 'retrieve', }), name='ProductViewSet'),
 ]
 

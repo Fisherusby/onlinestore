@@ -4,6 +4,7 @@ from tools.notify import notify_order
 from django.core.exceptions import ObjectDoesNotExist
 
 from users.models import UserProfile
+from .product import ProductSerializer
 
 
 class ProductInOrderSerializer(serializers.ModelSerializer):
@@ -18,7 +19,21 @@ class ProductInOrderSerializer(serializers.ModelSerializer):
         )
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class FullProductInOrderSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = ProductInOrder
+        fields = (
+            'product',
+            'vendor',
+            'price_in_currency',
+            'price_count',
+            'count',
+        )
+
+
+class ListOrderSerializer(serializers.ModelSerializer):
     products = ProductInOrderSerializer(many=True)
 
     class Meta:
@@ -39,6 +54,30 @@ class OrderSerializer(serializers.ModelSerializer):
             'products',
             'total_price',
         )
+
+
+class RetrieveOrderSerializer(serializers.ModelSerializer):
+    products = FullProductInOrderSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = (
+            'id',
+            'user',
+            'create_date',
+            'status',
+            'payment',
+            'receipts',
+            'delivery',
+            'is_confirmed',
+            'is_paid',
+            'is_deliver',
+            'is_completed',
+            'is_cancel',
+            'products',
+            'total_price',
+        )
+
 
 
 class CreateOrderSerializer(serializers.ModelSerializer):
