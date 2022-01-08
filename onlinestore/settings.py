@@ -135,4 +135,15 @@ EMAIL_PORT = 587
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # from .settings_local import *
+# Braintree settings
+BRAINTREE_MERCHANT_ID = '8qrhvnyqny9s4kqs' # Merchant ID
+BRAINTREE_PUBLIC_KEY = 'tyr229qg67gt2pty' # Public Key
+BRAINTREE_PRIVATE_KEY = '5f097ac72115b6c8c32f75334cf42021' # Private key
 
+import braintree
+BRAINTREE_CONF = braintree.Configuration(
+ braintree.Environment.Sandbox,
+ BRAINTREE_MERCHANT_ID,
+ BRAINTREE_PUBLIC_KEY,
+ BRAINTREE_PRIVATE_KEY
+)
