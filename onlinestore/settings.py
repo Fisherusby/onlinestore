@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'mptt',
     'store',
     'rest_framework',
-    'drf_yasg',
+    # 'drf_yasg',
     'info',
     'users',
     'frontend',
