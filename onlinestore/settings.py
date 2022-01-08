@@ -4,7 +4,7 @@ import os
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cdjango-insecure-*!+(xv%l(d^-&flewxrf43o53m0+scca3j_onq*2wb_9')
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['arcane-escarpment-26447.herokuapp.com', '127.0.0.1']
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
