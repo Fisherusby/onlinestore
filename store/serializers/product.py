@@ -41,12 +41,18 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Product
         fields = (
+            'slug',
             'url',
             'full_name',
             'category',
             'model',
             'brand',
-            'slug',
+            'weight',
+            'height',
+            'width',
+            'deep',
+            'color',
+            'production',
             'images',
             'offers',
             'rating',

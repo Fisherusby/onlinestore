@@ -130,7 +130,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             )
 
         # clear basket
-        # ProductInBasket.objects.filter(basket=basket).delete()
+        ProductInBasket.objects.filter(basket=basket).delete()
 
         # send email to user about order
         order_send = Order.objects.get(id=order.id)

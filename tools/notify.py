@@ -8,7 +8,6 @@ from django.utils.html import strip_tags
 
 def notify_order(order):
     subject = f'Thank you for your order №{str(order.pk).rjust(10,"0")}'
-    # message = f'Thank you for your order №{str(order.pk).rjust(10,"0")}'
 
     html_message = render_to_string('emails/order_create.html', {'order': order})
     plain_message = strip_tags(html_message)

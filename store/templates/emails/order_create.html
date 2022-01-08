@@ -5,16 +5,19 @@
     <title>Информационное сообщение!</title>
 </head>
 <body>
+
+{% load custom_tags %}
+
 Здравствуйте, {{ order.user.username }},
 
 Ваш заказ номер {{ order.id }} от {{ orde.create_date }} принят в обработку.
 Для уточнения деталей с Вами свяжется менеджер магазина.
 
-Стоимость заказа: {{ order.total_price }} {{ order.price_currency }}.
+Стоимость заказа: {{ order.total_price|get_item:order.user.user_profile.currency}} {{ order.user.user_profile.currency }}.
 
 Состав заказа:
     {% for product in order.products.all %}
-        {{ product.product.full_name }} - {{ product.count }} шт x {{ product.price_in_currency }} {{ order.price_currency }} = {{ product.price_count }} {{ order.price_currency }}
+        {{ product.product.full_name }} - {{ product.count }} шт x {{ product.price_in_currency|get_item:order.user.user_profile.currency }} {{ order.user.user_profile.currency }} = {{ product.price_count|get_item:order.user.user_profile.currency }} {{ order.user.user_profile.currency }}
     {% endfor %}
 
 

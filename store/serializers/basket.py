@@ -121,6 +121,9 @@ class ProductToBasket(serializers.Serializer):
     product = serializers.SlugField(max_length=255, min_length=None, allow_blank=False)
 
     def create(self, validated_data):
+        import pdb
+        pdb.set_trace()
+
         try:
             offer = OfferVendor.objects.get(
                 vendor__slug=validated_data['vendor'],
@@ -130,7 +133,7 @@ class ProductToBasket(serializers.Serializer):
             raise serializers.ValidationError("offer_not_found")
 
         try:
-            basket = Basket.objects.filter(user=self.context['request'].user).last()
+            basket = Basket.objects.get(user=self.context['request'].user)
         except ObjectDoesNotExist:
             basket = Basket.objects.create(user=self.context['request'].user)
 
