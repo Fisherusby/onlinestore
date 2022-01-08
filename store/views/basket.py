@@ -29,9 +29,6 @@ class ProductToBasketViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, 
     permission_classes = [permissions.IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
-        import pdb
-        pdb.set_trace()
-
         prodict_in_basket = get_object_or_404(
             ProductInBasket,
             basket__user=request.user,

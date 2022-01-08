@@ -12,11 +12,11 @@ from users.views.user import RegisterClientUserViewSet
 router = DefaultRouter()
 
 
-router.register('products', AllProductViewSet, basename='AllProductViewSet')
+router.register('store/products', AllProductViewSet, basename='AllProductViewSet')
 
 # router.register('vendor', VendorViewSet, basename="VendorViewSet")
 router.register('store/category', CategoryViewSet, basename="CategoryViewSet")
-router.register('store/products/brand', BrandViewSet, basename='BrandViewSet')
+router.register('store/brand', BrandViewSet, basename='BrandViewSet')
 router.register('store/user/basket', BasketViewSet, basename='BasketViewSet')
 router.register('store/user/to_basket', ProductToBasketViewSet, basename='ProductToBasketViewSet')
 router.register('store/user/order', OrderViewSet, basename='OrderViewSet')
@@ -42,8 +42,8 @@ urlpatterns = [
          VendorViewSet.as_view({'get': 'retrieve', }), name='VendorViewSet'),
     path('store/vendor',
          ListVendorViewSet.as_view(), name='ListVendorViewSet'),
-    path('store/products/category/<slug:cat_slug>/',
-         ProductViewSet.as_view({'get': 'list', }), name='ProductViewSet'),
+    # path('store/products/category/<slug:cat_slug>/',
+    #      ProductViewSet.as_view({'get': 'list', }), name='ProductViewSet'),
     path('store/product/detail/<slug:slug>/',
          ProductViewSet.as_view({'get': 'retrieve', }), name='ProductViewSet'),
 ]

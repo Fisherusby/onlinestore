@@ -121,9 +121,6 @@ class ProductToBasket(serializers.Serializer):
     product = serializers.SlugField(max_length=255, min_length=None, allow_blank=False)
 
     def create(self, validated_data):
-        import pdb
-        pdb.set_trace()
-
         try:
             offer = OfferVendor.objects.get(
                 vendor__slug=validated_data['vendor'],
