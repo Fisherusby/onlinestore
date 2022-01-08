@@ -21,8 +21,8 @@ class OrderViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Li
         return self.serializers[self.action]
 
     def get_queryset(self):
-        result = self.queryset.filter(user=self.request.user)
-        return result
+        if self.request.user.is_authenticated:
+            return self.queryset.filter(user=self.request.user)
 
     def get_object(self):
         try:
