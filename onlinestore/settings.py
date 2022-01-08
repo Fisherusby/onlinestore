@@ -14,7 +14,7 @@ INSTALLED_APPS = [
     'mptt',
     'store',
     'rest_framework',
-    'drf_yasg',
+    # 'drf_yasg',
     'info',
     'users',
     'frontend',
@@ -131,7 +131,7 @@ EMAIL_PORT = 587
 # CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 # CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
-
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 from .settings_local import *
