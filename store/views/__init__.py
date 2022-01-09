@@ -4,7 +4,7 @@ from .product import ProductViewSet, ProductReviewsViewSet, ProductToFavoriteVie
     ReviewProductViewSet, AllProductViewSet
 from .brand import BrandViewSet
 from .basket import BasketViewSet, ProductToBasketViewSet
-from .order import OrderViewSet, PayOrderByWalletViewSet
+from .order import OrderViewSet, PayOrderByWalletViewSet, PayOrderByCardViewSet
 from .statistics import MostPopularProductsViewSet
 
 

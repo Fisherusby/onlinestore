@@ -4,7 +4,7 @@ from store.serializers import BrandSerializer, RetrieveBrandSerializer
 
 
 class BrandViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    queryset = Brand.objects.all()
+    queryset = Brand.objects.all().order_by('name')
     serializers = {
         'list': BrandSerializer,
         'retrieve': RetrieveBrandSerializer,

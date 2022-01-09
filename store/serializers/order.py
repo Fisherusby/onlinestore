@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from store.models import Order, ProductInOrder, Basket, ProductInBasket, ReceiptOfPayment
-from tools.notify import notify_order
+from tools.notify import notify_order, notify_payment
 from django.core.exceptions import ObjectDoesNotExist
 
 from users.models import UserProfile
@@ -117,6 +117,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             user=self.context['request'].user,
             payment=validated_data['payment'],
             delivery=validated_data['delivery'],
+            # status=Order.PAYMENT,
         )
 
         # Add goods in order from basket
@@ -159,6 +160,12 @@ class PayOrderByWalletSerializer(serializers.ModelSerializer):
         if order.total_price.get('BYN', 0) == 0:
             raise serializers.ValidationError("Order_empty")
 
+        if order.is_paid:
+            raise serializers.ValidationError("Order_already_paid")
+
+        # if order.status != Order.PAYMENT:
+        #     raise serializers.ValidationError("Order_not_ready_to_pay")
+
         try:
             if self.context['request'].user.user_profile.money_in_wallet < order.total_price['BYN']:
                 raise serializers.ValidationError("Not_enough_money")
@@ -167,23 +174,22 @@ class PayOrderByWalletSerializer(serializers.ModelSerializer):
                 self.context['request'].user.user_profile.money_in_wallet -= order.total_price['BYN']
                 self.context['request'].user.save()
                 order.is_paid = True
-                order.status = 'delivery'
+                order.status = Order.DELIVERY
                 order.save()
         except UserProfile.DoesNotExist:
             raise serializers.ValidationError("Not_enough_wallet")
 
+        notify_payment(receipt)
         return receipt
 
 
-
-class PayOrderByCardtSerializer(serializers.ModelSerializer):
+class PayOrderByCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReceiptOfPayment
         fields = (
             'order',
             'method',
-            'card',
-
+            'detail',
         )
 
     def create(self, validated_data):
@@ -194,6 +200,7 @@ class PayOrderByCardtSerializer(serializers.ModelSerializer):
 
         if validated_data['method'] != 'online':
             raise serializers.ValidationError("payment_method_error")
+
         try:
             order = Order.objects.get(id=validated_data['order'].id, user=self.context['request'].user)
         except ObjectDoesNotExist:
@@ -202,18 +209,30 @@ class PayOrderByCardtSerializer(serializers.ModelSerializer):
         if order.total_price.get('BYN', 0) == 0:
             raise serializers.ValidationError("Order_empty")
 
+        if order.is_paid:
+            raise serializers.ValidationError("Order_already_paid")
 
-        try:
-            if self.context['request'].user.user_profile.money_in_wallet < order.total_price['BYN']:
-                raise serializers.ValidationError("Not_enough_money")
-            else:
-                receipt = ReceiptOfPayment.objects.create(order=order, method='wallet', price=order.total_price['BYN'])
-                self.context['request'].user.user_profile.money_in_wallet -= order.total_price['BYN']
-                self.context['request'].user.save()
-                order.is_paid = True
-                order.status = 'delivery'
-                order.save()
-        except UserProfile.DoesNotExist:
-            raise serializers.ValidationError("Not_enough_wallet")
+        result = gateway.transaction.sale({
+            'amount': f'{order.total_price["USD"]}',
+            'payment_method_nonce': validated_data['detail'],
+            'options': {
+                'submit_for_settlement': True
+            }
+        })
 
+        if result.is_success:
+            receipt = ReceiptOfPayment.objects.create(
+                order=order,
+                method='online',
+                price=order.total_price['BYN'],
+                detail=result.is_success,
+            )
+            order.is_paid = True
+            order.status = Order.DELIVERY
+            order.save()
+        else:
+            raise serializers.ValidationError("payment_canceled")
+
+        notify_payment(receipt)
         return receipt
+

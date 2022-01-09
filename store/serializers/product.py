@@ -31,7 +31,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     brand = BrandSerializer()
     category = ProductCategorySerializer()
-    images = ProductImageSerializer(many=True)
+    images = ProductImageSerializer(many=True, read_only=True)
     offers = OfferVendorSerializer(many=True, read_only=True)
     url = serializers.HyperlinkedIdentityField(
         view_name='ProductViewSet',
@@ -156,20 +156,6 @@ class CreateReviewProductSerializer(serializers.ModelSerializer):
                 )
                 review.slug = validated_data['slug']
             return review
-
-
-# {
-#   "slug": "establishes-eu-530",
-#   "user": 1,
-#   "rating": 5,
-#   "review_text": "В целом очень неплохо!",
-#   "title": "Отличный товар!",
-#   "plus": "Одни плюсы",
-#   "minus": "Нету",
-#   "photos": [
-#     {}
-#   ]
-# }
 
 
 class ProductToFavoriteSerializer(serializers.Serializer):

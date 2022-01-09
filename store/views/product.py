@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins, permissions
 from rest_framework.response import Response
+from rest_framework import filters
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,9 +16,11 @@ from store.serializers.product import ProductToFavoriteSerializer, \
 class AllProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category__slug', 'brand__slug',]
-    search_fields = ['full_name', 'model']
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['category__slug', 'brand__slug', 'color', 'production', ]
+    search_fields = ['brand__name', 'model', 'category__name', ]
+
+    ordering_fields = ['brand__name', 'category__name', 'color', 'production', ]
     lookup_field = 'slug'
 
     # def get_queryset(self):

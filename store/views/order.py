@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, mixins
 from store.models import Order, ProductInOrder, ReceiptOfPayment
 from store.serializers import RetrieveOrderSerializer, ListOrderSerializer, CreateOrderSerializer, \
-    PayOrderByWalletSerializer
+    PayOrderByWalletSerializer, PayOrderByCardSerializer
 
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
@@ -35,6 +35,14 @@ class PayOrderByWalletViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ReceiptOfPayment.objects.all()
     serializer_class = PayOrderByWalletSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class PayOrderByCardViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = ReceiptOfPayment.objects.all()
+    serializer_class = PayOrderByCardSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 
 
 

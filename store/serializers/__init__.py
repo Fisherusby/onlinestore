@@ -5,6 +5,7 @@ from .product import ProductSerializer, PhotoReviewProductSerializer, ReviewProd
 from .brand import BrandSerializer, RetrieveBrandSerializer
 from .basket import BasketSerializer, CreateBasketSerializer, ProductToBasket
 from .order import ProductInOrderSerializer, ListOrderSerializer, RetrieveOrderSerializer, CreateOrderSerializer, \
-     PayOrderByWalletSerializer
+     PayOrderByWalletSerializer, PayOrderByCardSerializer
 
 from .statistics import PopularProductSerializer
+

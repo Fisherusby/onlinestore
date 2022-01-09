@@ -34,7 +34,7 @@ class ProductToBasketViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, 
             basket__user=request.user,
             pk=self.kwargs['pk'],
         )
-        if prodict_in_basket.count == 1:
+        if prodict_in_basket.count <= 1:
             prodict_in_basket.delete()
         else:
             prodict_in_basket.count -= 1

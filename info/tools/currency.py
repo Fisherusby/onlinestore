@@ -29,6 +29,15 @@ def convert_price(price):
 def update_currency():
     import requests
     import json
+    import pdb
+    pdb.set_trace()
+
+    today = datetime.date.today()
+
+    lasts = ExchangeCurrency.objects.filter(date=today)
+
+    if lasts:
+        return True
 
     result = True
 

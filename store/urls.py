@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 from info.views import ExchangeCurrencyViewSet, TodayExchangeCurrencyViewSet, CovidViewSet
 from store.views import VendorViewSet, BasketViewSet, CategoryViewSet, ProductViewSet, BrandViewSet, OrderViewSet, \
     ProductReviewsViewSet, ListVendorViewSet, ProductToFavoriteViewSet, FavoriteProductsViewSet, ProductToBasketViewSet, \
-    PayOrderByWalletViewSet, ReviewProductViewSet, MostPopularProductsViewSet, AllProductViewSet
+    PayOrderByWalletViewSet, ReviewProductViewSet, MostPopularProductsViewSet, AllProductViewSet, PayOrderByCardViewSet
 from users.views.user import RegisterClientUserViewSet
 
 
@@ -26,6 +26,8 @@ router.register('store/user/favorite/product', ProductToFavoriteViewSet, basenam
 router.register('store/user/favorite/products', FavoriteProductsViewSet, basename='FavoriteProductsViewSet')
 
 router.register('store/user/payment/wallet', PayOrderByWalletViewSet, basename='PayOrderByWalletViewSet')
+router.register('store/user/payment/card', PayOrderByCardViewSet, basename='PayOrderByCardViewSet')
+
 
 
 router.register('info/currency', TodayExchangeCurrencyViewSet, basename='ExchangeCurrencyViewSet')
@@ -38,6 +40,7 @@ router.register('user/register', RegisterClientUserViewSet, basename='RegisterCl
 
 urlpatterns = [
     path('', include(router.urls)),
+    path(r'user/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('store/vendor/<slug:slug>',
          VendorViewSet.as_view({'get': 'retrieve', }), name='VendorViewSet'),
     path('store/vendor',

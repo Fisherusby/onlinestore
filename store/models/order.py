@@ -11,13 +11,20 @@ PAYMENT_METHOD = (
 )
 
 class Order(models.Model):
+
+    VERIFY = 'verify'
+    PAYMENT = 'payment'
+    DELIVERY = 'delivery'
+    COMPLETED = 'completed'
+    CENCEL = 'cancel'
+
     STATUS_CHOICES = (
-        ('verify', 'Подтверждение'),
-        ('payment', 'Оплата'),
-        ('delivery', 'Доставка'),
+        (VERIFY, 'Подтверждение'),
+        (PAYMENT, 'Оплата'),
+        (DELIVERY, 'Доставка'),
         # ('ready', 'Готов к выдаче'),
-        ('completed', 'Выполнен'),
-        ('cancel', 'Отменен'),
+        (COMPLETED, 'Выполнен'),
+        (CENCEL, 'Отменен'),
     )
 
 
@@ -79,9 +86,10 @@ class ProductInOrder(models.Model):
 
 
 class ReceiptOfPayment(models.Model):
-    order = models.ForeignKey(Order,on_delete=models.CASCADE, related_name='receipts')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='receipts')
     method = models.CharField(max_length=16, choices=PAYMENT_METHOD)
     price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
+    detail = models.CharField(max_length=256, default='')
     is_canceled = models.BooleanField(default=False)
     create_data = models.DateTimeField(auto_now=True)
 

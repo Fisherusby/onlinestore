@@ -2,25 +2,29 @@ import braintree
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 
+from info.tools import update_currency, update_covid
+
 
 def index(request):
     return render(request, 'index.html')
+
+
+def updates_info(request):
+    update_currency()
+    update_covid()
+    return redirect('index')
 
 
 # instantiate Braintree payment gateway
 gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)
 
 
-def payment_process(request):
+def payment_process(request, order_id):
     total_cost = 1
     if request.method == 'POST':
         # retrieve nonce
         nonce = request.POST.get('payment_method_nonce', None)
         # create and submit transaction
-
-        import pdb
-        pdb.set_trace()
-
 
         result = gateway.transaction.sale({
             'amount': f'{total_cost:.2f}',
@@ -45,7 +49,7 @@ def payment_process(request):
         return render(
             request,
             'payment/process.html',
-            {'order': 111, 'client_token': client_token}
+            {'order_id': order_id, 'client_token': client_token}
         )
 
 

@@ -15,16 +15,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mptt',
-    'store',
-    'rest_framework',
-    'drf_yasg',
+
     'info',
     'users',
     'frontend',
     'autofleamarket',
     'forum',
+    'store',
+
+    'mptt',
+    'rest_framework',
+    'drf_yasg',
     'django_filters',
+    'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
@@ -142,7 +145,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
-# from .settings_local import *
+from .settings_local import *
 # Braintree settings
 BRAINTREE_MERCHANT_ID = '8qrhvnyqny9s4kqs' # Merchant ID
 BRAINTREE_PUBLIC_KEY = 'tyr229qg67gt2pty' # Public Key

@@ -3,14 +3,9 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from users.serializers import RegisterUserSerializer
-
-
 
 class RegisterNonAuthUserAPITestCase(APITestCase):
     def setUp(self):
-        # self.superuser = User.objects.create_superuser('john', 'john@snow.com', 'johnpassword')
-        # self.client.login(username='john', password='johnpassword')
         self.data = {'username': 'mike', 'first_name': 'Mike', 'last_name': 'Tyson', 'password': 'johnpassword', 'email': 'john@snow.com'}
 
     def test_can_register_user(self):
@@ -20,8 +15,6 @@ class RegisterNonAuthUserAPITestCase(APITestCase):
     def test_can_list_user(self):
         response = self.client.get(reverse('RegisterClientUserViewSet-list'), self.data)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
 
 
 class RegisterAuthAdminUserAPITestCase(APITestCase):

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информационное сообщение!</title>
+</head>
+<body>
+
+{% load custom_tags %}
+
+Статус заказа номер {{ receipt.order.id }} от {{ receipt.order.create_date }} изменен.
+Оплачен {{ receipt.method }} !
+{{ receipt.detail }}
+
+
+</body>
+</html>

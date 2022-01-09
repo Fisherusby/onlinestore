@@ -21,5 +21,13 @@
     {% endfor %}
 
 
+{% if order.payment == 'online' %}
+Вы выбрали способ оплаты по карте:
+
+Ссылка для оплаты по карте
+    {{ request.get_host }}{% url 'process' order.pk %}
+{% endif %}
+
+
 </body>
 </html>
