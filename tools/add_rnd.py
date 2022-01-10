@@ -3,6 +3,7 @@ import random
 from store.models import Brand, Vendor, OfferVendor
 from store.models import Category, Product
 from .onliner_catalog import catalog
+from string import ascii_uppercase
 
 WORDS = ['Brisque', 'Mysterioso', 'Preprimary', 'Unjealously', 'Responsorium', 'Theresa', 'Metabolomes', 'Repaster',
          'Autoboot', 'Bacterian', 'Thereout', 'Free flowing', 'Honey', 'Preliminary', 'Animative', 'Upsize',
@@ -61,8 +62,27 @@ def create_brands_and_vendors():
 def create_random_goods(count):
     products_type = Category.objects.filter(children=None)[:10]
     brands = Brand.objects.all()
+    rnd_str = ascii_uppercase+'        '
+
+    COLORS = [
+        'red',
+        'black',
+        'green',
+        'silver',
+        'blue',
+        'white',
+    ]
+
     for category in products_type:
-        goods = [Product.objects.create(category=category, brand=random.choice(brands), model=rnd_model()) for _ in range(count)]
+        for _ in range(count):
+            Product.objects.create(
+                category=category,
+                brand=random.choice(brands),
+                model=rnd_model(),
+                production=2000+random.randint(1, 17),
+                description=''.join(random.choice(rnd_str) for i in range(200)),
+                color=random.choice(COLORS),
+            )
 
 
 # from tools.add_rnd import create_vendors_and_offers
@@ -76,7 +96,7 @@ def create_vendors_and_offers(offer_min, offer_max):
 
     for product in products:
         has_offer = random.randint(1, 100)
-        if has_offer < 30:
+        if has_offer < 50:
             price = random.randint(20, 1000)
             count_offers = random.randint(offer_min, offer_max)
             rnd_vendors = random.sample(range(len(vendors)), count_offers)
