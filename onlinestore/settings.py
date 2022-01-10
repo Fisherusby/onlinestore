@@ -143,7 +143,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-#from .settings_local import *
+# from .settings_local import *
 
 # Braintree settings
 BRAINTREE_MERCHANT_ID = '8qrhvnyqny9s4kqs' # Merchant ID

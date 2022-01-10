@@ -21,7 +21,7 @@
                 </div>
 
             </nav>
-            <div id="products">
+            <div id="products" style="display: none">
                 <div id="product-filter">
                     <form id="filter-form">
                         <input hidden value="">
@@ -30,13 +30,43 @@
                 </div>
                 <div id="product-list-block">
                     <div id="product-list">
-                        list
+
                     </div>
-                    <div id="load-more-product">
-                        more 30
+                    <div id="load-more" style="display: none">
+                        Показать еще
                     </div>
                 </div>
             </div>
+
+            <div id="product-detail" style="display: none">
+                    <div class="product-detail">
+                        <div id="return-products-list" class="button">НАЗАД</div>
+                        <div class="product-detail-title">Veri good product</div>
+                        <div  class="product-detail-prices">
+                            стоит
+                        </div>
+                        <div  class="product-detail-rating">
+                            стоит
+                        </div>
+                        <div class="product-detail-images">
+                            <img src="23213">
+                        </div>
+                        <div class="product-detail-chars">
+                            <div class="product-detail-chars-color"><div class="key">Цвет</div><div class="val">1</div></div>
+                            <div class="product-detail-chars-production"><div class="key">Дата выхода на рынок</div><div class="val">1</div></div>
+                            <div class="product-detail-chars-weight"><div class="key">Вес</div><div class="val">1</div></div>
+                            <div class="product-detail-chars-height"><div class="key">Высота</div><div class="val">1</div></div>
+                            <div class="product-detail-chars-width"><div class="key">Ширина</div><div class="val">1</div></div>
+                            <div class="product-detail-chars-deep"><div class="key">Глубина</div><div class="val">1</div></div>
+                        </div>
+                    </div>
+
+                    <div class="product-detail-offers">
+
+                    </div>
+
+                </div>
+
             <div id="log_json"></div>
         </div>
     </div>
@@ -107,9 +137,19 @@
                 $('#product-list').empty()
                 $('#products').show()
 
+                let url = "/api/store/products/?category__slug="+target_cat;
+                load_product_list(url)
+        });
 
+        $("#product-list-block").on('click', '#load-more', function(){
+            let url = $('#load-more').attr('text')
+            console.log(url)
+            if (url) {
+                load_product_list(url)
+            }
+        });
 
-                let url = "/api/products/?category__slug="+target_cat;
+        function load_product_list(url){
                 $.ajax({
                     url : url,
                     dataType: "json",
@@ -117,11 +157,21 @@
                         console.log(data)
 
                         for (product of data.results) {
+                            if ( !product.rating) {
+                                product.rating = ''
+                            }
+
+                            let img_htmp = '';
+                            if ( product.images.length >0 ){
+                                img_htmp = '<img src="'+product.images[0].image+'">';
+                            }
+
                             let html_product =
-                                `<div class="product-list-item" prd="${product.slug}">
+                                `<div class="product-list-item" prd="${product.url}">
+                                    <div class="product-list-item-img" >${img_htmp}</div>
                                     <div class="product-list-item-title">${product.full_name}</div>
-                                    <div class="product-list-item-price">${product.rating}</div>
-                                    <div class="product-list-item-vendors">${product.offers.length}</div>
+                                    <div class="product-list-item-price">Рейтинг: ${product.rating}</div>
+                                    <div class="product-list-item-vendors">Предложений: ${product.offers.length}</div>
                                 </div>`;
 
                             $('#product-list').append(html_product)
@@ -129,9 +179,86 @@
 
                         if (data.next){
                             console.log(data.next)
+                            $('#load-more').attr('text', data.next)
+                            $('#load-more').show()
+                        } else {
+                            $('#load-more').removeAttr('text')
+                            $('#load-more').hide()
                         }
                     }
                 });
+        };
+
+        $(".product-detail").on('click', '#return-products-list', function(){
+            $('#products').show()
+            $('#product-detail').hide()
+        });
+
+
+        $("#product-list").on('click', '.product-list-item', function(){
+            let url = $(this).attr('prd')
+
+            if (url) {
+                {#load_product_list(url)#}
+                console.log(url)
+                $('#products').hide()
+
+                $.ajax({
+                    url : url,
+                    dataType: "json",
+                    success : function (data) {
+                        console.log(data)
+                        $('.product-detail-full_name').text(data.full_name)
+                        $('.product-detail-chars-production .val').text(data.production)
+                        $('.product-detail-chars-height .val').text(data.height)
+                        $('.product-detail-chars-width .val').text(data.width)
+                        $('.product-detail-chars-deep .val').text(data.deep)
+                        $('.product-detail-chars-weight .val').text(data.weight)
+                        $('.product-detail-rating').text(data.rating)
+
+
+                        let thml_img = ''
+
+                        for (img of data.images){
+                            thml_img += '<img src="'+img.image+'">'
+                        }
+                        $('.product-detail-images').empty()
+                        $('.product-detail-images').append(thml_img)
+
+                        $('.product-detail-offers').empty()
+
+                        if (data.offers) {
+                            console.log(data.offers)
+                            for (offer of data.offers){
+                                let html_offers = `<div class="product-detail-offers-item">
+                                    <div class="product-detail-offers-item-name">${offer.vendor.name}</div>
+                                    <div class="product-detail-offers-item-price">${offer.price}</div>
+                                    <div class="product-detail-offers-item-bay button">Купить</div>
+                                    </div>`
+                                $('.product-detail-offers').append(html_offers)
+
+                            }
+                        }
+
+                        $('#product-detail').show()
+
+
+
+
+                        {#images#}
+                        {#min_price#}
+                        {#max_price#}
+                        {#offers#}
+
+                        {#vendor#}
+                        {#price_in_currency#}
+
+
+                    }
+                });
+
+
+            }
         });
 
     </script>

@@ -2,7 +2,9 @@ import braintree
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 
+import tools.add_rnd
 from info.tools import update_currency, update_covid
+from tools.add_rnd import create_cat
 
 
 def index(request):
@@ -12,6 +14,10 @@ def index(request):
 def updates_info(request):
     update_currency()
     update_covid()
+    return redirect('index')
+
+def add_cat_onliner(request, code_add):
+    create_cat()
     return redirect('index')
 
 
