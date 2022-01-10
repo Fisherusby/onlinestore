@@ -20,6 +20,7 @@ Django==4.0
 django-filter==21.1
 django-js-asset==1.2.2
 django-mptt==0.13.4
+django-rest-passwordreset==1.2.1
 django-uuslug==1.2.0
 djangorestframework==3.13.1
 drf-yasg==1.20.0
