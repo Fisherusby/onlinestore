@@ -248,8 +248,25 @@
                     dataType: "json",
                     success : function (data) {
                         console.log(data)
-                        $('.product-detail-full_name').text(data.full_name)
+                        $('.product-detail-title').text(data.full_name)
                         $('.product-detail-chars-production .val').text(data.production)
+                        $('.product-detail-chars-color .val').empty()
+
+                        $('.pproduct-detail-prices').empty()
+                        console.log(data.min_price['BYN'])
+
+                        if (data.min_price['BYN']){
+                            let currency_list = ['BYN', 'USD', 'EUR', 'RUB']
+                            let cur_price = 'Стоимость от |'
+                            for (cur of currency_list){
+                                cur_price += data.min_price[cur]+' '+cur+' | '
+                            }
+                            $('.product-detail-prices').text(cur_price)
+                        }
+
+                        if (data.color){
+                            $('.product-detail-chars-color .val').append('<span style="color: '+data.color+';">&#x2588&#x2588 '+'</span>'+data.color)
+                        }
                         $('.product-detail-chars-height .val').text(data.height)
                         $('.product-detail-chars-width .val').text(data.width)
                         $('.product-detail-chars-deep .val').text(data.deep)
@@ -270,9 +287,19 @@
                         if (data.offers) {
                             console.log(data.offers)
                             for (offer of data.offers){
+                                let cur_price = ''
+                                if (offer.price_in_currency['BYN']){
+                                    let currency_list = ['BYN', 'USD', 'EUR', 'RUB']
+
+                                    for (cur of currency_list){
+                                        cur_price += data.min_price[cur]+' '+cur+'<br>'
+                                    }
+                                }
+
+
                                 let html_offers = `<div class="product-detail-offers-item">
                                     <div class="product-detail-offers-item-name">${offer.vendor.name}</div>
-                                    <div class="product-detail-offers-item-price">${offer.price}</div>
+                                    <div class="product-detail-offers-item-price">${cur_price}</div>
                                     <div class="product-detail-offers-item-bay button">Купить</div>
                                     </div>`
                                 $('.product-detail-offers').append(html_offers)

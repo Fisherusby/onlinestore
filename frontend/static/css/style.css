@@ -244,4 +244,8 @@ div.cat-item-lvl3:hover {
     margin: 10px;
 }
 
+.product-detail-chars-color span{
+    border: 1px solid #eee;
+}
+
 

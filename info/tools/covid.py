@@ -39,7 +39,7 @@ def update_covid():
         date = f"{covid_day['date'][-4:]}-{covid_day['date'][3:5]}-{covid_day['date'][0:2]}"
         date_time_obj = datetime.datetime.strptime(covid_day['date'], '%d.%m.%Y')
         if date_time_obj.date() > last_covid.date:
-            if date_time_obj.date() == today:
+            if date_time_obj.date == today:
                 return True
             Covid.objects.create(
                 date=date,
