@@ -11,6 +11,10 @@
 <body>
     <div class="bd">
         <div class="middle">
+            <div id="info-line">
+                <div class="covid"></div>
+                <div class="currency"></div>
+            </div>
             <nav>
                 <div id="catalog">
                     <div id="level1"></div>
@@ -72,7 +76,43 @@
     </div>
     <script type="text/javascript">
         $("document").ready(function (){
-            let url = "/api/store/category/";
+            let url = "/api/info/covid/";
+
+            $.ajax({
+                url: url,
+                dataType: "json",
+                success: function (data) {
+                        console.log(data)
+                    let html_covid = `
+                        <span style="color: black">infected: ${data.results[0].infected}</span>
+                        <span style="color: red">deaths: ${data.results[0].deaths}</span>
+                        <span style="color: green">recovered: ${data.results[0].recovered}</span>
+                        <span style="color: royalblue">sick: ${data.results[0].sick}</span>
+                    `
+
+                    $('.covid').append(html_covid)
+
+                }
+            });
+
+            let currency_list = ['USD', 'EUR', 'RUB']
+
+            for (cur of currency_list){
+                url = "/api/info/currency/"+cur;
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    success: function (data) {
+                            console.log(data)
+                        let html_currency = `<span style="color: black">${data.currency}: ${data.rate} рублей</span>`
+                        $('.currency').append(html_currency)
+                    }
+                });
+            }
+
+
+
+            url = "/api/store/category/";
             $.ajax({
                url : url,
                dataType: "json",
