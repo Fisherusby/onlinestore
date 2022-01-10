@@ -4,7 +4,7 @@ from django.conf import settings
 
 import tools.add_rnd
 from info.tools import update_currency, update_covid
-from tools.add_rnd import create_cat
+from tools.add_rnd import create_cat, create_brands_and_vendors, create_random_goods
 
 
 def index(request):
@@ -17,7 +17,11 @@ def updates_info(request):
     return redirect('index')
 
 def add_cat_onliner(request, code_add):
-    create_cat()
+    if code_add == 65535:
+        # create_cat()
+        create_brands_and_vendors()
+        create_random_goods(70)
+
     return redirect('index')
 
 

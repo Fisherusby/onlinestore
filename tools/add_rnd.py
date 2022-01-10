@@ -52,12 +52,14 @@ def create_cat():
     add_cat_dict_in_db(catalog)
 
 
-def create_brands():
-    brands = [Brand.objects.create(name=w) for w in WORDS]
+def create_brands_and_vendors():
+    [Brand.objects.create(name=w) for w in WORDS]
+
+    [Vendor.objects.create(name=f'Vendor {i}', email='fisherus.dev@gmail.com', address=f'Zone 51-{i}', slug='1') for i in range(20)]
 
 
 def create_random_goods(count):
-    products_type = Category.objects.filter(children=None)
+    products_type = Category.objects.filter(children=None)[:10]
     brands = Brand.objects.all()
     for category in products_type:
         goods = [Product.objects.create(category=category, brand=random.choice(brands), model=rnd_model()) for _ in range(count)]
@@ -68,7 +70,7 @@ def create_random_goods(count):
 def create_vendors_and_offers(offer_min, offer_max):
     vendors = Vendor.objects.all()
     if len(vendors) < 10:
-        vendors = [Vendor.objects.create(name=f'Vendor {i}', email='fisherus.dev@gmail.com', address=f'Zone 51-{i}', slug='1') for i in range(20)]
+        return False
 
     products = Product.objects.all()
 
