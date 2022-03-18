@@ -1,9 +1,17 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
+from django.conf import settings
+
+
+class CustomUser(AbstractUser):
+    pass
+    is_client = models.BooleanField(default=False)
+    is_vendor = models.BooleanField(default=False)
+    is_moderator = models.BooleanField(default=False)
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_profile')
     currency = models.CharField(max_length=3, default='USD')
     money_in_wallet = models.IntegerField(default=0)
 

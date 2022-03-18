@@ -1,6 +1,6 @@
 from django.db import models
 from uuslug import uuslug
-from django.contrib.auth.models import User
+from django.conf import settings
 
 from tools.image_store import get_path_image_store
 from users.models import VendorProfile
@@ -39,7 +39,7 @@ class Vendor(models.Model):
 
 class ReviewVendor(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name='Продавец', related_name='reviews')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='reviews_vendor')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='reviews_vendor')
     rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], verbose_name='Рейтинг')
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Отзыв')

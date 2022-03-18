@@ -4,7 +4,7 @@ import os
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cdjango-insecure-*!+(xv%l(d^-&flewxrf43o53m0+scca3j_onq*2wb_9')
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['arcane-escarpment-26447.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,10 +25,12 @@ INSTALLED_APPS = [
 
     'mptt',
     'rest_framework',
-  #  'drf_yasg',
+    'drf_yasg',
     'django_filters',
     'django_rest_passwordreset',
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,12 +145,13 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-#from .settings_local import *
 
 # Braintree settings
-BRAINTREE_MERCHANT_ID = '8qrhvnyqny9s4kqs' # Merchant ID
-BRAINTREE_PUBLIC_KEY = 'tyr229qg67gt2pty' # Public Key
-BRAINTREE_PRIVATE_KEY = '5f097ac72115b6c8c32f75334cf42021' # Private key
+BRAINTREE_MERCHANT_ID = '' # Merchant ID
+BRAINTREE_PUBLIC_KEY = '' # Public Key
+BRAINTREE_PRIVATE_KEY = '' # Private key
+
+from .settings_local import *
 
 import braintree
 
@@ -159,7 +162,9 @@ BRAINTREE_CONF = braintree.Configuration(
      BRAINTREE_PRIVATE_KEY
 )
 
+
 import dj_database_url
+
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
