@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'autofleamarket',
     'forum',
     'store',
+    'wallet',
 
     'mptt',
     'rest_framework',

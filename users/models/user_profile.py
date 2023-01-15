@@ -8,11 +8,12 @@ class CustomUser(AbstractUser):
     is_client = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)
     is_moderator = models.BooleanField(default=False)
+    currency = models.CharField(max_length=3, default='USD')
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_profile')
-    currency = models.CharField(max_length=3, default='USD')
+
     money_in_wallet = models.IntegerField(default=0)
 
     is_client = models.BooleanField(default=False)

@@ -3,7 +3,7 @@ from uuslug import uuslug
 from django.conf import settings
 
 from tools.image_store import get_path_image_store
-from users.models import VendorProfile
+# from users.models import VendorProfile
 
 
 def vendor_store_path(instance, filename):
