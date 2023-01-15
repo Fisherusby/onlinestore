@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from uuslug import uuslug
 from tools.image_store import get_path_image_store
 import datetime
@@ -50,7 +50,7 @@ class Auto(models.Model):
 
 class ReviewAuto(models.Model):
 
-    user = models.ForeignKey(User, related_name='AutoReviews', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='AutoReviews', on_delete=models.CASCADE)
     title = models.CharField(max_length=128)
     review = models.TextField()
     plus = models.CharField(max_length=256)

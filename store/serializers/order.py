@@ -3,8 +3,9 @@ from store.models import Order, ProductInOrder, Basket, ProductInBasket, Receipt
 from tools.notify import notify_order, notify_payment
 from django.core.exceptions import ObjectDoesNotExist
 
-from users.models import UserProfile
+# from users.models import UserProfile
 from .product import ProductSerializer
+from wallet.models import Wallet
 
 
 class ProductInOrderSerializer(serializers.ModelSerializer):
@@ -77,7 +78,6 @@ class RetrieveOrderSerializer(serializers.ModelSerializer):
             'products',
             'total_price',
         )
-
 
 
 class CreateOrderSerializer(serializers.ModelSerializer):
@@ -167,16 +167,16 @@ class PayOrderByWalletSerializer(serializers.ModelSerializer):
         #     raise serializers.ValidationError("Order_not_ready_to_pay")
 
         try:
-            if self.context['request'].user.user_profile.money_in_wallet < order.total_price['BYN']:
+            if self.context['request'].user.wallet.amount_of_money < order.total_price['BYN']:
                 raise serializers.ValidationError("Not_enough_money")
             else:
                 receipt = ReceiptOfPayment.objects.create(order=order, method='wallet', price=order.total_price['BYN'])
-                self.context['request'].user.user_profile.money_in_wallet -= order.total_price['BYN']
+                self.context['request'].user.wallet.amount_of_money -= order.total_price['BYN']
                 self.context['request'].user.save()
                 order.is_paid = True
                 order.status = Order.DELIVERY
                 order.save()
-        except UserProfile.DoesNotExist:
+        except Wallet.DoesNotExist:
             raise serializers.ValidationError("Not_enough_wallet")
 
         notify_payment(receipt)

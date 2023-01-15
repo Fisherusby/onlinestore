@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Avg, Max, Min
+from django.conf import settings
 
 from info.tools import convert_price
 from tools.image_store import get_path_image_store
@@ -7,7 +8,6 @@ from .product_category import Category
 from uuslug import uuslug
 from .brand import Brand
 from .vendor import Vendor
-from django.contrib.auth.models import User
 
 
 class Product(models.Model):
@@ -90,7 +90,7 @@ class ProductImage(models.Model):
 
 class ReviewProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews', verbose_name='Товар')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
     rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], verbose_name='Рейтинг')
     review_text = models.TextField(verbose_name='Отзыв')
     title = models.CharField(max_length=128, verbose_name='Заголовок отзыва')
@@ -110,6 +110,6 @@ class PhotoReviewProduct(models.Model):
 
 
 class FavoriteProduct(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_products')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorite_products')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='in_favorites')
     create_date = models.DateTimeField(auto_now_add=True)

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 from info.tools import convert_price
 from store.models import Product, Vendor
@@ -34,7 +34,7 @@ class Order(models.Model):
         ('courier', 'Курьером'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     create_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=16, choices=STATUS_CHOICES, default='verify')
     payment = models.CharField(max_length=16, choices=PAYMENT_METHOD)
@@ -60,7 +60,6 @@ class Order(models.Model):
                 result[cur] += price
         return result
 
-
     def __str__(self):
         return f'№{str(self.id).rjust(10, "0")} - {self.user.username} : {self.total_price}'
 
@@ -79,7 +78,7 @@ class ProductInOrder(models.Model):
 
     @property
     def price_count(self):
-        result ={}
+        result = {}
         for cur, val in self.price_in_currency.items():
             result[cur] = val * self.count
         return result

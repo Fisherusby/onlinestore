@@ -16,6 +16,7 @@ def updates_info(request):
     update_covid()
     return redirect('index')
 
+
 def add_cat_onliner(request, code_add):
     if code_add == 65535:
         # create_cat()
