@@ -108,14 +108,10 @@ def create_vendors_and_offers(offer_min, offer_max):
                 )
 
 
-
 def create_all():
     print('add cat')
     create_cat()
     print('add brands')
-    create_brands()
+    create_brands_and_vendors()
     print('add goods')
     create_random_goods(30)
-
-
-
