@@ -1,7 +1,7 @@
 import string
 import random
-from store.models import Brand, Vendor, OfferVendor
-from store.models import Category, Product
+from apps.store.models import Brand, Vendor, OfferVendor
+from apps.store.models import Category, Product
 from .onliner_catalog import catalog
 from string import ascii_uppercase
 
