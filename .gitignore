@@ -119,3 +119,4 @@ db_cred.conf
 # tempory project folder
 tmp/
 celerybeat-schedule
+settings_local.py
