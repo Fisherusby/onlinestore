@@ -1,4 +1,4 @@
-from info.models import Covid
+from apps.info.models import Covid
 
 COVID19 = [{'date': '02.03.2020', 'infected': '1', 'deaths': '0', 'recovered': '0', 'sick': '1'},
            {'date': '03.03.2020', 'infected': '1', 'deaths': '0', 'recovered': '0', 'sick': '1'},
