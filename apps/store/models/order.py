@@ -1,42 +1,40 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 from apps.info.tools import convert_price
-from apps.store.models import Product, Vendor
+from apps.store.models.product import Product, Vendor
 
 PAYMENT_METHOD = (
-    ('cash', 'Наличными'),
-    ('wallet', 'Кошелек'),
-    ('online', 'online'),
+    ("cash", "Наличными"),
+    ("wallet", "Кошелек"),
+    ("online", "online"),
 )
 
-class Order(models.Model):
 
-    VERIFY = 'verify'
-    PAYMENT = 'payment'
-    DELIVERY = 'delivery'
-    COMPLETED = 'completed'
-    CENCEL = 'cancel'
+class Order(models.Model):
+    VERIFY = "verify"
+    PAYMENT = "payment"
+    DELIVERY = "delivery"
+    COMPLETED = "completed"
+    CENCEL = "cancel"
 
     STATUS_CHOICES = (
-        (VERIFY, 'Подтверждение'),
-        (PAYMENT, 'Оплата'),
-        (DELIVERY, 'Доставка'),
+        (VERIFY, "Подтверждение"),
+        (PAYMENT, "Оплата"),
+        (DELIVERY, "Доставка"),
         # ('ready', 'Готов к выдаче'),
-        (COMPLETED, 'Выполнен'),
-        (CENCEL, 'Отменен'),
+        (COMPLETED, "Выполнен"),
+        (CENCEL, "Отменен"),
     )
 
-
-
     DELIVERY_METHOD = (
-        ('pickup', 'Самовывоз'),
-        ('courier', 'Курьером'),
+        ("pickup", "Самовывоз"),
+        ("courier", "Курьером"),
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     create_date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default='verify')
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default="verify")
     payment = models.CharField(max_length=16, choices=PAYMENT_METHOD)
     delivery = models.CharField(max_length=16, choices=DELIVERY_METHOD)
     is_confirmed = models.BooleanField(default=False)
@@ -65,11 +63,17 @@ class Order(models.Model):
 
 
 class ProductInOrder(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ', related_name='products')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар', related_name='orders')
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name='Продавец', related_name='orders')
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, verbose_name="Заказ", related_name="products"
+    )
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="orders"
+    )
+    vendor = models.ForeignKey(
+        Vendor, on_delete=models.CASCADE, verbose_name="Продавец", related_name="orders"
+    )
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
-    count = models.PositiveIntegerField(default=0, verbose_name='Количество')
+    count = models.PositiveIntegerField(default=0, verbose_name="Количество")
 
     @property
     def price_in_currency(self):
@@ -85,11 +89,9 @@ class ProductInOrder(models.Model):
 
 
 class ReceiptOfPayment(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='receipts')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="receipts")
     method = models.CharField(max_length=16, choices=PAYMENT_METHOD)
     price = models.DecimalField(max_digits=9, decimal_places=2, default=0)
-    detail = models.CharField(max_length=256, default='')
+    detail = models.CharField(max_length=256, default="")
     is_canceled = models.BooleanField(default=False)
     create_data = models.DateTimeField(auto_now=True)
-
-

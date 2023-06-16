@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from apps.store.models import Category
 
 
@@ -12,18 +13,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = (
-            'name',
-            'slug',
-            'children'
-        )
+        fields = ("name", "slug", "children")
 
 
 class ProductCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = (
-            'name',
-            'slug',
+            "name",
+            "slug",
         )
-

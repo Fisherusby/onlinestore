@@ -1,6 +1,7 @@
 def update_currncy():
-    import requests
     import json
+
+    import requests
 
     url = "https://www.nbrb.by/api/exrates/rates?periodicity=0"
 
@@ -16,16 +17,13 @@ def update_currncy():
             return False
         for currency in json_loads:
             print(currency)
-            date = currency.get('Date', False)
+            date = currency.get("Date", False)
             print(date[:10])
 
     except requests.ConnectionError:
         return False
 
-
-
     # print(response.text)
-
 
 
 update_currncy()

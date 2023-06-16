@@ -1,7 +1,7 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
-from . import OfferVendor
+from apps.store.models.product import OfferVendor
 
 
 class Basket(models.Model):
@@ -19,12 +19,16 @@ class Basket(models.Model):
         return result
 
     def __str__(self):
-        return f'{self.user.username}'
+        return f"{self.user.username}"
 
 
 class ProductInBasket(models.Model):
-    basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name='products_in_basket')
-    offer = models.ForeignKey(OfferVendor, on_delete=models.CASCADE, related_name='in_baskets')
+    basket = models.ForeignKey(
+        Basket, on_delete=models.CASCADE, related_name="products_in_basket"
+    )
+    offer = models.ForeignKey(
+        OfferVendor, on_delete=models.CASCADE, related_name="in_baskets"
+    )
     count = models.PositiveIntegerField(default=1)
 
     @property
@@ -41,7 +45,3 @@ class ProductInBasket(models.Model):
     @property
     def vendor(self):
         return self.offer.vendor
-
-
-
-

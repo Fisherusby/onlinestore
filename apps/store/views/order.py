@@ -1,19 +1,29 @@
-from rest_framework import viewsets, permissions, mixins
-from apps.store.models import Order, ReceiptOfPayment
-from apps.store.serializers import RetrieveOrderSerializer, ListOrderSerializer, CreateOrderSerializer, \
-    PayOrderByWalletSerializer, PayOrderByCardSerializer
-
-from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
+from rest_framework import mixins, permissions, viewsets
+
+from apps.store.models import Order, ReceiptOfPayment
+from apps.store.serializers import (
+    CreateOrderSerializer,
+    ListOrderSerializer,
+    PayOrderByCardSerializer,
+    PayOrderByWalletSerializer,
+    RetrieveOrderSerializer,
+)
 
 
-class OrderViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+class OrderViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
     queryset = Order.objects.all()
 
     serializers = {
-        'list': ListOrderSerializer,
-        'create': CreateOrderSerializer,
-        'retrieve': RetrieveOrderSerializer,
+        "list": ListOrderSerializer,
+        "create": CreateOrderSerializer,
+        "retrieve": RetrieveOrderSerializer,
     }
     permission_classes = [permissions.IsAuthenticated]
 
@@ -26,7 +36,7 @@ class OrderViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.Li
 
     def get_object(self):
         try:
-            return self.queryset.get(user=self.request.user, pk=self.kwargs['pk'])
+            return self.queryset.get(user=self.request.user, pk=self.kwargs["pk"])
         except ObjectDoesNotExist:
             raise Http404
 
@@ -41,9 +51,3 @@ class PayOrderByCardViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ReceiptOfPayment.objects.all()
     serializer_class = PayOrderByCardSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-
-
-
-
-

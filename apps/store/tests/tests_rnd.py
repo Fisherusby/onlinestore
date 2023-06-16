@@ -1,7 +1,13 @@
 from rest_framework.test import APITestCase
-from tools.add_rnd import create_cat, create_brands_and_vendors, create_random_goods, create_vendors_and_offers
-from apps.store.models import Brand, Vendor, OfferVendor
-from apps.store.models import Category, Product
+from tools.add_rnd import (
+    create_brands_and_vendors,
+    create_cat,
+    create_random_goods,
+    create_vendors_and_offers,
+)
+
+from apps.store.models import Brand, Category, OfferVendor, Product, Vendor
+
 
 class RandomBaseAPITestCase(APITestCase):
     def setUp(self):
@@ -18,4 +24,3 @@ class RandomBaseAPITestCase(APITestCase):
     #     print(len(Product.objects.all()))
     #     print(len(Vendor.objects.all()))
     #     print(len(OfferVendor.objects.all()))
-

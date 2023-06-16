@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from apps.info.models import ExchangeCurrency
 
 # currency = models.CharField(max_length=3)
@@ -12,9 +13,9 @@ class ExchangeCurrencySerializer(serializers.ModelSerializer):
     class Meta:
         model = ExchangeCurrency
         fields = (
-            'currency',
-            'rate',
-            'scale',
-            'date',
-            'created_date',
+            "currency",
+            "rate",
+            "scale",
+            "date",
+            "created_date",
         )

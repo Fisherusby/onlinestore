@@ -1,0 +1,32 @@
+[flake8]
+format = wemake
+max-line-length = 120
+max-arguments = 10
+max-methods = 10
+max-imports = 20
+# max-jones-score not working
+max-jones-score = 20
+exclude = .tox,.git,*/migrations/*,*/static/CACHE/*,docs,node_modules
+extend-ignore =
+  B008,
+  C812,
+  D104, D107,
+  DAR401, DAR201, DAR101,
+  E203, E231,
+  Q000,
+  W503,
+  WPS112,
+  WPS220, WPS202, WPS237, WPS229,
+  WPS300, WPS306, WPS323, WPS305,
+  WPS430, WPS440, WPS410, WPS404, WPS412, WPS432,
+  WPS602
+
+per-file-ignores =
+  */__init__.py: F401, D107
+  */config.py: WPS115
+  # delete next line when its done
+  core/services/message.py: WPS411, E800
+
+
+# List of error codes
+# https://wemake-python-styleguide.readthedocs.io/en/latest/pages/usage/violations/index.html

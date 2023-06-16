@@ -1,5 +1,5 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 from apps.autofleamarket import Auto
 
@@ -18,4 +18,3 @@ class OfferAuto(models.Model):
     is_cleared = models.BooleanField(max_length=16)
     create_date = models.DateTimeField(auto_now=True)
     cost = models.DecimalField(max_digits=6, decimal_places=2, default=0)
-
