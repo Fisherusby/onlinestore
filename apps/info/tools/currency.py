@@ -1,12 +1,13 @@
-from apps.info.models import ExchangeCurrency
-from django.core.exceptions import ObjectDoesNotExist
 import datetime
 
+from django.core.exceptions import ObjectDoesNotExist
+
+from apps.info.models import ExchangeCurrency
 
 DEFAULT_CURRENCY = (
-    'USD',
-    'EUR',
-    'RUB',
+    "USD",
+    "EUR",
+    "RUB",
 )
 
 
@@ -15,11 +16,13 @@ def convert_price(price):
     tmp = {}
     try:
         for currency in DEFAULT_CURRENCY:
-            tmp[currency] = ExchangeCurrency.objects.filter(currency=currency).latest('created_date')
+            tmp[currency] = ExchangeCurrency.objects.filter(currency=currency).latest(
+                "created_date"
+            )
     except ObjectDoesNotExist:
         return None
 
-    result = {'BYN': price}
+    result = {"BYN": price}
     for currency, data in tmp.items():
         result[currency] = round(price * data.scale / data.rate, 2)
 
@@ -27,8 +30,9 @@ def convert_price(price):
 
 
 def update_currency():
-    import requests
     import json
+
+    import requests
 
     today = datetime.date.today()
 
@@ -53,19 +57,18 @@ def update_currency():
             return False
 
         for currency in json_loads:
-            cur_name = currency.get('Cur_Abbreviation', False)
-            cur_scale = currency.get('Cur_Scale', False)
-            cur_official_rate = currency.get('Cur_OfficialRate', False)
-            date = currency.get('Date', False)
+            cur_name = currency.get("Cur_Abbreviation", False)
+            cur_scale = currency.get("Cur_Scale", False)
+            cur_official_rate = currency.get("Cur_OfficialRate", False)
+            date = currency.get("Date", False)
 
             exchange_currency = ExchangeCurrency.objects.create(
-                    currency=cur_name,
-                    rate=cur_official_rate,
-                    scale=cur_scale,
-                    date=date[:10],
-                )
+                currency=cur_name,
+                rate=cur_official_rate,
+                scale=cur_scale,
+                date=date[:10],
+            )
 
         return result
     except requests.ConnectionError:
         return False
-

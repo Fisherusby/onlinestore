@@ -1,6 +1,7 @@
-from rest_framework import viewsets, mixins
-from apps.store.serializers import CategorySerializer
+from rest_framework import mixins, viewsets
+
 from apps.store.models import Category
+from apps.store.serializers import CategorySerializer
 
 
 class CategoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -9,4 +10,3 @@ class CategoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(parent=None)
-

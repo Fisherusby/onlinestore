@@ -1,10 +1,14 @@
-from .vendor import VendorViewSet, ListVendorViewSet
-from .product_category import CategoryViewSet
-from .product import ProductViewSet, ProductReviewsViewSet, ProductToFavoriteViewSet, FavoriteProductsViewSet,\
-    ReviewProductViewSet, AllProductViewSet
-from .brand import BrandViewSet
 from .basket import BasketViewSet, ProductToBasketViewSet
-from .order import OrderViewSet, PayOrderByWalletViewSet, PayOrderByCardViewSet
+from .brand import BrandViewSet
+from .order import OrderViewSet, PayOrderByCardViewSet, PayOrderByWalletViewSet
+from .product import (
+    AllProductViewSet,
+    FavoriteProductsViewSet,
+    ProductReviewsViewSet,
+    ProductToFavoriteViewSet,
+    ProductViewSet,
+    ReviewProductViewSet,
+)
+from .product_category import CategoryViewSet
 from .statistics import MostPopularProductsViewSet
-
-
+from .vendor import ListVendorViewSet, VendorViewSet

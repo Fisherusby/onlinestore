@@ -1,11 +1,24 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
-from apps.store.models import Category, ProductImage, Product, Brand, OfferVendor, Vendor, Basket, ProductInBasket, Order, \
-    ReviewProduct, PhotoReviewProduct
+
+from apps.store.models import (
+    Basket,
+    Brand,
+    Category,
+    OfferVendor,
+    Order,
+    PhotoReviewProduct,
+    Product,
+    ProductImage,
+    ProductInBasket,
+    ReviewProduct,
+    Vendor,
+)
 
 
 class ProductImageInLine(admin.TabularInline):
     model = ProductImage
+
 
 class ProductsAdmin(admin.ModelAdmin):
     inlines = [
@@ -13,7 +26,9 @@ class ProductsAdmin(admin.ModelAdmin):
     ]
 
     def render_change_form(self, request, context, *args, **kwargs):
-        context['adminform'].form.fields['category'].queryset = Category.objects.filter(children=None)
+        context["adminform"].form.fields["category"].queryset = Category.objects.filter(
+            children=None
+        )
         return super().render_change_form(request, context, *args, **kwargs)
 
         # return super(Products, self).render_change_form(request, context, *args, **kwargs)
@@ -85,4 +100,3 @@ admin.site.register(ReviewProduct, ReviewProductAdmin)
 # admin.site.register(PropertyProduct)
 # admin.site.register(Goods)
 # admin.site.register(GoodsProperty)
-
