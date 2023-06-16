@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from tools.add_rnd import (
     create_brands_and_vendors,
+    create_cat,
     create_random_goods,
     create_vendors_and_offers,
 )
