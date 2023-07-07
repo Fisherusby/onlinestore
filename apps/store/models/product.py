@@ -1,10 +1,10 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import Avg
-from tools.image_store import get_path_image_store
 from uuslug import uuslug
 
 from apps.info.services import convert_price
+from tools.image_store import get_path_image_store
 
 from .brand import Brand
 from .product_category import Category
@@ -26,18 +26,10 @@ class Product(models.Model):
         related_name="products",
     )
     production = models.IntegerField(default=2020)
-    weight = models.DecimalField(
-        max_digits=8, decimal_places=3, blank=True, null=True, default=0
-    )
-    height = models.DecimalField(
-        max_digits=7, decimal_places=2, blank=True, null=True, default=0
-    )
-    width = models.DecimalField(
-        max_digits=7, decimal_places=2, blank=True, null=True, default=0
-    )
-    deep = models.DecimalField(
-        max_digits=7, decimal_places=2, blank=True, null=True, default=0
-    )
+    weight = models.DecimalField(max_digits=8, decimal_places=3, blank=True, null=True, default=0)
+    height = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, default=0)
+    width = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, default=0)
+    deep = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, default=0)
     color = models.CharField(max_length=16, default=None, null=True, blank=True)
     color_duble = models.CharField(max_length=16, default=None, null=True, blank=True)
     slug = models.SlugField(verbose_name="slug", max_length=255, unique=True)
@@ -82,12 +74,8 @@ class Product(models.Model):
 
 
 class OfferVendor(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="offers"
-    )
-    vendor = models.ForeignKey(
-        Vendor, on_delete=models.CASCADE, verbose_name="Продавец", related_name="offers"
-    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="offers")
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name="Продавец", related_name="offers")
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
 
     @property
@@ -104,9 +92,7 @@ def image_store_path(instance, filename):
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(
-        Product, verbose_name="Товар", on_delete=models.CASCADE, related_name="images"
-    )
+    product = models.ForeignKey(Product, verbose_name="Товар", on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(verbose_name="Изображение", upload_to=image_store_path)
     order = models.PositiveIntegerField(blank=True, null=True)
 
@@ -115,15 +101,9 @@ class ProductImage(models.Model):
 
 
 class ReviewProduct(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="reviews", verbose_name="Товар"
-    )
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь"
-    )
-    rating = models.PositiveIntegerField(
-        choices=[(i, i) for i in range(1, 6)], verbose_name="Рейтинг"
-    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews", verbose_name="Товар")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь")
+    rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], verbose_name="Рейтинг")
     review_text = models.TextField(verbose_name="Отзыв")
     title = models.CharField(max_length=128, verbose_name="Заголовок отзыва")
     plus = models.TextField(verbose_name="Достоинства")
@@ -137,9 +117,7 @@ def reviews_image_path(instance, filename):
 
 
 class PhotoReviewProduct(models.Model):
-    review = models.ForeignKey(
-        ReviewProduct, on_delete=models.CASCADE, related_name="photos"
-    )
+    review = models.ForeignKey(ReviewProduct, on_delete=models.CASCADE, related_name="photos")
     photo = models.ImageField(upload_to=reviews_image_path, verbose_name=" Фотограция")
 
 
@@ -149,7 +127,5 @@ class FavoriteProduct(models.Model):
         on_delete=models.CASCADE,
         related_name="favorite_products",
     )
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="in_favorites"
-    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="in_favorites")
     create_date = models.DateTimeField(auto_now_add=True)

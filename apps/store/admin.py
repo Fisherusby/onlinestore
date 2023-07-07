@@ -26,9 +26,7 @@ class ProductsAdmin(admin.ModelAdmin):
     ]
 
     def render_change_form(self, request, context, *args, **kwargs):
-        context["adminform"].form.fields["category"].queryset = Category.objects.filter(
-            children=None
-        )
+        context["adminform"].form.fields["category"].queryset = Category.objects.filter(children=None)
         return super().render_change_form(request, context, *args, **kwargs)
 
         # return super(Products, self).render_change_form(request, context, *args, **kwargs)

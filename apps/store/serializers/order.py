@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
-from tools.notify import notify_order, notify_payment
 
 from apps.store.models import (
     Basket,
@@ -10,6 +9,7 @@ from apps.store.models import (
     ReceiptOfPayment,
 )
 from apps.wallet.models import Wallet
+from tools.notify import notify_order, notify_payment
 
 # from users.models import UserProfile
 from .product import ProductSerializer
@@ -158,9 +158,7 @@ class PayOrderByWalletSerializer(serializers.ModelSerializer):
         if validated_data["method"] != "wallet":
             raise serializers.ValidationError("payment_method_error")
         try:
-            order = Order.objects.get(
-                id=validated_data["order"].id, user=self.context["request"].user
-            )
+            order = Order.objects.get(id=validated_data["order"].id, user=self.context["request"].user)
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Order_not_found")
 
@@ -174,18 +172,11 @@ class PayOrderByWalletSerializer(serializers.ModelSerializer):
         #     raise serializers.ValidationError("Order_not_ready_to_pay")
 
         try:
-            if (
-                self.context["request"].user.wallet.amount_of_money
-                < order.total_price["BYN"]
-            ):
+            if self.context["request"].user.wallet.amount_of_money < order.total_price["BYN"]:
                 raise serializers.ValidationError("Not_enough_money")
             else:
-                receipt = ReceiptOfPayment.objects.create(
-                    order=order, method="wallet", price=order.total_price["BYN"]
-                )
-                self.context[
-                    "request"
-                ].user.wallet.amount_of_money -= order.total_price["BYN"]
+                receipt = ReceiptOfPayment.objects.create(order=order, method="wallet", price=order.total_price["BYN"])
+                self.context["request"].user.wallet.amount_of_money -= order.total_price["BYN"]
                 self.context["request"].user.save()
                 order.is_paid = True
                 order.status = Order.DELIVERY
@@ -216,9 +207,7 @@ class PayOrderByCardSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("payment_method_error")
 
         try:
-            order = Order.objects.get(
-                id=validated_data["order"].id, user=self.context["request"].user
-            )
+            order = Order.objects.get(id=validated_data["order"].id, user=self.context["request"].user)
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Order_not_found")
 

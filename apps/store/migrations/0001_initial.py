@@ -82,15 +82,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "name",
-                    models.CharField(
-                        max_length=128, unique=True, verbose_name="Название"
-                    ),
+                    models.CharField(max_length=128, unique=True, verbose_name="Название"),
                 ),
                 (
                     "description",
-                    models.CharField(
-                        blank=True, max_length=512, null=True, verbose_name="Описание"
-                    ),
+                    models.CharField(blank=True, max_length=512, null=True, verbose_name="Описание"),
                 ),
                 (
                     "slug",
@@ -130,9 +126,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "price",
-                    models.DecimalField(
-                        decimal_places=2, max_digits=7, verbose_name="Цена"
-                    ),
+                    models.DecimalField(decimal_places=2, max_digits=7, verbose_name="Цена"),
                 ),
             ],
         ),
@@ -211,39 +205,27 @@ class Migration(migrations.Migration):
                 ("production", models.IntegerField(default=2020)),
                 (
                     "weight",
-                    models.DecimalField(
-                        blank=True, decimal_places=3, default=0, max_digits=8, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=3, default=0, max_digits=8, null=True),
                 ),
                 (
                     "height",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, default=0, max_digits=7, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, default=0, max_digits=7, null=True),
                 ),
                 (
                     "width",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, default=0, max_digits=7, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, default=0, max_digits=7, null=True),
                 ),
                 (
                     "deep",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, default=0, max_digits=7, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, default=0, max_digits=7, null=True),
                 ),
                 (
                     "color",
-                    models.CharField(
-                        blank=True, default=None, max_length=16, null=True
-                    ),
+                    models.CharField(blank=True, default=None, max_length=16, null=True),
                 ),
                 (
                     "color_duble",
-                    models.CharField(
-                        blank=True, default=None, max_length=16, null=True
-                    ),
+                    models.CharField(blank=True, default=None, max_length=16, null=True),
                 ),
                 (
                     "slug",
@@ -450,9 +432,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "price",
-                    models.DecimalField(
-                        decimal_places=2, max_digits=7, verbose_name="Цена"
-                    ),
+                    models.DecimalField(decimal_places=2, max_digits=7, verbose_name="Цена"),
                 ),
                 (
                     "count",

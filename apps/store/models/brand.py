@@ -1,6 +1,7 @@
 from django.db import models
-from tools.image_store import get_path_image_store
 from uuslug import uuslug
+
+from tools.image_store import get_path_image_store
 
 
 def logo_store_path(instance, filename):
@@ -9,9 +10,7 @@ def logo_store_path(instance, filename):
 
 class Brand(models.Model):
     name = models.CharField(max_length=128, verbose_name="Название")
-    logo = models.ImageField(
-        upload_to=logo_store_path, verbose_name="Логотип", blank=True, null=True
-    )
+    logo = models.ImageField(upload_to=logo_store_path, verbose_name="Логотип", blank=True, null=True)
     slug = models.SlugField(max_length=255, verbose_name="slug", unique=True)
 
     def __str__(self):

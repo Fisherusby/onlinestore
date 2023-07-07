@@ -7,9 +7,6 @@ from apps.store.serializers import PopularProductSerializer
 
 class MostPopularProductsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = (
-        Product.objects.all()
-        .annotate(Count("orders"))
-        .filter(orders__count__gt=0)
-        .order_by("-orders__count")[:5]
+        Product.objects.all().annotate(Count("orders")).filter(orders__count__gt=0).order_by("-orders__count")[:5]
     )
     serializer_class = PopularProductSerializer

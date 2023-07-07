@@ -14,9 +14,7 @@ from apps.store.serializers.product import (
 )
 
 
-class AllProductViewSet(
-    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
-):
+class AllProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [
@@ -54,9 +52,7 @@ class AllProductViewSet(
     #         raise Http404
 
 
-class ProductViewSet(
-    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
-):
+class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
@@ -85,9 +81,7 @@ class ProductReviewsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             raise Http404
 
 
-class ReviewProductViewSet(
-    mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
-):
+class ReviewProductViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = ReviewProduct.objects.all()
     serializers = {
         "create": CreateReviewProductSerializer,
@@ -110,17 +104,13 @@ class FavoriteProductsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         return self.queryset.filter(in_favorites__user=self.request.user)
 
 
-class ProductToFavoriteViewSet(
-    mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet
-):
+class ProductToFavoriteViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductToFavoriteSerializer
     permission_classes = [permissions.IsAuthenticated]
     lookup_field = "slug"
 
     def destroy(self, request, *args, **kwargs):
-        favorite = get_object_or_404(
-            FavoriteProduct, user=request.user, product__slug=self.kwargs["slug"]
-        )
+        favorite = get_object_or_404(FavoriteProduct, user=request.user, product__slug=self.kwargs["slug"])
         favorite.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
