@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from apps.info.models import Covid
-from apps.info.tools import update_covid
+from apps.info.services import update_covid
 
 
 class CovidUpdateAPITestCase(APITestCase):

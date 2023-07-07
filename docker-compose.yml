@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  main_backend:
+    container_name: main_backend
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 80:8000
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - onlinestore_network
+    depends_on:
+      rabbitmq3:
+        condition: service_healthy
+
+  main_db:
+    image: postgres:14.6-alpine
+    container_name: main_db
+    restart: always
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks:
+      - onlinestore_network
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+
+  celery:
+    container_name: "celery_worker"
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "celery -A core worker -B --loglevel=info"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - onlinestore_network
+    depends_on:
+      rabbitmq3:
+        condition: service_healthy
+
+  rabbitmq3:
+    container_name: "rabbitmq3"
+    restart: unless-stopped
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    env_file:
+      - .env
+    networks:
+      - onlinestore_network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 20s
+      timeout: 20s
+      retries: 3
+
+networks:
+  onlinestore_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

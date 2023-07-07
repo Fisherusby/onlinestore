@@ -5,7 +5,7 @@ from rest_framework import mixins, viewsets
 
 from apps.info.models import ExchangeCurrency
 from apps.info.serializers import ExchangeCurrencySerializer
-from apps.info.tools.currency import update_currency
+from apps.info.services import update_currency
 from apps.store.permissions import IsAdminUserOrReadOnly
 
 
