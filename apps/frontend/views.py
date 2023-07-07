@@ -8,7 +8,7 @@ from tools.add_rnd import (
     create_vendors_and_offers,
 )
 
-from apps.info.tools import update_covid, update_currency
+from apps.info.services import update_covid, update_currency
 
 
 def index(request):

@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+from celery.schedules import crontab
+
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = bool(int(os.environ.get("DEBUG", 0)))
@@ -129,8 +131,22 @@ EMAIL_PORT = os.environ.get("EMAIL_PORT")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
-# CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-# CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+# CELERY
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+CELERY_TIMEZONE = "UTC"
+
+CELERY_BEAT_SCHEDULE = {
+    "update_covid_task": {
+        "task": "apps.info.tasks.update_covid_task",
+        "schedule": crontab(hour="*/12"),
+    },
+    "update_currency_task": {
+        "task": "apps.info.tasks.update_currency_task",
+        "schedule": crontab(minute="*/30"),
+    },
+}
+
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

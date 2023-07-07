@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from apps.info.tools import convert_price
+from apps.info.services import convert_price
 from apps.store.models.product import Product, Vendor
 
 PAYMENT_METHOD = (

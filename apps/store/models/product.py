@@ -4,7 +4,7 @@ from django.db.models import Avg
 from tools.image_store import get_path_image_store
 from uuslug import uuslug
 
-from apps.info.tools import convert_price
+from apps.info.services import convert_price
 
 from .brand import Brand
 from .product_category import Category

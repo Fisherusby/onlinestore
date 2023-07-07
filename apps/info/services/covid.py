@@ -30,12 +30,18 @@ def update_covid():
     tmp_covid = []
 
     while not ((today_year == year) and (today_month == month)):
-        tmp_covid += get_covid_month(year, month)
+        covid_data = get_covid_month(year, month)
+        if covid_data is not None:
+            tmp_covid += covid_data
+
         month += 1
         if month == 13:
             month = 1
             year += 1
-    tmp_covid += get_covid_month(today_year, today_month)
+
+    covid_data = get_covid_month(today_year, today_month)
+    if covid_data is not None:
+        tmp_covid += covid_data
 
     for covid_day in tmp_covid:
         date = f"{covid_day['date'][-4:]}-{covid_day['date'][3:5]}-{covid_day['date'][0:2]}"
@@ -54,9 +60,23 @@ def update_covid():
     return True
 
 
+def get_try(url, try_count=5):
+    while try_count > 0:
+        try:
+            r = requests.get(url)
+            return r
+        except Exception as e:
+            try_count -= 1
+            print(f"Request for {url} error ({e}): next try (less {try_count})")
+    return
+
+
 def get_covid_month(year, month):
     url = f"https://index.minfin.com.ua/reference/coronavirus/geography/belarus/{year}-{month:02}/"
-    r = requests.get(url)
+
+    r = get_try(url)
+    if r is None:
+        return
     html = BS(r.text, "html.parser")
     body = html
 
