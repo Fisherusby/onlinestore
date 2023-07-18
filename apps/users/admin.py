@@ -22,9 +22,7 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ["username", "email", "is_client"]
 
-    fieldsets = UserAdmin.fieldsets + (
-        ("store", {"fields": ("is_client", "is_vendor", "is_moderator")}),
-    )
+    fieldsets = UserAdmin.fieldsets + (("store", {"fields": ("is_client", "is_vendor", "is_moderator")}),)
 
     def get_inline_instances(self, request, obj=None):
         if not obj:

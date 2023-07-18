@@ -27,13 +27,9 @@ router.register("products", AllProductViewSet, basename="AllProductViewSet")
 router.register("category", CategoryViewSet, basename="CategoryViewSet")
 router.register("brand", BrandViewSet, basename="BrandViewSet")
 router.register("user/basket", BasketViewSet, basename="BasketViewSet")
-router.register(
-    "user/to_basket", ProductToBasketViewSet, basename="ProductToBasketViewSet"
-)
+router.register("user/to_basket", ProductToBasketViewSet, basename="ProductToBasketViewSet")
 router.register("user/order", OrderViewSet, basename="OrderViewSet")
-router.register(
-    "product/reviews", ProductReviewsViewSet, basename="ProductReviewsViewSet"
-)
+router.register("product/reviews", ProductReviewsViewSet, basename="ProductReviewsViewSet")
 router.register("product/review", ReviewProductViewSet, basename="ReviewProductViewSet")
 router.register(
     "user/favorite/product",
@@ -51,9 +47,7 @@ router.register(
     PayOrderByWalletViewSet,
     basename="PayOrderByWalletViewSet",
 )
-router.register(
-    "store/user/payment/card", PayOrderByCardViewSet, basename="PayOrderByCardViewSet"
-)
+router.register("store/user/payment/card", PayOrderByCardViewSet, basename="PayOrderByCardViewSet")
 
 router.register(
     "popular_products",

@@ -9,17 +9,13 @@ from apps.info.services import update_currency
 from apps.store.permissions import IsAdminUserOrReadOnly
 
 
-class ExchangeCurrencyViewSet(
-    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
-):
+class ExchangeCurrencyViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = ExchangeCurrency.objects.all()
     serializer_class = ExchangeCurrencySerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-class TodayExchangeCurrencyViewSet(
-    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
-):
+class TodayExchangeCurrencyViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = ExchangeCurrency.objects.all()
     serializer_class = ExchangeCurrencySerializer
     permission_classes = [IsAdminUserOrReadOnly]

@@ -1,12 +1,12 @@
 from rest_framework.test import APITestCase
+
+from apps.store.models import Brand, Category, OfferVendor, Product, Vendor
 from tools.add_rnd import (
     create_brands_and_vendors,
     create_cat,
     create_random_goods,
     create_vendors_and_offers,
 )
-
-from apps.store.models import Brand, Category, OfferVendor, Product, Vendor
 
 
 class RandomBaseAPITestCase(APITestCase):

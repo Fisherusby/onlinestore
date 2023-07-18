@@ -16,9 +16,7 @@ class RegisterNonAuthUserAPITestCase(APITestCase):
         }
 
     def test_can_register_user(self):
-        response = self.client.post(
-            reverse("RegisterClientUserViewSet-list"), self.data
-        )
+        response = self.client.post(reverse("RegisterClientUserViewSet-list"), self.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_can_list_user(self):
@@ -28,9 +26,7 @@ class RegisterNonAuthUserAPITestCase(APITestCase):
 
 class RegisterAuthAdminUserAPITestCase(APITestCase):
     def setUp(self):
-        self.superuser = CustomUser.objects.create_superuser(
-            "john", "john@snow.com", "johnpassword"
-        )
+        self.superuser = CustomUser.objects.create_superuser("john", "john@snow.com", "johnpassword")
         self.client.login(username="john", password="johnpassword")
         self.data = {
             "username": "mike",
@@ -41,9 +37,7 @@ class RegisterAuthAdminUserAPITestCase(APITestCase):
         }
 
     def test_can_register_user(self):
-        response = self.client.post(
-            reverse("RegisterClientUserViewSet-list"), self.data
-        )
+        response = self.client.post(reverse("RegisterClientUserViewSet-list"), self.data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
@@ -60,9 +54,7 @@ class RegisterAuthNonAdminUserAPITestCase(APITestCase):
         }
 
     def test_can_register_user(self):
-        response = self.client.post(
-            reverse("RegisterClientUserViewSet-list"), self.data
-        )
+        response = self.client.post(reverse("RegisterClientUserViewSet-list"), self.data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 

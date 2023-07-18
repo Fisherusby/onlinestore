@@ -20,9 +20,7 @@ class ShortProductInBasketSerializer(serializers.ModelSerializer):
 
 
 class ShortVendorProductInBasketSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(
-        view_name="VendorViewSet", lookup_field="slug"
-    )
+    url = serializers.HyperlinkedIdentityField(view_name="VendorViewSet", lookup_field="slug")
 
     class Meta:
         model = Vendor
@@ -105,9 +103,7 @@ class CreateBasketSerializer(serializers.ModelSerializer):
             import pdb
 
             pdb.set_trace()
-            ProductInBasket.objects.create(
-                basket=basket, offer=pib["offer"], count=pib["count"]
-            )
+            ProductInBasket.objects.create(basket=basket, offer=pib["offer"], count=pib["count"])
 
         return basket
 

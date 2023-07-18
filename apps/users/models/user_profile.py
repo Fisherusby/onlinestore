@@ -12,9 +12,7 @@ class CustomUser(AbstractUser):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_profile"
-    )
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_profile")
 
     money_in_wallet = models.IntegerField(default=0)
 
@@ -35,18 +33,12 @@ class UserProfile(models.Model):
 
 
 class VendorProfile(models.Model):
-    profile = models.OneToOneField(
-        UserProfile, on_delete=models.CASCADE, related_name="vendor_profile"
-    )
+    profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name="vendor_profile")
 
 
 class ModeratorProfile(models.Model):
-    profile = models.OneToOneField(
-        UserProfile, on_delete=models.CASCADE, related_name="moderator_profile"
-    )
+    profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name="moderator_profile")
 
 
 class ClientProfile(models.Model):
-    profile = models.OneToOneField(
-        UserProfile, on_delete=models.CASCADE, related_name="client_profile"
-    )
+    profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name="client_profile")

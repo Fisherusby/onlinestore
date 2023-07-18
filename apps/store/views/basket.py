@@ -10,9 +10,7 @@ from apps.store.serializers import (
 )
 
 
-class BasketViewSet(
-    mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet
-):
+class BasketViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Basket.objects.all()
     serializers = {
         "list": BasketSerializer,
@@ -29,9 +27,7 @@ class BasketViewSet(
         return self.queryset.filter(user=self.request.user)
 
 
-class ProductToBasketViewSet(
-    mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet
-):
+class ProductToBasketViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = ProductInBasket.objects.all()
     serializer_class = ProductToBasket
     permission_classes = [permissions.IsAuthenticated]

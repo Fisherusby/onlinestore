@@ -40,9 +40,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     category = ProductCategorySerializer()
     images = ProductImageSerializer(many=True, read_only=True)
     offers = OfferVendorSerializer(many=True, read_only=True)
-    url = serializers.HyperlinkedIdentityField(
-        view_name="ProductViewSet", lookup_field="slug"
-    )
+    url = serializers.HyperlinkedIdentityField(view_name="ProductViewSet", lookup_field="slug")
 
     class Meta:
         model = Product
@@ -146,9 +144,7 @@ class CreateReviewProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Product_not_found")
 
         try:
-            review = ReviewProduct.objects.get(
-                product=product, user=self.context["request"].user
-            )
+            review = ReviewProduct.objects.get(product=product, user=self.context["request"].user)
             raise serializers.ValidationError("Forbidden_more_than_once")
         except ObjectDoesNotExist:
             review = ReviewProduct.objects.create(
@@ -169,8 +165,6 @@ class ProductToFavoriteSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         product = get_object_or_404(Product, slug=validated_data["slug"])
-        FavoriteProduct.objects.get_or_create(
-            user=self.context["request"].user, product=product
-        )
+        FavoriteProduct.objects.get_or_create(user=self.context["request"].user, product=product)
 
         return validated_data

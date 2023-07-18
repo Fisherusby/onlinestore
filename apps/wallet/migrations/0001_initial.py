@@ -27,9 +27,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "currency",
-                    models.CharField(
-                        default="BYN", max_length=3, verbose_name="Валюта"
-                    ),
+                    models.CharField(default="BYN", max_length=3, verbose_name="Валюта"),
                 ),
                 (
                     "amount_of_money",

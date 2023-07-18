@@ -5,13 +5,9 @@ from django.dispatch import receiver
 
 
 class Wallet(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="wallet"
-    )
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="wallet")
     currency = models.CharField(max_length=3, default="BYN", verbose_name="Валюта")
-    amount_of_money = models.DecimalField(
-        max_digits=6, decimal_places=2, default=0, verbose_name="Количество денег"
-    )
+    amount_of_money = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name="Количество денег")
 
     def __str__(self):
         return f"{self.user}: {self.currency} {self.amount_of_money}"

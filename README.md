@@ -5,8 +5,9 @@
 - Django REST framework
 - Postgres
 - Docker compose
+- Celery
+- Redis
 
 ## TODO
 
-- add Celery
-- add Redis
+naming

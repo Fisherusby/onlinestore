@@ -63,15 +63,9 @@ class Order(models.Model):
 
 
 class ProductInOrder(models.Model):
-    order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, verbose_name="Заказ", related_name="products"
-    )
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="orders"
-    )
-    vendor = models.ForeignKey(
-        Vendor, on_delete=models.CASCADE, verbose_name="Продавец", related_name="orders"
-    )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="Заказ", related_name="products")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="orders")
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name="Продавец", related_name="orders")
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
     count = models.PositiveIntegerField(default=0, verbose_name="Количество")
 
