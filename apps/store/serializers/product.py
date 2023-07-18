@@ -85,7 +85,7 @@ class ReviewProductSerializer(serializers.ModelSerializer):
             "title",
             "plus",
             "minus",
-            "created_date",
+            "created_at",
             "photos",
         )
 
@@ -114,7 +114,7 @@ class UpdateReviewProductSerializer(serializers.ModelSerializer):
             "title",
             "plus",
             "minus",
-            "created_date",
+            "created_at",
             "photos",
         )
 
@@ -127,13 +127,12 @@ class CreateReviewProductSerializer(serializers.ModelSerializer):
         model = ReviewProduct
         fields = (
             "slug",
-            "user",
             "rating",
             "review_text",
             "title",
             "plus",
             "minus",
-            "created_date",
+            "created_at",
             "photos",
         )
 

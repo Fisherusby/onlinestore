@@ -1,7 +1,9 @@
 from django.db import models
 
+from core.base.model import BaseModel
 
-class Covid(models.Model):
+
+class Covid(BaseModel):
     date = models.DateField()
     infected = models.IntegerField()
     deaths = models.IntegerField()

@@ -4,6 +4,7 @@ from django.db.models import Avg
 from uuslug import uuslug
 
 from apps.info.services import convert_price
+from core.base.model import BaseModel
 from tools.image_store import get_path_image_store
 
 from .brand import Brand
@@ -11,7 +12,7 @@ from .product_category import Category
 from .vendor import Vendor
 
 
-class Product(models.Model):
+class Product(BaseModel):
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -73,7 +74,7 @@ class Product(models.Model):
         return f"{self.full_name}"
 
 
-class OfferVendor(models.Model):
+class OfferVendor(BaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="offers")
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name="Продавец", related_name="offers")
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
@@ -91,7 +92,7 @@ def image_store_path(instance, filename):
     return get_path_image_store(filename, "products")
 
 
-class ProductImage(models.Model):
+class ProductImage(BaseModel):
     product = models.ForeignKey(Product, verbose_name="Товар", on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(verbose_name="Изображение", upload_to=image_store_path)
     order = models.PositiveIntegerField(blank=True, null=True)
@@ -100,7 +101,7 @@ class ProductImage(models.Model):
         return f"{self.product.full_name} - {self.pk}. {self.image}"
 
 
-class ReviewProduct(models.Model):
+class ReviewProduct(BaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews", verbose_name="Товар")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь")
     rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], verbose_name="Рейтинг")
@@ -108,7 +109,6 @@ class ReviewProduct(models.Model):
     title = models.CharField(max_length=128, verbose_name="Заголовок отзыва")
     plus = models.TextField(verbose_name="Достоинства")
     minus = models.TextField(verbose_name="Недостатки")
-    created_date = models.DateTimeField(auto_now_add=True)
     moderation = models.BooleanField(default=False, verbose_name="Прошел модерацию")
 
 
@@ -116,12 +116,12 @@ def reviews_image_path(instance, filename):
     return get_path_image_store(filename, "reviewsproduct")
 
 
-class PhotoReviewProduct(models.Model):
+class PhotoReviewProduct(BaseModel):
     review = models.ForeignKey(ReviewProduct, on_delete=models.CASCADE, related_name="photos")
     photo = models.ImageField(upload_to=reviews_image_path, verbose_name=" Фотограция")
 
 
-class FavoriteProduct(models.Model):
+class FavoriteProduct(BaseModel):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

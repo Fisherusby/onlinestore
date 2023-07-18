@@ -2,9 +2,8 @@ from django.conf import settings
 from django.db import models
 from uuslug import uuslug
 
+from core.base.model import BaseModel
 from tools.image_store import get_path_image_store
-
-# from users.models import VendorProfile
 
 
 def vendor_store_path(instance, filename):
@@ -15,7 +14,7 @@ def vendor_store_path(instance, filename):
 # aa = [Vendor.objects.create(name=f'Vendor {i}', email='fisherus.dev@gmail.com', address=f'Zone 51-{i}', slug='1') for i in range(20)]
 
 
-class Vendor(models.Model):
+class Vendor(BaseModel):
     name = models.CharField(max_length=128, verbose_name="Название")
     logo = models.ImageField(upload_to=vendor_store_path, verbose_name="Логотип", blank=True, null=True)
     # site = models.CharField(max_length=128, verbose_name='Сайт')
@@ -38,7 +37,7 @@ class Vendor(models.Model):
         return rng["rating__avg"]
 
 
-class ReviewVendor(models.Model):
+class ReviewVendor(BaseModel):
     vendor = models.ForeignKey(
         Vendor,
         on_delete=models.CASCADE,

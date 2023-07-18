@@ -3,6 +3,7 @@ from django.db import models
 
 from apps.info.services import convert_price
 from apps.store.models.product import Product, Vendor
+from core.base.model import BaseModel
 
 PAYMENT_METHOD = (
     ("cash", "Наличными"),
@@ -11,7 +12,7 @@ PAYMENT_METHOD = (
 )
 
 
-class Order(models.Model):
+class Order(BaseModel):
     VERIFY = "verify"
     PAYMENT = "payment"
     DELIVERY = "delivery"
@@ -62,7 +63,7 @@ class Order(models.Model):
         return f'№{str(self.id).rjust(10, "0")} - {self.user.username} : {self.total_price}'
 
 
-class ProductInOrder(models.Model):
+class ProductInOrder(BaseModel):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name="Заказ", related_name="products")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар", related_name="orders")
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, verbose_name="Продавец", related_name="orders")
@@ -82,7 +83,7 @@ class ProductInOrder(models.Model):
         return result
 
 
-class ReceiptOfPayment(models.Model):
+class ReceiptOfPayment(BaseModel):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="receipts")
     method = models.CharField(max_length=16, choices=PAYMENT_METHOD)
     price = models.DecimalField(max_digits=9, decimal_places=2, default=0)

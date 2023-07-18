@@ -6,6 +6,7 @@ from rest_framework import filters, mixins, permissions, status, viewsets
 from rest_framework.response import Response
 
 from apps.store.models import FavoriteProduct, Product, ReviewProduct
+from apps.store.permissions import IsClient
 from apps.store.serializers import ProductReviewsSerializer, ProductSerializer
 from apps.store.serializers.product import (
     CreateReviewProductSerializer,
@@ -83,6 +84,7 @@ class ProductReviewsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
 class ReviewProductViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = ReviewProduct.objects.all()
+    permission_classes = [IsClient]
     serializers = {
         "create": CreateReviewProductSerializer,
         "update": UpdateReviewProductSerializer,
