@@ -5,6 +5,7 @@ from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
+from rest_framework_simplejwt import views as jwt_views
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -28,6 +29,8 @@ urlpatterns = [
     path("api/users/", include("apps.users.urls")),
     # path('api/wallet/', include('apps.wallet.urls')),
     path("admin/", admin.site.urls),
+    path('api/auth/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/auth/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 if settings.DEBUG:
