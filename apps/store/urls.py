@@ -43,11 +43,11 @@ router.register(
 )
 
 router.register(
-    "store/user/payment/wallet",
+    "user/payment/wallet",
     PayOrderByWalletViewSet,
     basename="PayOrderByWalletViewSet",
 )
-router.register("store/user/payment/card", PayOrderByCardViewSet, basename="PayOrderByCardViewSet")
+router.register("user/payment/card", PayOrderByCardViewSet, basename="PayOrderByCardViewSet")
 
 router.register(
     "popular_products",
@@ -59,7 +59,7 @@ router.register(
 urlpatterns = [
     path("", include(router.urls)),
     path(
-        "store/vendor/<slug:slug>",
+        "vendor/<slug:slug>",
         VendorViewSet.as_view(
             {
                 "get": "retrieve",
@@ -67,9 +67,9 @@ urlpatterns = [
         ),
         name="VendorViewSet",
     ),
-    path("store/vendor", ListVendorViewSet.as_view(), name="ListVendorViewSet"),
+    path("vendor", ListVendorViewSet.as_view(), name="ListVendorViewSet"),
     path(
-        "store/product/detail/<slug:slug>/",
+        "product/detail/<slug:slug>/",
         ProductViewSet.as_view(
             {
                 "get": "retrieve",

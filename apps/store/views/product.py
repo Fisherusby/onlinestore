@@ -2,6 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import filters, mixins, permissions, status, viewsets
 from rest_framework.response import Response
 
@@ -18,17 +20,20 @@ from apps.store.serializers.product import (
 class AllProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
+
     filterset_fields = [
         "category__slug",
         "brand__slug",
         "color",
         "production",
     ]
+
     search_fields = [
         "brand__name",
         "model",
@@ -41,16 +46,34 @@ class AllProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
         "color",
         "production",
     ]
+
     lookup_field = "slug"
 
-    # def get_queryset(self):
-    #     return self.queryset.filter(category__slug=self.kwargs['cat_slug'])
-    #
-    # def get_object(self):
-    #     try:
-    #         return self.queryset.get(slug=self.kwargs['slug'])
-    #     except ObjectDoesNotExist:
-    #         raise Http404
+    @swagger_auto_schema(
+        operation_summary='List of products',
+        tags=['products'],
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description='Response list of products by filters',
+                schema=ProductSerializer,
+            ),
+        },
+    )
+    def list(self, *args, **kwargs):
+        return super().list(*args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_summary='Detail of product',
+        tags=['products'],
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description='Response a product`s detail',
+                schema=ProductSerializer,
+            ),
+        },
+    )
+    def retrieve(self, *args, **kwargs):
+        return super().retrieve(*args, **kwargs)
 
 
 class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
