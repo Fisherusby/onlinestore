@@ -2,9 +2,10 @@ from django.conf import settings
 from django.db import models
 
 from apps.store.models.product import OfferVendor
+from core.base.model import BaseModel
 
 
-class Basket(models.Model):
+class Basket(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     last_update = models.DateTimeField(auto_now=True)
 
@@ -22,7 +23,7 @@ class Basket(models.Model):
         return f"{self.user.username}"
 
 
-class ProductInBasket(models.Model):
+class ProductInBasket(BaseModel):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name="products_in_basket")
     offer = models.ForeignKey(OfferVendor, on_delete=models.CASCADE, related_name="in_baskets")
     count = models.PositiveIntegerField(default=1)

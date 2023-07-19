@@ -85,7 +85,7 @@ class ReviewProductSerializer(serializers.ModelSerializer):
             "title",
             "plus",
             "minus",
-            "created_date",
+            "created_at",
             "photos",
         )
 
@@ -114,7 +114,7 @@ class UpdateReviewProductSerializer(serializers.ModelSerializer):
             "title",
             "plus",
             "minus",
-            "created_date",
+            "created_at",
             "photos",
         )
 
@@ -127,28 +127,29 @@ class CreateReviewProductSerializer(serializers.ModelSerializer):
         model = ReviewProduct
         fields = (
             "slug",
-            "user",
             "rating",
             "review_text",
             "title",
             "plus",
             "minus",
-            "created_date",
+            "created_at",
             "photos",
         )
 
-    def create(self, validated_data):
+    def validate_slug(self, v):
         try:
-            product = Product.objects.get(slug=validated_data["slug"])
+            self._product = Product.objects.get(slug=v)
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Product_not_found")
+        return v
 
+    def create(self, validated_data):
         try:
-            review = ReviewProduct.objects.get(product=product, user=self.context["request"].user)
+            review = ReviewProduct.objects.get(product=self._product, user=self.context["request"].user)
             raise serializers.ValidationError("Forbidden_more_than_once")
         except ObjectDoesNotExist:
             review = ReviewProduct.objects.create(
-                product=product,
+                product=self._product,
                 user=self.context["request"].user,
                 rating=validated_data["rating"],
                 review_text=validated_data["review_text"],
@@ -157,6 +158,7 @@ class CreateReviewProductSerializer(serializers.ModelSerializer):
                 minus=validated_data["minus"],
             )
             review.slug = validated_data["slug"]
+
         return review
 
 

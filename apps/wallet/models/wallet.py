@@ -3,8 +3,10 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from core.base.model import BaseModel
 
-class Wallet(models.Model):
+
+class Wallet(BaseModel):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="wallet")
     currency = models.CharField(max_length=3, default="BYN", verbose_name="Валюта")
     amount_of_money = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name="Количество денег")

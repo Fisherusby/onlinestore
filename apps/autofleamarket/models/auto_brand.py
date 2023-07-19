@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from uuslug import uuslug
 
+from core.base.model import BaseModel
 from tools.image_store import get_path_image_store
 
 
@@ -11,7 +12,7 @@ def auto_brand_store_path(instance, filename):
     get_path_image_store(filename, "auto_brand")
 
 
-class AutoBrand(models.Model):
+class AutoBrand(BaseModel):
     name = models.CharField(max_length=64)
     logo = models.ImageField(upload_to=auto_brand_store_path, blank=True, null=True)
     slug = models.SlugField(max_length=255, unique=True)
@@ -24,7 +25,7 @@ class AutoBrand(models.Model):
         super().save(*args, **kwargs)
 
 
-class AutoLineModel(models.Model):
+class AutoLineModel(BaseModel):
     name = models.CharField(max_length=64)
     brand = models.ForeignKey(AutoBrand, on_delete=models.CASCADE, related_name="model_lines")
 
@@ -37,7 +38,7 @@ def current_year():
     return datetime.date.today().year
 
 
-class Auto(models.Model):
+class Auto(BaseModel):
     YEAR_CHOICES = [(r, r) for r in range(1900, datetime.date.today().year + 1)]
 
     model = models.CharField(max_length=64)
@@ -49,7 +50,7 @@ class Auto(models.Model):
         return f"{self.line_model.brand.name} {self.line_model.name} {self.model}"
 
 
-class ReviewAuto(models.Model):
+class ReviewAuto(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="AutoReviews", on_delete=models.CASCADE)
     title = models.CharField(max_length=128)
     review = models.TextField()

@@ -16,7 +16,7 @@ def convert_price(price):
     tmp = {}
     try:
         for currency in DEFAULT_CURRENCY:
-            tmp[currency] = ExchangeCurrency.objects.filter(currency=currency).latest("created_date")
+            tmp[currency] = ExchangeCurrency.objects.filter(currency=currency).latest("created_at")
     except ObjectDoesNotExist:
         return None
 
