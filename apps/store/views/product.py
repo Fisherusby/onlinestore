@@ -77,23 +77,6 @@ class AllProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
         return super().retrieve(*args, **kwargs)
 
 
-class ProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['category', 'in_stock']
-    search_fields = ["full_name"]
-
-    def get_queryset(self):
-        return self.queryset.filter(category__slug=self.kwargs["cat_slug"])
-
-    def get_object(self):
-        try:
-            return self.queryset.get(slug=self.kwargs["slug"])
-        except ObjectDoesNotExist:
-            raise Http404
-
-
 class ProductReviewsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductReviewsSerializer

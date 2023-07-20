@@ -40,7 +40,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     category = ProductCategorySerializer()
     images = ProductImageSerializer(many=True, read_only=True)
     offers = OfferVendorSerializer(many=True, read_only=True)
-    url = serializers.HyperlinkedIdentityField(view_name="ProductViewSet", lookup_field="slug")
+    url = serializers.HyperlinkedIdentityField(view_name="AllProductViewSet-detail", lookup_field="slug")
 
     class Meta:
         model = Product

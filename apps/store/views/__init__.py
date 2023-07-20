@@ -4,7 +4,6 @@ from .product import (
     FavoriteProductsViewSet,
     ProductReviewsViewSet,
     ProductToFavoriteViewSet,
-    ProductViewSet,
     ReviewProductViewSet,
 )
 from .product_category import CategoryViewSet
@@ -16,7 +15,6 @@ __all__ = (
     FavoriteProductsViewSet,
     ProductReviewsViewSet,
     ProductToFavoriteViewSet,
-    ProductViewSet,
     ReviewProductViewSet,
     MostPopularProductsViewSet,
     CategoryViewSet,

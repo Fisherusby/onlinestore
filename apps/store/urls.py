@@ -9,7 +9,6 @@ from apps.store.views import (
     MostPopularProductsViewSet,
     ProductReviewsViewSet,
     ProductToFavoriteViewSet,
-    ProductViewSet,
     ReviewProductViewSet,
 )
 
@@ -41,13 +40,4 @@ router.register(
 
 urlpatterns = [
     path("", include(router.urls)),
-    path(
-        "product/detail/<slug:slug>/",
-        ProductViewSet.as_view(
-            {
-                "get": "retrieve",
-            }
-        ),
-        name="ProductViewSet",
-    ),
 ]
