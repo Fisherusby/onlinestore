@@ -6,7 +6,7 @@ from rest_framework import mixins, viewsets
 from apps.info.models import ExchangeCurrency
 from apps.info.serializers import ExchangeCurrencySerializer
 from apps.info.services import update_currency
-from apps.store.permissions import IsAdminUserOrReadOnly
+from apps.users.permissions import IsAdminUserOrReadOnly
 
 
 class ExchangeCurrencyViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):

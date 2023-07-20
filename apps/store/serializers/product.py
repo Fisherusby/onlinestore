@@ -136,20 +136,20 @@ class CreateReviewProductSerializer(serializers.ModelSerializer):
             "photos",
         )
 
-    def validate_slug(self, v):
+    def validate_slug(self, slug):
         try:
-            self._product = Product.objects.get(slug=v)
+            self.context['validate_product'] = Product.objects.get(slug=slug)
         except ObjectDoesNotExist:
             raise serializers.ValidationError("Product_not_found")
-        return v
+        return slug
 
     def create(self, validated_data):
         try:
-            review = ReviewProduct.objects.get(product=self._product, user=self.context["request"].user)
+            ReviewProduct.objects.get(product=self.context['validate_product'], user=self.context["request"].user)
             raise serializers.ValidationError("Forbidden_more_than_once")
         except ObjectDoesNotExist:
             review = ReviewProduct.objects.create(
-                product=self._product,
+                product=self.context['validate_product'],
                 user=self.context["request"].user,
                 rating=validated_data["rating"],
                 review_text=validated_data["review_text"],
@@ -158,8 +158,7 @@ class CreateReviewProductSerializer(serializers.ModelSerializer):
                 minus=validated_data["minus"],
             )
             review.slug = validated_data["slug"]
-
-        return review
+            return review
 
 
 class ProductToFavoriteSerializer(serializers.Serializer):
