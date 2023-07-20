@@ -1,3 +1,4 @@
+# flake8: noqa: I101
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 

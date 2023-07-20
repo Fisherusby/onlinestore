@@ -10,19 +10,12 @@ def vendor_store_path(instance, filename):
     get_path_image_store(filename, "vendor")
 
 
-# from store.models import Vendor
-# aa = [Vendor.objects.create(name=f'Vendor {i}', email='fisherus.dev@gmail.com', address=f'Zone 51-{i}', slug='1') for i in range(20)]
-
-
 class Vendor(BaseModel):
     name = models.CharField(max_length=128, verbose_name="Название")
     logo = models.ImageField(upload_to=vendor_store_path, verbose_name="Логотип", blank=True, null=True)
-    # site = models.CharField(max_length=128, verbose_name='Сайт')
     email = models.EmailField(verbose_name="email")
     address = models.CharField(max_length=256, verbose_name="Адрес")
-    # phone_number = models.CharField(max_length=64, verbose_name='Тел.', blank=True, null=True)
     slug = models.SlugField(verbose_name="sug", max_length=255, unique=True)
-    # vendor_profile = models.OneToOneField(VendorProfile, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.name}"
@@ -33,7 +26,7 @@ class Vendor(BaseModel):
 
     @property
     def rating(self):
-        rng = self.reviews.all().filter(moderation=True).aggregate(Avg("rating"))
+        rng = self.reviews.all().filter(moderation=True).aggregate(models.Avg("rating"))
         return rng["rating__avg"]
 
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.store.models import Vendor
+from apps.vendors.models import Vendor
 
 
 class VendorSerializer(serializers.HyperlinkedModelSerializer):

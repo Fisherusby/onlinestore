@@ -12,7 +12,6 @@ DEFAULT_CURRENCY = (
 
 
 def convert_price(price):
-    today = datetime.date.today()
     tmp = {}
     try:
         for currency in DEFAULT_CURRENCY:
@@ -60,7 +59,7 @@ def update_currency():
             cur_official_rate = currency.get("Cur_OfficialRate", False)
             date = currency.get("Date", False)
 
-            exchange_currency = ExchangeCurrency.objects.create(
+            ExchangeCurrency.objects.create(
                 currency=cur_name,
                 rate=cur_official_rate,
                 scale=cur_scale,

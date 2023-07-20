@@ -59,6 +59,7 @@ class AllProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
             ),
         },
     )
+    # flake8: noqa: A003
     def list(self, *args, **kwargs):
         return super().list(*args, **kwargs)
 

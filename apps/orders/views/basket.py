@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.response import Response
 
-from apps.store.models import Basket, ProductInBasket
-from apps.store.serializers import (
+from apps.orders.models import Basket, ProductInBasket
+from apps.orders.serializers import (
     BasketSerializer,
     CreateBasketSerializer,
     ProductToBasket,

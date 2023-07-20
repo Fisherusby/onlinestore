@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 
-def send_notyfy(subject, html_message, address_to):
+def send_notify(subject, html_message, address_to):
     plain_message = strip_tags(html_message)
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [address_to, email_from]
@@ -22,7 +22,7 @@ def notify_order(order):
     html_message = render_to_string("emails/order_create.html", {"order": order})
     send_to = order.user.email
 
-    return send_notyfy(subject, html_message, send_to)
+    return send_notify(subject, html_message, send_to)
 
 
 def notify_payment(receipt):
@@ -30,4 +30,4 @@ def notify_payment(receipt):
     html_message = render_to_string("emails/order_payment.html", {"receipt": receipt})
     send_to = receipt.order.user.email
 
-    return send_notyfy(subject, html_message, send_to)
+    return send_notify(subject, html_message, send_to)

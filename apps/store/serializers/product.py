@@ -10,10 +10,10 @@ from apps.store.models import (
     ProductImage,
     ReviewProduct,
 )
+from apps.vendors.serializers.vendor import VendorSerializer
 
 from .brand import BrandSerializer
 from .product_category import ProductCategorySerializer
-from .vendor import VendorSerializer
 
 
 class OfferVendorSerializer(serializers.ModelSerializer):

@@ -1,18 +1,16 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from apps.store.models import (
+from apps.orders.models import (
     Basket,
     Order,
     ProductInBasket,
     ProductInOrder,
     ReceiptOfPayment,
 )
+from apps.store.serializers.product import ProductSerializer
 from apps.wallet.models import Wallet
 from tools.notify import notify_order, notify_payment
-
-# from users.models import UserProfile
-from .product import ProductSerializer
 
 
 class ProductInOrderSerializer(serializers.ModelSerializer):

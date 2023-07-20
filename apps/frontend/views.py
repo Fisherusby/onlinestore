@@ -23,7 +23,7 @@ def updates_info(request):
 
 def add_cat_onliner(request, code_add):
     if code_add == 65535:
-        # create_cat()
+        create_cat()
         create_brands_and_vendors()
         create_random_goods(70)
         create_vendors_and_offers(1, 5)
@@ -38,7 +38,7 @@ def payment_process(request, order_id):
     total_cost = 1
     if request.method == "POST":
         # retrieve nonce
-        nonce = request.POST.get("payment_method_nonce", None)
+        nonce = request.POST.get("payment_method_nonce")
         # create and submit transaction
 
         result = gateway.transaction.sale(
