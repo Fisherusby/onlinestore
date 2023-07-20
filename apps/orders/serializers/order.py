@@ -10,7 +10,7 @@ from apps.orders.models import (
 )
 from apps.store.serializers.product import ProductSerializer
 from apps.wallet.models import Wallet
-from tools.notify import notify_order, notify_payment, send_notify
+from tools.notify import notify_order, notify_payment
 
 
 class ProductInOrderSerializer(serializers.ModelSerializer):

@@ -9,3 +9,15 @@ from .product import (
 )
 from .product_category import CategoryViewSet
 from .statistics import MostPopularProductsViewSet
+
+__all__ = (
+    BrandViewSet,
+    AllProductViewSet,
+    FavoriteProductsViewSet,
+    ProductReviewsViewSet,
+    ProductToFavoriteViewSet,
+    ProductViewSet,
+    ReviewProductViewSet,
+    MostPopularProductsViewSet,
+    CategoryViewSet,
+)

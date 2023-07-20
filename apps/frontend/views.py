@@ -38,7 +38,7 @@ def payment_process(request, order_id):
     total_cost = 1
     if request.method == "POST":
         # retrieve nonce
-        nonce = request.POST.get("payment_method_nonce", None)
+        nonce = request.POST.get("payment_method_nonce")
         # create and submit transaction
 
         result = gateway.transaction.sale(

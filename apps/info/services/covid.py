@@ -1,7 +1,8 @@
 import datetime
 
+# flake8: noqa: I100
 import requests
-from bs4 import BeautifulSoup as BS
+from bs4 import BeautifulSoup
 
 from apps.info.models import Covid
 
@@ -77,7 +78,7 @@ def get_covid_month(year, month):
     r = get_try(url)
     if r is None:
         return
-    html = BS(r.text, "html.parser")
+    html = BeautifulSoup(r.text, "html.parser")
     body = html
 
     stat_tbl = body.find("div", {"class": "compact-table"}).find_all("tr")

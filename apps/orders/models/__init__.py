@@ -5,6 +5,6 @@ __all__ = (
     Basket,
     ProductInBasket,
     Order,
-    ProductInBasket,
+    ProductInOrder,
     ReceiptOfPayment,
 )
