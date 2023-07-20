@@ -4,12 +4,12 @@ from django.db.models import Avg
 from uuslug import uuslug
 
 from apps.info.services import convert_price
+from apps.vendors.models.vendor import Vendor
 from core.base.model import BaseModel
 from tools.image_store import get_path_image_store
 
 from .brand import Brand
 from .product_category import Category
-from .vendor import Vendor
 
 
 class Product(BaseModel):

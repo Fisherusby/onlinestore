@@ -2,7 +2,8 @@ import random
 import string
 from string import ascii_uppercase
 
-from apps.store.models import Brand, Category, OfferVendor, Product, Vendor
+from apps.store.models import Brand, Category, OfferVendor, Product
+from apps.vendors.models import Vendor
 
 from .onliner_catalog import catalog
 

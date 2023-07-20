@@ -23,7 +23,7 @@ def updates_info(request):
 
 def add_cat_onliner(request, code_add):
     if code_add == 65535:
-        # create_cat()
+        create_cat()
         create_brands_and_vendors()
         create_random_goods(70)
         create_vendors_and_offers(1, 5)

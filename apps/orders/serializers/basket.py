@@ -1,7 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from apps.store.models import Basket, OfferVendor, Product, ProductInBasket, Vendor
+from apps.orders.models import Basket, ProductInBasket
+from apps.store.models import OfferVendor, Product
+from apps.vendors.models import Vendor
 
 
 class ShortProductInBasketSerializer(serializers.ModelSerializer):

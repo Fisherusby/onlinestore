@@ -2,8 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from rest_framework import mixins, permissions, viewsets
 
-from apps.store.models import Order, ReceiptOfPayment
-from apps.store.serializers import (
+from apps.orders.models import Order, ReceiptOfPayment
+from apps.orders.serializers import (
     CreateOrderSerializer,
     ListOrderSerializer,
     PayOrderByCardSerializer,

@@ -2,17 +2,13 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 
 from apps.store.models import (
-    Basket,
     Brand,
     Category,
     OfferVendor,
-    Order,
     PhotoReviewProduct,
     Product,
     ProductImage,
-    ProductInBasket,
     ReviewProduct,
-    Vendor,
 )
 
 
@@ -74,12 +70,6 @@ admin.site.register(Product, ProductsAdmin)
 
 admin.site.register(Brand)
 admin.site.register(OfferVendor)
-admin.site.register(Vendor)
-
-admin.site.register(Basket)
-admin.site.register(ProductInBasket)
-
-admin.site.register(Order)
 
 
 class PhotoReviewProductInLine(admin.TabularInline):

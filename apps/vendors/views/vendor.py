@@ -2,8 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from rest_framework import generics, mixins, permissions, viewsets
 
-from apps.store.models import Vendor
-from apps.store.serializers import VendorSerializer
+from apps.vendors.models import Vendor
+from apps.vendors.serializers import VendorSerializer
 
 
 class VendorViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
