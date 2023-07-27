@@ -22,6 +22,7 @@ whitenoise = "^6.5.0"
 coreapi = "^2.3.3"
 djangorestframework-simplejwt = "^5.2.2"
 gunicorn = "^21.2.0"
+braintree = "^4.21.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"
