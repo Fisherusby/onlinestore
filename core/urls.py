@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -17,7 +16,7 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=[permissions.AllowAny],
 )
 
 
@@ -28,7 +27,7 @@ urlpatterns = [
     path("api/vendors/", include("apps.vendors.urls")),
     path("api/info/", include("apps.info.urls")),
     path("api/users/", include("apps.users.urls")),
-    path("admin/", admin.site.urls),
+    # path("admin/", admin.site.urls),
     path('api/auth/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]

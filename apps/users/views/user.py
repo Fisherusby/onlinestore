@@ -1,7 +1,7 @@
 from rest_framework import mixins, viewsets
 
-from apps.store.permissions import IsNonAuthenticated
 from apps.users.models import CustomUser
+from apps.users.permissions import IsNonAuthenticated
 from apps.users.serializers import RegisterUserSerializer
 
 

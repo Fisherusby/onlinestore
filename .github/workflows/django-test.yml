@@ -1,0 +1,21 @@
+name: Docker Compose Test Actions Workflow
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Flake8
+        run: |
+          pip install flake8 flake8-bugbear flake8-simplify flake8-builtins pep8-naming flake8-import-order
+          flake8 .
+      - name: Build test environment
+        run: |
+          cp .env-test .env
+          docker-compose -f docker-compose.yml up -d --build
+      - name: Test
+        run: docker main_backend app python manage.py test -v 2
