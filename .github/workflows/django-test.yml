@@ -18,4 +18,4 @@ jobs:
           cp .env-test .env
           docker-compose -f docker-compose.yml up -d --build
       - name: Test
-        run: docker main_backend app python manage.py test -v 2
+        run: docker exec main_backend python manage.py test -v 2
