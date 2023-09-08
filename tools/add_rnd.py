@@ -158,20 +158,20 @@ def create_brands_and_vendors():
         for i in range(20)
     ]
 
-
-def create_random_goods(count):
-    products_type = Category.objects.filter(children=None)[:10]
-    brands = Brand.objects.all()
-    rnd_str = ascii_uppercase + '        '
-
-    COLORS = [
+    COLORS = (
         'red',
         'black',
         'green',
         'silver',
         'blue',
         'white',
-    ]
+    )
+
+
+def create_random_goods(count):
+    products_type = Category.objects.filter(children=None)[:10]
+    brands = Brand.objects.all()
+    rnd_str = ascii_uppercase + '        '
 
     for category in products_type:
         for _ in range(count):

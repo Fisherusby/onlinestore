@@ -17,6 +17,7 @@ extend-ignore =
 per-file-ignores =
   apps/info/services/covid,py: I100
   apps/store/permissions.py: I100
+  tools/onliner_catalog.py: E501
 
 # List of error codes
 # https://wemake-python-styleguide.readthedocs.io/en/latest/pages/usage/violations/index.html
