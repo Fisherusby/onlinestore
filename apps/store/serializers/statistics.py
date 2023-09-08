@@ -10,28 +10,28 @@ class PopularProductSerializer(serializers.HyperlinkedModelSerializer):
     category = ProductCategorySerializer()
     images = ProductImageSerializer(many=True)
     offers = OfferVendorSerializer(many=True, read_only=True)
-    url = serializers.HyperlinkedIdentityField(view_name="AllProductViewSet-detail", lookup_field="slug")
+    url = serializers.HyperlinkedIdentityField(view_name='AllProductViewSet-detail', lookup_field='slug')
 
     orders__count = serializers.IntegerField()
 
     class Meta:
         model = Product
         fields = (
-            "slug",
-            "url",
-            "full_name",
-            "category",
-            "model",
-            "brand",
-            "weight",
-            "height",
-            "width",
-            "deep",
-            "color",
-            "images",
-            "offers",
-            "rating",
-            "min_price",
-            "max_price",
-            "orders__count",
+            'slug',
+            'url',
+            'full_name',
+            'category',
+            'model',
+            'brand',
+            'weight',
+            'height',
+            'width',
+            'deep',
+            'color',
+            'images',
+            'offers',
+            'rating',
+            'min_price',
+            'max_price',
+            'orders__count',
         )

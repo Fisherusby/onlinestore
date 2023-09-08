@@ -5,9 +5,9 @@ from apps.info.views import CovidViewSet, TodayExchangeCurrencyViewSet
 
 router = DefaultRouter()
 
-router.register("currency", TodayExchangeCurrencyViewSet, basename="ExchangeCurrencyViewSet")
-router.register("covid", CovidViewSet, basename="CovidViewSet")
+router.register('currency', TodayExchangeCurrencyViewSet, basename='ExchangeCurrencyViewSet')
+router.register('covid', CovidViewSet, basename='CovidViewSet')
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path('', include(router.urls)),
 ]

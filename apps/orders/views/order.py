@@ -21,9 +21,9 @@ class OrderViewSet(
     queryset = Order.objects.all()
 
     serializers = {
-        "list": ListOrderSerializer,
-        "create": CreateOrderSerializer,
-        "retrieve": RetrieveOrderSerializer,
+        'list': ListOrderSerializer,
+        'create': CreateOrderSerializer,
+        'retrieve': RetrieveOrderSerializer,
     }
     permission_classes = [permissions.IsAuthenticated]
 
@@ -36,7 +36,7 @@ class OrderViewSet(
 
     def get_object(self):
         try:
-            return self.queryset.get(user=self.request.user, pk=self.kwargs["pk"])
+            return self.queryset.get(user=self.request.user, pk=self.kwargs['pk'])
         except ObjectDoesNotExist:
             raise Http404
 

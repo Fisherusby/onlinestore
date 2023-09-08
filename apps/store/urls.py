@@ -15,29 +15,29 @@ from apps.store.views import (
 router = DefaultRouter()
 
 
-router.register("products", AllProductViewSet, basename="AllProductViewSet")
-router.register("category", CategoryViewSet, basename="CategoryViewSet")
-router.register("brand", BrandViewSet, basename="BrandViewSet")
+router.register('products', AllProductViewSet, basename='AllProductViewSet')
+router.register('category', CategoryViewSet, basename='CategoryViewSet')
+router.register('brand', BrandViewSet, basename='BrandViewSet')
 
-router.register("product/reviews", ProductReviewsViewSet, basename="ProductReviewsViewSet")
-router.register("product/review", ReviewProductViewSet, basename="ReviewProductViewSet")
+router.register('product/reviews', ProductReviewsViewSet, basename='ProductReviewsViewSet')
+router.register('product/review', ReviewProductViewSet, basename='ReviewProductViewSet')
 router.register(
-    "user/favorite/product",
+    'user/favorite/product',
     ProductToFavoriteViewSet,
-    basename="ProductToFavoriteViewSet",
+    basename='ProductToFavoriteViewSet',
 )
 router.register(
-    "user/favorite/products",
+    'user/favorite/products',
     FavoriteProductsViewSet,
-    basename="FavoriteProductsViewSet",
+    basename='FavoriteProductsViewSet',
 )
 router.register(
-    "popular_products",
+    'popular_products',
     MostPopularProductsViewSet,
-    basename="MostPopularProductsViewSet",
+    basename='MostPopularProductsViewSet',
 )
 
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path('', include(router.urls)),
 ]

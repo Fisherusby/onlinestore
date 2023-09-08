@@ -19,5 +19,5 @@ def at_start(sender, **kwargs):
     """Startup task for update decentraland sale data."""
 
     with sender.app.connection() as conn:
-        sender.app.send_task("apps.info.tasks.update_covid_task", connection=conn)
-        sender.app.send_task("apps.info.tasks.update_currency_task", connection=conn)
+        sender.app.send_task('apps.info.tasks.update_covid_task', connection=conn)
+        sender.app.send_task('apps.info.tasks.update_currency_task', connection=conn)

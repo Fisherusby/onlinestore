@@ -7,24 +7,24 @@ class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = (
-            "name",
-            "logo",
-            "slug",
+            'name',
+            'logo',
+            'slug',
         )
-        lookup_field = "slug"
+        lookup_field = 'slug'
 
 
 class BrandProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            "full_name",
-            "model",
-            "slug",
-            "images",
-            "rating",
-            "min_price",
-            "max_price",
+            'full_name',
+            'model',
+            'slug',
+            'images',
+            'rating',
+            'min_price',
+            'max_price',
         )
 
 
@@ -34,8 +34,8 @@ class RetrieveBrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = (
-            "name",
-            "logo",
-            "slug",
-            "products",
+            'name',
+            'logo',
+            'slug',
+            'products',
         )

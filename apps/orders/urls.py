@@ -11,16 +11,16 @@ from apps.orders.views import (
 
 router = DefaultRouter()
 
-router.register("basket", BasketViewSet, basename="BasketViewSet")
-router.register("to_basket", ProductToBasketViewSet, basename="ProductToBasketViewSet")
-router.register("order", OrderViewSet, basename="OrderViewSet")
+router.register('basket', BasketViewSet, basename='BasketViewSet')
+router.register('to_basket', ProductToBasketViewSet, basename='ProductToBasketViewSet')
+router.register('order', OrderViewSet, basename='OrderViewSet')
 router.register(
-    "payment/wallet",
+    'payment/wallet',
     PayOrderByWalletViewSet,
-    basename="PayOrderByWalletViewSet",
+    basename='PayOrderByWalletViewSet',
 )
-router.register("payment/card", PayOrderByCardViewSet, basename="PayOrderByCardViewSet")
+router.register('payment/card', PayOrderByCardViewSet, basename='PayOrderByCardViewSet')
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path('', include(router.urls)),
 ]

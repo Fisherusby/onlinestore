@@ -8,12 +8,12 @@ from rest_framework_simplejwt import views as jwt_views
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="OnlineStore API",
-        default_version="v0.1",
-        description="Pet project",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
-        license=openapi.License(name="BSD License"),
+        title='OnlineStore API',
+        default_version='v0.1',
+        description='Pet project',
+        terms_of_service='https://www.google.com/policies/terms/',
+        contact=openapi.Contact(email='contact@snippets.local'),
+        license=openapi.License(name='BSD License'),
     ),
     public=True,
     permission_classes=[permissions.AllowAny],
@@ -21,12 +21,12 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path("", include("apps.frontend.urls")),
-    path("api/store/", include("apps.store.urls")),
-    path("api/orders/", include("apps.orders.urls")),
-    path("api/vendors/", include("apps.vendors.urls")),
-    path("api/info/", include("apps.info.urls")),
-    path("api/users/", include("apps.users.urls")),
+    path('', include('apps.frontend.urls')),
+    path('api/store/', include('apps.store.urls')),
+    path('api/orders/', include('apps.orders.urls')),
+    path('api/vendors/', include('apps.vendors.urls')),
+    path('api/info/', include('apps.info.urls')),
+    path('api/users/', include('apps.users.urls')),
     # path("admin/", admin.site.urls),
     path('api/auth/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
@@ -35,9 +35,9 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += (
         path(
-            "docs/",
-            schema_view.with_ui("swagger", cache_timeout=0),
-            name="schema-swagger-ui",
+            'docs/',
+            schema_view.with_ui('swagger', cache_timeout=0),
+            name='schema-swagger-ui',
         ),
     )
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

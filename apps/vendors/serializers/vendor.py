@@ -4,14 +4,14 @@ from apps.vendors.models import Vendor
 
 
 class VendorSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name="VendorViewSet", lookup_field="slug")
+    url = serializers.HyperlinkedIdentityField(view_name='VendorViewSet', lookup_field='slug')
 
     class Meta:
         model = Vendor
         fields = (
-            "url",
-            "name",
-            "email",
-            "address",
-            "slug",
+            'url',
+            'name',
+            'email',
+            'address',
+            'slug',
         )

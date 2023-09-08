@@ -13,10 +13,10 @@ from apps.orders.serializers import (
 class BasketViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Basket.objects.all()
     serializers = {
-        "list": BasketSerializer,
-        "create": CreateBasketSerializer,
-        "update": CreateBasketSerializer,
-        "retrieve": BasketSerializer,
+        'list': BasketSerializer,
+        'create': CreateBasketSerializer,
+        'update': CreateBasketSerializer,
+        'retrieve': BasketSerializer,
     }
     permission_classes = [permissions.IsAuthenticated]
 
@@ -36,7 +36,7 @@ class ProductToBasketViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, 
         prodict_in_basket = get_object_or_404(
             ProductInBasket,
             basket__user=request.user,
-            pk=self.kwargs["pk"],
+            pk=self.kwargs['pk'],
         )
         if prodict_in_basket.count <= 1:
             prodict_in_basket.delete()
