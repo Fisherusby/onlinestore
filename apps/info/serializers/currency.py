@@ -7,9 +7,9 @@ class ExchangeCurrencySerializer(serializers.ModelSerializer):
     class Meta:
         model = ExchangeCurrency
         fields = (
-            "currency",
-            "rate",
-            "scale",
-            "date",
-            "created_at",
+            'currency',
+            'rate',
+            'scale',
+            'date',
+            'created_at',
         )

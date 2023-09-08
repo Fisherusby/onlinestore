@@ -11,8 +11,8 @@ from apps.wallet.models import Wallet
 class WalletInLine(admin.StackedInline):
     model = Wallet
     can_delete = False
-    verbose_name_plural = "Wallet"
-    fk_name = "user"
+    verbose_name_plural = 'Wallet'
+    fk_name = 'user'
 
 
 class CustomUserAdmin(UserAdmin):
@@ -20,9 +20,9 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ["username", "email", "is_client"]
+    list_display = ['username', 'email', 'is_client']
 
-    fieldsets = UserAdmin.fieldsets + (("store", {"fields": ("is_client", "is_vendor", "is_moderator")}),)
+    fieldsets = UserAdmin.fieldsets + (('store', {'fields': ('is_client', 'is_vendor', 'is_moderator')}),)
 
     def get_inline_instances(self, request, obj=None):
         if not obj:

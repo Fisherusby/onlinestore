@@ -9,11 +9,11 @@ from apps.vendors.serializers import VendorSerializer
 class VendorViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
-    lookup_field = "slug"
+    lookup_field = 'slug'
 
     def get_object(self):
         try:
-            return self.queryset.get(slug=self.kwargs["slug"])
+            return self.queryset.get(slug=self.kwargs['slug'])
         except ObjectDoesNotExist:
             raise Http404
 

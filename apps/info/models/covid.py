@@ -11,4 +11,4 @@ class Covid(BaseModel):
     sick = models.IntegerField()
 
     class Meta:
-        ordering = ["-date"]
+        ordering = ['-date']

@@ -20,12 +20,12 @@ class Basket(BaseModel):
         return result
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f'{self.user.username}'
 
 
 class ProductInBasket(BaseModel):
-    basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name="products_in_basket")
-    offer = models.ForeignKey(OfferVendor, on_delete=models.CASCADE, related_name="in_baskets")
+    basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name='products_in_basket')
+    offer = models.ForeignKey(OfferVendor, on_delete=models.CASCADE, related_name='in_baskets')
     count = models.PositiveIntegerField(default=1)
 
     @property

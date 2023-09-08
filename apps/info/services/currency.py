@@ -5,9 +5,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from apps.info.models import ExchangeCurrency
 
 DEFAULT_CURRENCY = (
-    "USD",
-    "EUR",
-    "RUB",
+    'USD',
+    'EUR',
+    'RUB',
 )
 
 
@@ -15,11 +15,11 @@ def convert_price(price):
     tmp = {}
     try:
         for currency in DEFAULT_CURRENCY:
-            tmp[currency] = ExchangeCurrency.objects.filter(currency=currency).latest("created_at")
+            tmp[currency] = ExchangeCurrency.objects.filter(currency=currency).latest('created_at')
     except ObjectDoesNotExist:
         return None
 
-    result = {"BYN": price}
+    result = {'BYN': price}
     for currency, data in tmp.items():
         result[currency] = round(price * data.scale / data.rate, 2)
 
@@ -40,24 +40,24 @@ def update_currency():
 
     result = True
 
-    url = "https://www.nbrb.by/api/exrates/rates?periodicity=0"
+    url = 'https://www.nbrb.by/api/exrates/rates?periodicity=0'
 
     # CURRENCY = ['USD', 'EUR', 'RUB']
 
     payload = {}
     headers = {}
     try:
-        response = requests.request("GET", url, headers=headers, data=payload)
+        response = requests.request('GET', url, headers=headers, data=payload)
         json_loads = json.loads(response.text)
 
         if len(json_loads) < 2:
             return False
 
         for currency in json_loads:
-            cur_name = currency.get("Cur_Abbreviation", False)
-            cur_scale = currency.get("Cur_Scale", False)
-            cur_official_rate = currency.get("Cur_OfficialRate", False)
-            date = currency.get("Date", False)
+            cur_name = currency.get('Cur_Abbreviation', False)
+            cur_scale = currency.get('Cur_Scale', False)
+            cur_official_rate = currency.get('Cur_OfficialRate', False)
+            date = currency.get('Date', False)
 
             ExchangeCurrency.objects.create(
                 currency=cur_name,

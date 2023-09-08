@@ -19,7 +19,7 @@ class TodayExchangeCurrencyViewSet(mixins.RetrieveModelMixin, mixins.ListModelMi
     queryset = ExchangeCurrency.objects.all()
     serializer_class = ExchangeCurrencySerializer
     permission_classes = [IsAdminUserOrReadOnly]
-    lookup_field = "currency"
+    lookup_field = 'currency'
 
     def get_queryset(self):
         last = self.queryset.last()

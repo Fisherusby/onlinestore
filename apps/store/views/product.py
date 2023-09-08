@@ -28,26 +28,26 @@ class AllProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
     ]
 
     filterset_fields = [
-        "category__slug",
-        "brand__slug",
-        "color",
-        "production",
+        'category__slug',
+        'brand__slug',
+        'color',
+        'production',
     ]
 
     search_fields = [
-        "brand__name",
-        "model",
-        "category__name",
+        'brand__name',
+        'model',
+        'category__name',
     ]
 
     ordering_fields = [
-        "brand__name",
-        "category__name",
-        "color",
-        "production",
+        'brand__name',
+        'category__name',
+        'color',
+        'production',
     ]
 
-    lookup_field = "slug"
+    lookup_field = 'slug'
 
     @swagger_auto_schema(
         operation_summary='List of products',
@@ -80,11 +80,11 @@ class AllProductViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
 class ProductReviewsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductReviewsSerializer
-    lookup_field = "slug"
+    lookup_field = 'slug'
 
     def get_object(self):
         try:
-            return self.queryset.get(slug=self.kwargs["slug"])
+            return self.queryset.get(slug=self.kwargs['slug'])
         except ObjectDoesNotExist:
             raise Http404
 
@@ -93,9 +93,9 @@ class ReviewProductViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, vie
     queryset = ReviewProduct.objects.all()
     permission_classes = [IsClient]
     serializers = {
-        "create": CreateReviewProductSerializer,
-        "update": UpdateReviewProductSerializer,
-        "partial_update": UpdateReviewProductSerializer,
+        'create': CreateReviewProductSerializer,
+        'update': UpdateReviewProductSerializer,
+        'partial_update': UpdateReviewProductSerializer,
     }
 
     def get_serializer_class(self):
@@ -117,9 +117,9 @@ class ProductToFavoriteViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin
     queryset = Product.objects.all()
     serializer_class = ProductToFavoriteSerializer
     permission_classes = [permissions.IsAuthenticated]
-    lookup_field = "slug"
+    lookup_field = 'slug'
 
     def destroy(self, request, *args, **kwargs):
-        favorite = get_object_or_404(FavoriteProduct, user=request.user, product__slug=self.kwargs["slug"])
+        favorite = get_object_or_404(FavoriteProduct, user=request.user, product__slug=self.kwargs['slug'])
         favorite.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

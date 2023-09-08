@@ -8,116 +8,116 @@ from apps.vendors.models import Vendor
 from .onliner_catalog import catalog
 
 WORDS = [
-    "Brisque",
-    "Mysterioso",
-    "Preprimary",
-    "Unjealously",
-    "Responsorium",
-    "Theresa",
-    "Metabolomes",
-    "Repaster",
-    "Autoboot",
-    "Bacterian",
-    "Thereout",
-    "Free flowing",
-    "Honey",
-    "Preliminary",
-    "Animative",
-    "Upsize",
-    "Crotchety",
-    "High seasoned",
-    "Temption",
-    "Sauvignon blanc",
-    "Jib headed",
-    "Defraud",
-    "Aggravates",
-    "Villa",
-    "Postganglionic",
-    "Algicide",
-    "Empathically",
-    "Droughty",
-    "Vapourish",
-    "Lyricists",
-    "Stiff neck",
-    "Degreasers",
-    "Thousands",
-    "Disparities",
-    "Fuckdoll",
-    "Dishware",
-    "Accurately",
-    "Wallflowers",
-    "Suppositionally",
-    "Micella",
-    "Seeking",
-    "Santon",
-    "Twincest",
-    "Trappour",
-    "Girls",
-    "Fieldman",
-    "Bastardize",
-    "Alliance",
-    "Emptyish",
-    "Elche",
-    "Loners",
-    "Lathy",
-    "Travale",
-    "Ginger",
-    "Unbolt",
-    "Conodonts",
-    "Unsisterliness",
-    "Dribblet",
-    "Tremorous",
-    "Perigastrula",
-    "Interruptible",
-    "Propound",
-    "Sylvicola",
-    "Swordfight",
-    "Squander",
-    "Picometer",
-    "Decriminalized",
-    "Creation",
-    "Doxologies",
-    "Tavel",
-    "Cryptical",
-    "Slapdash",
-    "Establishes",
-    "Makuta",
-    "Vaishyas",
-    "Illaqueation",
-    "Corrosivity",
-    "Bordelaise",
-    "Long beach",
-    "Dolor",
-    "Buyers",
-    "Thermobaric",
-    "Astrochemistry",
-    "Flench",
-    "Rakish",
-    "Lathe",
-    "Laking",
-    "Dropseed",
-    "Reasoning",
-    "Bottled",
-    "Nano ohm",
-    "Unroof",
-    "Allwhither",
-    "Attelet",
-    "Afflux",
-    "Exorcists",
-    "Naples",
-    "Choiceful",
-    "Glaucus",
-    "Affeeble",
+    'Brisque',
+    'Mysterioso',
+    'Preprimary',
+    'Unjealously',
+    'Responsorium',
+    'Theresa',
+    'Metabolomes',
+    'Repaster',
+    'Autoboot',
+    'Bacterian',
+    'Thereout',
+    'Free flowing',
+    'Honey',
+    'Preliminary',
+    'Animative',
+    'Upsize',
+    'Crotchety',
+    'High seasoned',
+    'Temption',
+    'Sauvignon blanc',
+    'Jib headed',
+    'Defraud',
+    'Aggravates',
+    'Villa',
+    'Postganglionic',
+    'Algicide',
+    'Empathically',
+    'Droughty',
+    'Vapourish',
+    'Lyricists',
+    'Stiff neck',
+    'Degreasers',
+    'Thousands',
+    'Disparities',
+    'Fuckdoll',
+    'Dishware',
+    'Accurately',
+    'Wallflowers',
+    'Suppositionally',
+    'Micella',
+    'Seeking',
+    'Santon',
+    'Twincest',
+    'Trappour',
+    'Girls',
+    'Fieldman',
+    'Bastardize',
+    'Alliance',
+    'Emptyish',
+    'Elche',
+    'Loners',
+    'Lathy',
+    'Travale',
+    'Ginger',
+    'Unbolt',
+    'Conodonts',
+    'Unsisterliness',
+    'Dribblet',
+    'Tremorous',
+    'Perigastrula',
+    'Interruptible',
+    'Propound',
+    'Sylvicola',
+    'Swordfight',
+    'Squander',
+    'Picometer',
+    'Decriminalized',
+    'Creation',
+    'Doxologies',
+    'Tavel',
+    'Cryptical',
+    'Slapdash',
+    'Establishes',
+    'Makuta',
+    'Vaishyas',
+    'Illaqueation',
+    'Corrosivity',
+    'Bordelaise',
+    'Long beach',
+    'Dolor',
+    'Buyers',
+    'Thermobaric',
+    'Astrochemistry',
+    'Flench',
+    'Rakish',
+    'Lathe',
+    'Laking',
+    'Dropseed',
+    'Reasoning',
+    'Bottled',
+    'Nano ohm',
+    'Unroof',
+    'Allwhither',
+    'Attelet',
+    'Afflux',
+    'Exorcists',
+    'Naples',
+    'Choiceful',
+    'Glaucus',
+    'Affeeble',
 ]
 
 
 def rnd_model():
     size = random.randrange(1, 4)
-    result = "".join(random.choice(string.ascii_uppercase) for _ in range(size))
-    result += random.choice(["", " ", "-"])
+    result = ''.join(random.choice(string.ascii_uppercase) for _ in range(size))
+    result += random.choice(['', ' ', '-'])
     size = random.randrange(1, 5)
-    result += "".join(random.choice(string.digits) for _ in range(size))
-    result += random.choice(["", "0"])
+    result += ''.join(random.choice(string.digits) for _ in range(size))
+    result += random.choice(['', '0'])
     return result
 
 
@@ -129,13 +129,13 @@ def add_cat_dict_in_db(cat, parant=False):
             if parant:
                 isset = Category.objects.create(
                     name=key,
-                    slug="1",
+                    slug='1',
                     parent=parant,
                 )
             else:
                 isset = Category.objects.create(
                     name=key,
-                    slug="1",
+                    slug='1',
                 )
         if type(value) == dict:
             add_cat_dict_in_db(value, isset)
@@ -150,28 +150,28 @@ def create_brands_and_vendors():
 
     [
         Vendor.objects.create(
-            name=f"Vendor {i}",
-            email="fisherus.dev@gmail.com",
-            address=f"Zone 51-{i}",
-            slug="1",
+            name=f'Vendor {i}',
+            email='fisherus.dev@gmail.com',
+            address=f'Zone 51-{i}',
+            slug='1',
         )
         for i in range(20)
     ]
+
+    COLORS = (
+        'red',
+        'black',
+        'green',
+        'silver',
+        'blue',
+        'white',
+    )
 
 
 def create_random_goods(count):
     products_type = Category.objects.filter(children=None)[:10]
     brands = Brand.objects.all()
-    rnd_str = ascii_uppercase + "        "
-
-    COLORS = [
-        "red",
-        "black",
-        "green",
-        "silver",
-        "blue",
-        "white",
-    ]
+    rnd_str = ascii_uppercase + '        '
 
     for category in products_type:
         for _ in range(count):
@@ -180,7 +180,7 @@ def create_random_goods(count):
                 brand=random.choice(brands),
                 model=rnd_model(),
                 production=2000 + random.randint(1, 17),
-                description="".join(random.choice(rnd_str) for i in range(200)),
+                description=''.join(random.choice(rnd_str) for i in range(200)),
                 color=random.choice(COLORS),
             )
 
@@ -210,9 +210,9 @@ def create_vendors_and_offers(offer_min, offer_max):
 
 
 def create_all():
-    print("add cat")
+    print('add cat')
     create_cat()
-    print("add brands")
+    print('add brands')
     create_brands_and_vendors()
-    print("add goods")
+    print('add goods')
     create_random_goods(30)

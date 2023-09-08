@@ -182,3 +182,5 @@ db_cred.conf
 tmp/
 celerybeat-schedule
 settings_local.py
+
+poetry.lock

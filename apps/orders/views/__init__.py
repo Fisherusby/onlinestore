@@ -6,9 +6,9 @@ from apps.orders.views.order import (
 )
 
 __all__ = (
-    BasketViewSet,
-    ProductToBasketViewSet,
-    OrderViewSet,
-    PayOrderByWalletViewSet,
-    PayOrderByCardViewSet,
+    'BasketViewSet',
+    'ProductToBasketViewSet',
+    'OrderViewSet',
+    'PayOrderByWalletViewSet',
+    'PayOrderByCardViewSet',
 )

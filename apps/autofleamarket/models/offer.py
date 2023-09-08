@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from apps.autofleamarket import Auto
+from apps.autofleamarket.models import Auto
 
 
 class OfferAuto(models.Model):

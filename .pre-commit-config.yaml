@@ -1,4 +1,16 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-added-large-files
+      - id: check-yaml
+      - id: check-json
+        exclude: launch.json
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: double-quote-string-fixer
+      - id: end-of-file-fixer
   - repo: https://github.com/psf/black
     rev: 23.1.0
     hooks:
@@ -12,3 +24,33 @@ repos:
     hooks:
       - id: docformatter
         entry: docformatter -i --wrap-summaries 120 --wrap-descriptions 120
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        entry: flake8
+        exclude: '(migrations|tools)/.*'
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-builtins
+          - flake8-import-order
+          - flake8-simplify
+          - pep8-naming
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.991
+    hooks:
+      - id: mypy
+        exclude: 'migrations'
+        additional_dependencies: ['types-requests']
+  - repo: https://github.com/python-poetry/poetry
+    rev: '1.3.1'
+    hooks:
+      - id: poetry-check
+        always_run: true
+      - id: poetry-lock
+        always_run: true
+      - id: poetry-export
+        args: [ "--without-hashes", "-f", "requirements.txt", "-o", "requirements.txt" ]
+        files: .
+        always_run: true
+        verbose: true

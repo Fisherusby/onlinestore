@@ -7,13 +7,13 @@ router = DefaultRouter()
 
 urlpatterns = [
     path(
-        "<slug:slug>",
+        '<slug:slug>',
         VendorViewSet.as_view(
             {
-                "get": "retrieve",
+                'get': 'retrieve',
             }
         ),
-        name="VendorViewSet",
+        name='VendorViewSet',
     ),
-    path("", ListVendorViewSet.as_view(), name="ListVendorViewSet"),
+    path('', ListVendorViewSet.as_view(), name='ListVendorViewSet'),
 ]
